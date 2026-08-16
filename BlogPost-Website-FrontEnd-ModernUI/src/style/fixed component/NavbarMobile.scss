@@ -1,0 +1,554 @@
+/* ===========================================
+   Mobile Navbar
+=========================================== */
+
+.navbar-mobile {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 72px;
+  padding: 0 18px;
+
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .08);
+
+  transition: .4s ease;
+}
+
+.navbar-image {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 100px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 16px;
+    transition: .35s ease;
+  }
+
+  img:hover {
+    transform: scale(1.08) rotate(-3deg);
+  }
+}
+
+/* ===========================================
+   Menu Button
+=========================================== */
+
+.navbar-menu-button {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu-btn {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  border-radius: 18px;
+
+  background: rgba(255,255,255,.92);
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.12),
+    inset 0 1px 1px rgba(255,255,255,.8);
+
+  transition: .35s;
+
+  svg {
+    font-size: 28px;
+    color: #4f46e5;
+  }
+
+  img {
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #6366f1;
+  }
+
+  &:hover {
+    transform: translateY(-2px) scale(1.05);
+
+    box-shadow:
+      0 18px 40px rgba(79,70,229,.28);
+  }
+
+  &:active {
+    transform: scale(.94);
+  }
+}
+
+/* ===========================================
+   Overlay
+=========================================== */
+
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: flex-end;
+
+  background: rgba(10,15,30,.45);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  z-index: 99999;
+
+  overflow: hidden;
+}
+
+/* ===========================================
+   Drawer
+=========================================== */
+
+.mobile-menu-container {
+  width: min(90%, 360px);
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: rgba(255,255,255,.95);
+
+  backdrop-filter: blur(35px);
+
+  border-left: 1px solid rgba(255,255,255,.4);
+
+  box-shadow:
+    -25px 0 60px rgba(0,0,0,.15);
+
+  overflow-y: auto;
+
+  animation: drawerGlow .8s ease;
+}
+
+/* ===========================================
+   Header
+=========================================== */
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px 22px 18px;
+
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
+
+.mobile-logo {
+
+  img {
+    width: 100px;
+    height: 54px;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+
+}
+
+.close-menu-btn {
+  width: 48px;
+  height: 48px;
+
+  border: none;
+  cursor: pointer;
+
+  border-radius: 14px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #f5f7fb;
+
+  transition: .3s;
+
+  svg {
+    font-size: 22px;
+    color: #555;
+  }
+
+  &:hover {
+    transform: rotate(90deg);
+
+    background: #4f46e5;
+
+    svg {
+      color: white;
+    }
+  }
+}
+
+/* ===========================================
+   Profile Card
+=========================================== */
+
+.mobile-profile-card {
+  margin: 24px;
+  padding: 32px 24px;
+
+  text-align: center;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+
+  color: white;
+
+  box-shadow:
+    0 25px 55px rgba(79,70,229,.35);
+
+  transition: .4s;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  .profile-image {
+    width: 96px;
+    height: 96px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 4px solid white;
+
+    margin-bottom: 18px;
+
+    transition: .35s;
+  }
+
+  .profile-image:hover {
+    transform: scale(1.08) rotate(-4deg);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+
+  p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: rgba(255,255,255,.82);
+  }
+}
+
+/* ===========================================
+   Menu
+=========================================== */
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  padding: 0 22px 30px;
+}
+
+.mobile-menu-links h5 {
+  margin: 24px 0 14px;
+  padding-left: 4px;
+
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  color: #9ca3af;
+}
+
+.menu-divider {
+  width: 100%;
+  height: 1px;
+  margin: 22px 0;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0,0,0,.08),
+    transparent
+  );
+}
+
+/* ===========================================
+   Buttons
+=========================================== */
+
+.mobile-menu-links button {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+
+  padding: 16px 18px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 18px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition: .35s ease;
+}
+
+.mobile-menu-links button svg {
+  font-size: 23px;
+  color: #6366f1;
+  transition: .35s ease;
+}
+
+.mobile-menu-links button span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  transition: .35s ease;
+}
+
+.mobile-menu-links button::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    rgba(99,102,241,.10),
+    rgba(139,92,246,.15)
+  );
+
+  transition: .35s;
+}
+
+.mobile-menu-links button:hover::before {
+  opacity: 1;
+}
+
+.mobile-menu-links button:hover {
+  transform: translateX(10px);
+}
+
+.mobile-menu-links button:hover svg {
+  color: #4f46e5;
+  transform: scale(1.2) rotate(-8deg);
+}
+
+.mobile-menu-links button:hover span {
+  color: #4f46e5;
+}
+
+.mobile-menu-links button:active {
+  transform: scale(.97);
+}
+
+/* ===========================================
+   Logout
+=========================================== */
+
+.logout-btn svg,
+.logout-btn span {
+  color: #ef4444 !important;
+}
+
+.logout-btn:hover {
+  background: rgba(239,68,68,.08);
+}
+
+/* ===========================================
+   Delete
+=========================================== */
+
+.delete-btn svg,
+.delete-btn span {
+  color: #f97316 !important;
+}
+
+.delete-btn:hover {
+  background: rgba(249,115,22,.08);
+}
+
+/* ===========================================
+   Scrollbar
+=========================================== */
+
+.mobile-menu-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mobile-menu-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobile-menu-container::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: rgba(99,102,241,.28);
+}
+
+.mobile-menu-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(99,102,241,.5);
+}
+
+/* ===========================================
+   Animations
+=========================================== */
+
+@keyframes drawerGlow {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes floatCard {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.mobile-menu-links button:nth-child(1) {
+  animation: fadeSlide .35s .05s both;
+}
+
+.mobile-menu-links button:nth-child(2) {
+  animation: fadeSlide .35s .10s both;
+}
+
+.mobile-menu-links button:nth-child(3) {
+  animation: fadeSlide .35s .15s both;
+}
+
+.mobile-menu-links button:nth-child(4) {
+  animation: fadeSlide .35s .20s both;
+}
+
+.mobile-menu-links button:nth-child(5) {
+  animation: fadeSlide .35s .25s both;
+}
+
+.mobile-menu-links button:nth-child(6) {
+  animation: fadeSlide .35s .30s both;
+}
+
+.mobile-menu-links button:nth-child(7) {
+  animation: fadeSlide .35s .35s both;
+}
+
+.mobile-menu-links button:nth-child(8) {
+  animation: fadeSlide .35s .40s both;
+}
+
+.mobile-profile-card {
+  animation: floatCard 5s ease-in-out infinite;
+}
+
+/* ===========================================
+   Responsive
+=========================================== */
+
+@media (max-width: 480px) {
+  .mobile-menu-container {
+    width: 100%;
+  }
+
+  .mobile-profile-card {
+    margin: 18px;
+    padding: 26px 18px;
+
+    .profile-image {
+      width: 82px;
+      height: 82px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .mobile-menu-links {
+    padding: 0 16px 24px;
+  }
+
+  .mobile-menu-links button {
+    padding: 15px;
+    border-radius: 16px;
+  }
+
+  .mobile-menu-links button svg {
+    font-size: 21px;
+  }
+
+  .mobile-menu-links button span {
+    font-size: 15px;
+  }
+}

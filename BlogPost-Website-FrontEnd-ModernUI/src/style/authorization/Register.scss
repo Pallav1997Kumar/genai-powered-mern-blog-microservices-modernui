@@ -1,0 +1,207 @@
+.register-auth-page {
+	position: relative;
+	min-height: 100vh;
+	padding: 90px 0;
+	overflow: hidden;
+
+	background:
+		radial-gradient(circle at top left, rgba(99, 102, 241, .10), transparent 30%),
+		radial-gradient(circle at bottom right, rgba(6, 182, 212, .10), transparent 30%),
+		linear-gradient(
+			135deg,
+			#f8fafc 0%,
+			#eef2ff 45%,
+			#ffffff 100%
+		);
+}
+
+.register-auth-page::before {
+	content: "";
+	position: absolute;
+	left: -220px;
+	top: -220px;
+
+	width: 520px;
+	height: 520px;
+
+	border-radius: 50%;
+
+	background: rgba(99,102,241,.08);
+
+	filter: blur(90px);
+}
+
+.register-auth-page::after {
+	content: "";
+	position: absolute;
+	right: -220px;
+	bottom: -220px;
+
+	width: 520px;
+	height: 520px;
+
+	border-radius: 50%;
+
+	background: rgba(14,165,233,.08);
+
+	filter: blur(90px);
+}
+
+.register-auth-grid {
+
+	position: relative;
+	z-index: 2;
+
+	width: min(1450px,94%);
+	margin: auto;
+
+	display: grid;
+
+	grid-template-columns: .8fr 1.2fr;
+
+	grid-template-areas:
+		"hero register"
+		"feature feature";
+
+	column-gap: 60px;
+	row-gap: 80px;
+
+	align-items: start;
+
+}
+
+.register-hero-section {
+
+	grid-area: hero;
+	padding-top: 150px;
+
+	animation: registerHeroFade .8s ease;
+
+}
+
+.register-section {
+	grid-area: register;
+
+	position: sticky;
+	top: 110px;
+
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+
+	animation: registerFade .8s ease;
+}
+
+.register-feature-section {
+
+	grid-area: feature;
+
+	animation: registerFeatureFade 1s ease;
+
+}
+
+@keyframes registerHeroFade {
+
+	from {
+		opacity: 0;
+		transform: translateX(-60px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+}
+
+@keyframes registerFade {
+
+	from {
+		opacity: 0;
+		transform: translateX(60px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+}
+
+@keyframes registerFeatureFade {
+
+	from {
+		opacity: 0;
+		transform: translateY(50px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+}
+
+@media (max-width:1200px){
+
+	.register-auth-grid{
+		column-gap:40px;
+	}
+
+}
+
+@media (max-width:992px){
+
+	.register-auth-page{
+		padding:70px 0;
+	}
+
+	.register-auth-grid{
+		width:94%;
+
+		grid-template-columns:1fr;
+
+		grid-template-areas:
+			"hero"
+			"register"
+			"feature";
+
+		row-gap:55px;
+	}
+
+	.register-section{
+		position:static;
+		width:100%;
+	}
+
+}
+
+@media (max-width:768px){
+
+	.register-auth-page{
+		padding:50px 0;
+	}
+
+	.register-auth-grid{
+		width:95%;
+		row-gap:45px;
+	}
+
+}
+
+@media (max-width:576px){
+
+	.register-auth-page{
+		padding:35px 0;
+	}
+
+	.register-auth-grid{
+		width:calc(100% - 24px);
+		row-gap:35px;
+	}
+
+	.register-section{
+		width:100%;
+	}
+
+}

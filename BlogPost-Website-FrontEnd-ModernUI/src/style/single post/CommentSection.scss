@@ -1,0 +1,264 @@
+/* ================================
+   CommentSection.scss
+================================ */
+
+.modern-comment-section {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.comment-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+    border: 1px solid #ececec;
+}
+
+/* ==========================
+   Header
+========================== */
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #ececec;
+}
+
+.comment-header h3 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #202020;
+}
+
+.comment-header span {
+    color: #777;
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+/* ==========================
+   Comment Editor
+========================== */
+
+.comment-editor {
+    margin-bottom: 40px;
+}
+
+.comment-editor textarea {
+    width: 100%;
+    min-height: 150px;
+    resize: vertical;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 15px;
+
+    padding: 18px;
+
+    outline: none;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    transition: .25s;
+}
+
+.comment-editor textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, .08);
+}
+
+.comment-submit {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.post-comment-btn {
+    border: none !important;
+    border-radius: 10px !important;
+
+    padding: 12px 28px !important;
+
+    font-weight: 600 !important;
+    font-size: 15px;
+
+    transition: .3s;
+}
+
+.post-comment-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* ==========================
+   Messages
+========================== */
+
+.comment-success-message {
+
+    margin-top: 18px;
+
+    background: #ecfdf3;
+    color: #087443;
+
+    padding: 14px 18px;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #22c55e;
+}
+
+.comment-error-message {
+
+    margin-top: 18px;
+
+    background: #fef2f2;
+    color: #dc2626;
+
+    padding: 14px 18px;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #ef4444;
+}
+
+.comment-success-message p,
+.comment-error-message p {
+    margin: 0;
+}
+
+/* ==========================
+   Login Card
+========================== */
+
+.login-comment-card {
+
+    text-align: center;
+
+    padding: 35px;
+
+    background: #fafafa;
+
+    border-radius: 18px;
+
+    border: 1px dashed #d8d8d8;
+
+    margin-bottom: 35px;
+}
+
+.login-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.login-comment-card h5 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.login-comment-card p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.login-btn {
+    border-radius: 10px !important;
+    padding: 10px 28px !important;
+}
+
+.login-comment {
+    color: white !important;
+    text-decoration: none;
+}
+
+/* ==========================
+   Comment List
+========================== */
+
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment-list h4 {
+
+    margin-bottom: 25px;
+
+    font-size: 1.35rem;
+
+    font-weight: 700;
+
+    color: #222;
+}
+
+/* spacing between comments */
+
+.comment-list>.single-comment,
+.comment-list>.comment-card-item {
+    margin-bottom: 18px;
+}
+
+/* ==========================
+   Empty State
+========================== */
+
+.no-comments {
+
+    text-align: center;
+
+    padding: 40px 20px;
+
+    background: #fafafa;
+
+    border-radius: 15px;
+
+    color: #888;
+
+    border: 1px dashed #dcdcdc;
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media (max-width:992px) {
+
+    .comment-card {
+        padding: 25px;
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .comment-card {
+        padding: 18px;
+    }
+
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .comment-header h3 {
+        font-size: 1.45rem;
+    }
+
+    .comment-editor textarea {
+        min-height: 120px;
+        font-size: 15px;
+    }
+
+    .comment-submit {
+        justify-content: stretch;
+    }
+
+    .post-comment-btn {
+        width: 100%;
+    }
+
+}

@@ -1,0 +1,163 @@
+.account-deleted-box {
+	width: 100%;
+	position: relative;
+}
+
+.deleted-content {
+	text-align: center;
+	padding: 10px;
+}
+
+.deleted-icon {
+	width: 120px;
+	height: 120px;
+	margin: 0 auto 35px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 58px;
+	color: #ffffff;
+	background: linear-gradient(
+		135deg,
+		#ef4444,
+		#dc2626
+	);
+	box-shadow:
+		0 20px 45px rgba(239, 68, 68, 0.35);
+	animation: pulseDelete 3s infinite;
+}
+
+.deleted-content h2 {
+	font-size: 2.2rem;
+	font-weight: 800;
+	color: #111827;
+	margin-bottom: 18px;
+}
+
+.deleted-content p {
+	font-size: 16px;
+	line-height: 1.9;
+	color: #6b7280;
+	max-width: 420px;
+	margin: 0 auto 40px;
+}
+
+.deleted-buttons {
+	display: flex;
+	gap: 18px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.deleted-buttons a {
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 15px;
+	padding: 15px 30px;
+	border-radius: 14px;
+	transition: .35s ease;
+}
+
+.home-btn {
+	background: linear-gradient(
+		135deg,
+		#6366f1,
+		#3b82f6
+	);
+	color: white;
+	box-shadow:
+		0 15px 35px rgba(99, 102, 241, .3);
+}
+
+.home-btn:hover {
+	transform: translateY(-4px);
+	box-shadow:
+		0 25px 45px rgba(99, 102, 241, .4);
+	color: white;
+}
+
+.register-btn {
+	background: white;
+	color: #374151;
+	border: 1px solid #d1d5db;
+	box-shadow:
+		0 12px 25px rgba(0,0,0,.06);
+}
+
+.register-btn:hover {
+	transform: translateY(-4px);
+	background: #f9fafb;
+	color: #111827;
+	border-color: #6366f1;
+	box-shadow:
+		0 20px 40px rgba(99,102,241,.15);
+}
+
+@keyframes pulseDelete {
+
+	0% {
+		transform: scale(1);
+		box-shadow:
+			0 20px 45px rgba(239,68,68,.30);
+	}
+
+	50% {
+		transform: scale(1.08);
+		box-shadow:
+			0 30px 60px rgba(239,68,68,.45);
+	}
+
+	100% {
+		transform: scale(1);
+		box-shadow:
+			0 20px 45px rgba(239,68,68,.30);
+	}
+
+}
+
+@media (max-width:768px) {
+
+	.deleted-icon {
+		width: 95px;
+		height: 95px;
+		font-size: 46px;
+		margin-bottom: 28px;
+	}
+
+	.deleted-content h2 {
+		font-size: 1.8rem;
+	}
+
+	.deleted-content p {
+		font-size: 15px;
+		margin-bottom: 32px;
+	}
+
+	.deleted-buttons {
+		flex-direction: column;
+	}
+
+	.deleted-buttons a {
+		width: 100%;
+	}
+
+}
+
+@media (max-width:480px) {
+
+	.deleted-content h2 {
+		font-size: 1.6rem;
+	}
+
+	.deleted-content p {
+		font-size: 14px;
+		line-height: 1.8;
+	}
+
+	.deleted-buttons a {
+		padding: 14px 20px;
+		font-size: 14px;
+	}
+
+}

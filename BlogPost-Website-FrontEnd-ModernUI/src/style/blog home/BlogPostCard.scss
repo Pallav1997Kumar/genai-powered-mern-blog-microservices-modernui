@@ -1,0 +1,490 @@
+/*=========================================================
+                BlogPostCard.scss
+                Premium Modern Card
+==========================================================*/
+
+.premium-blog-card {
+
+    background: #ffffff;
+
+    border-radius: 28px;
+
+    overflow: hidden;
+
+    border: 1px solid #edf2ff;
+
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, .08);
+
+    transition: all .45s ease;
+
+    position: relative;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.premium-blog-card:hover {
+
+    transform: translateY(-12px);
+
+    box-shadow:
+        0 35px 80px rgba(79,70,229,.18);
+
+}
+
+
+/*=========================================================
+                    IMAGE
+==========================================================*/
+
+.premium-card-image {
+
+    position: relative;
+
+    height: 260px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+}
+
+.premium-card-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform .8s ease;
+
+}
+
+.premium-blog-card:hover .premium-card-image img {
+
+    transform: scale(1.12);
+
+}
+
+
+/*=========================================================
+                    IMAGE OVERLAY
+==========================================================*/
+
+.image-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: linear-gradient(
+        to top,
+        rgba(15,23,42,.65),
+        rgba(15,23,42,.10),
+        transparent
+    );
+
+}
+
+
+/*=========================================================
+                    BADGE
+==========================================================*/
+
+.featured-badge {
+
+    position: absolute;
+
+    top: 18px;
+
+    left: 18px;
+
+    padding: 8px 18px;
+
+    border-radius: 50px;
+
+    background: rgba(255,255,255,.92);
+
+    backdrop-filter: blur(14px);
+
+    color: #4f46e5;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+
+    text-transform: uppercase;
+
+}
+
+
+/*=========================================================
+                    CONTENT
+==========================================================*/
+
+.premium-card-content {
+
+    padding: 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex: 1;
+
+}
+
+
+/*=========================================================
+                    AUTHOR
+==========================================================*/
+
+.author-row {
+
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+
+}
+
+.author-avatar {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #2563eb
+    );
+
+    color: white;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-weight: 700;
+
+    font-size: 20px;
+
+    margin-right: 14px;
+
+    box-shadow:
+        0 12px 24px rgba(99,102,241,.25);
+
+}
+
+.author-details {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.author-label {
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+}
+
+.author-details h6 {
+
+    margin: 3px 0 0;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color: #0f172a;
+
+}
+
+
+/*=========================================================
+                    TITLE
+==========================================================*/
+
+.premium-title {
+
+    font-size: 26px;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    color: #17213d;
+
+    margin-bottom: 18px;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+}
+
+.premium-title:hover {
+
+    color: #4f46e5;
+
+}
+
+
+/*=========================================================
+                    DESCRIPTION
+==========================================================*/
+
+.premium-description {
+
+    color: #64748b;
+
+    line-height: 1.8;
+
+    font-size: 15px;
+
+    margin-bottom: 30px;
+
+    flex: 1;
+
+}
+
+
+/*=========================================================
+                    FOOTER
+==========================================================*/
+
+.premium-footer {
+
+    display: flex;
+
+    justify-content: flex-start;
+
+    align-items: center;
+
+}
+
+
+/*=========================================================
+                    BUTTON
+==========================================================*/
+
+.read-more-btn {
+
+    border: none;
+
+    outline: none;
+
+    cursor: pointer;
+
+    padding: 14px 28px;
+
+    border-radius: 50px;
+
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #4f46e5
+    );
+
+    color: white;
+
+    font-weight: 700;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    transition: .35s;
+
+    box-shadow:
+        0 18px 35px rgba(99,102,241,.22);
+
+}
+
+.read-more-btn span {
+
+    transition: .3s;
+
+}
+
+.read-more-btn:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 24px 55px rgba(79,70,229,.35);
+
+}
+
+.read-more-btn:hover span {
+
+    transform: translateX(6px);
+
+}
+
+
+/*=========================================================
+                    DECORATION
+==========================================================*/
+
+.premium-blog-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 140px;
+
+    height: 140px;
+
+    border-radius: 50%;
+
+    background: rgba(99,102,241,.05);
+
+    right: -60px;
+
+    top: -60px;
+
+    filter: blur(15px);
+
+    pointer-events: none;
+
+}
+
+
+/*=========================================================
+                    ANIMATION
+==========================================================*/
+
+.premium-blog-card {
+
+    animation: cardFade .8s ease both;
+
+}
+
+@keyframes cardFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(45px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/*=========================================================
+                    RESPONSIVE
+==========================================================*/
+
+@media(max-width:992px){
+
+    .premium-card-image{
+
+        height:220px;
+
+    }
+
+    .premium-title{
+
+        font-size:22px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .premium-card-content{
+
+        padding:22px;
+
+    }
+
+    .premium-card-image{
+
+        height:210px;
+
+    }
+
+    .premium-title{
+
+        font-size:20px;
+
+    }
+
+    .read-more-btn{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .premium-card-image{
+
+        height:190px;
+
+    }
+
+    .premium-card-content{
+
+        padding:18px;
+
+    }
+
+    .author-avatar{
+
+        width:42px;
+
+        height:42px;
+
+        font-size:18px;
+
+    }
+
+    .premium-title{
+
+        font-size:18px;
+
+    }
+
+}

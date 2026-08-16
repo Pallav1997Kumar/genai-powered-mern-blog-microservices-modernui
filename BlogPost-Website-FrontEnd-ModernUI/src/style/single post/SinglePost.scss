@@ -1,0 +1,155 @@
+/* ==========================================
+   SinglePost.scss
+========================================== */
+
+.single-post-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f7fb;
+    padding: 50px 0 80px;
+    margin-top: 80px;
+}
+
+.single-post-container {
+    width: 92%;
+    max-width: 1450px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 35px;
+
+    align-items: flex-start;
+}
+
+.single-post-left {
+    width: 100%;
+    min-width: 0;
+}
+
+.single-post-right {
+    width: 100%;
+    position: sticky;
+    top: 100px;
+}
+
+/* ==========================
+   Loading
+========================== */
+
+.single-post-loading {
+    min-height: 70vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-card {
+
+    width: 350px;
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    color: #444;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,.08);
+}
+
+/* ==========================
+   Bootstrap fixes
+========================== */
+
+.single-post-page img {
+    max-width: 100%;
+}
+
+.single-post-page .btn {
+    transition: all .25s ease;
+}
+
+.single-post-page .btn:hover {
+    transform: translateY(-2px);
+}
+
+.single-post-page a {
+    text-decoration: none;
+}
+
+/* ==========================
+   Large Screen
+========================== */
+
+@media (min-width:1600px){
+
+    .single-post-container{
+        max-width:1550px;
+    }
+
+}
+
+/* ==========================
+   Tablet
+========================== */
+
+@media (max-width:1200px){
+
+    .single-post-container{
+
+        grid-template-columns:1fr;
+    }
+
+    .single-post-right{
+
+        position:static;
+    }
+
+}
+
+/* ==========================
+   Mobile
+========================== */
+
+@media (max-width:768px){
+
+    .single-post-page{
+
+        padding:25px 0 50px;
+    }
+
+    .single-post-container{
+
+        width:95%;
+        gap:25px;
+    }
+
+}
+
+/* ==========================
+   Small Mobile
+========================== */
+
+@media (max-width:480px){
+
+    .single-post-container{
+
+        width:96%;
+    }
+
+    .loading-card{
+
+        width:100%;
+        font-size:18px;
+    }
+
+}

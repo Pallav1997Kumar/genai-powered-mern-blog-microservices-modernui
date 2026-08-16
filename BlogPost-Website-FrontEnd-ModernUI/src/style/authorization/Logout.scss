@@ -1,0 +1,210 @@
+.logout-auth-page {
+	position: relative;
+	min-height: 100vh;
+	padding: 90px 0;
+	overflow: hidden;
+
+	background:
+		radial-gradient(circle at top left, rgba(99, 102, 241, .10), transparent 30%),
+		radial-gradient(circle at bottom right, rgba(6, 182, 212, .10), transparent 30%),
+		linear-gradient(
+			135deg,
+			#f8fafc 0%,
+			#eef2ff 45%,
+			#ffffff 100%
+		);
+}
+
+.logout-auth-page::before {
+	content: "";
+	position: absolute;
+	left: -220px;
+	top: -220px;
+
+	width: 520px;
+	height: 520px;
+
+	border-radius: 50%;
+
+	background: rgba(99,102,241,.08);
+
+	filter: blur(90px);
+}
+
+.logout-auth-page::after {
+	content: "";
+	position: absolute;
+	right: -220px;
+	bottom: -220px;
+
+	width: 520px;
+	height: 520px;
+
+	border-radius: 50%;
+
+	background: rgba(14,165,233,.08);
+
+	filter: blur(90px);
+}
+
+.logout-auth-grid {
+
+	position: relative;
+	z-index: 2;
+
+	width: min(1450px,94%);
+	margin: auto;
+
+	display: grid;
+
+	grid-template-columns: 1.2fr .8fr;
+
+	grid-template-areas:
+		"hero logout"
+		"feature feature";
+
+	column-gap: 60px;
+	row-gap: 80px;
+
+	align-items: start;
+
+}
+
+.logout-hero-section {
+
+	grid-area: hero;
+	padding-top: 50px;
+
+	animation: logoutHeroFade .8s ease;
+
+}
+
+.logout-section {
+
+	grid-area: logout;
+
+	position: sticky;
+	top: 110px;
+	padding-top: 150px;
+
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+
+	animation: logoutFade .8s ease;
+
+}
+
+.logout-feature-section {
+
+	grid-area: feature;
+
+	animation: logoutFeatureFade 1s ease;
+
+}
+
+@keyframes logoutHeroFade {
+
+	from {
+		opacity: 0;
+		transform: translateX(-60px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+}
+
+@keyframes logoutFade {
+
+	from {
+		opacity: 0;
+		transform: translateX(60px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+}
+
+@keyframes logoutFeatureFade {
+
+	from {
+		opacity: 0;
+		transform: translateY(50px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+}
+
+@media (max-width:1200px){
+
+	.logout-auth-grid{
+		column-gap:40px;
+	}
+
+}
+
+@media (max-width:992px){
+
+	.auth-page{
+		padding:70px 0;
+	}
+
+	.logout-auth-grid{
+		width:94%;
+
+		grid-template-columns:1fr;
+
+		grid-template-areas:
+			"hero"
+			"logout"
+			"feature";
+
+		row-gap:55px;
+	}
+
+	.logout-section{
+		position:static;
+		width:100%;
+	}
+
+}
+
+@media (max-width:768px){
+
+	.logout-auth-page{
+		padding:50px 0;
+	}
+
+	.logout-auth-grid{
+		width:95%;
+		row-gap:45px;
+	}
+
+}
+
+@media (max-width:576px){
+
+	.logout-auth-page{
+		padding:35px 0;
+	}
+
+	.logout-auth-grid{
+		width:calc(100% - 24px);
+		row-gap:35px;
+	}
+
+	.logout-section{
+		width:100%;
+	}
+
+}

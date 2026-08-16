@@ -1,0 +1,13 @@
+.navbar-container{
+    .navbar-for-desktop{
+        @media(max-width: 770px){
+            display: none;
+        }
+    }
+    .navbar-for-mobile{
+        @media(min-width: 771px){
+            display: none;
+        }
+    }
+    
+}

@@ -1,0 +1,105 @@
+.footer {
+    background:
+        radial-gradient(circle at 78% 24%, rgba(105, 77, 255, 0.18), transparent 32%),
+        linear-gradient(135deg, #081229 0%, #101a4c 55%, #090d28 100%);
+    color: #ffffff;
+    overflow: hidden;
+    padding: 34px 24px 30px;
+    text-align: center;
+    width: 100%;
+
+    h1 {
+        color: #ffffff;
+        font-size: clamp(28px, 3.3vw, 40px);
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 1.2;
+        margin: 0;
+
+        span {
+            background: linear-gradient(135deg, #a85bff, #2d94f5);
+            background-clip: text;
+            color: transparent;
+        }
+    }
+
+    p {
+        color: #bbc5e0;
+        font-size: 17px;
+        margin: 12px 0 28px;
+    }
+
+    h3 {
+        color: #cdd6ee;
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0 0 16px;
+        position: relative;
+
+        &::before,
+        &::after {
+            background: linear-gradient(90deg, transparent, rgba(139, 90, 255, 0.8));
+            content: "";
+            display: inline-block;
+            height: 1px;
+            margin: 0 14px 6px 0;
+            width: min(14vw, 170px);
+        }
+
+        &::after {
+            background: linear-gradient(90deg, rgba(139, 90, 255, 0.8), transparent);
+            margin: 0 0 6px 14px;
+        }
+    }
+
+    h4 {
+        color: #aeb9d4;
+        font-size: 17px;
+        font-weight: 500;
+        margin: 20px 0 0;
+    }
+
+    .footer-social {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px 44px;
+        justify-content: center;
+
+        .footer-social-name {
+            align-items: center;
+            color: #ffffff;
+            display: inline-flex;
+            font-size: 16px;
+            gap: 12px;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                color: #ffffff;
+                transform: translateY(-2px);
+            }
+
+            .social-icon {
+                filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.28));
+                height: 48px !important;
+                width: 48px !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        h3 {
+            &::before,
+            &::after {
+                width: 54px;
+            }
+        }
+
+        .footer-social {
+            gap: 18px 24px;
+        }
+    }
+}

@@ -1,0 +1,210 @@
+.account-deleted-auth-page {
+	position: relative;
+	min-height: 100vh;
+	padding: 90px 0;
+	overflow: hidden;
+
+	background:
+		radial-gradient(circle at top left, rgba(99, 102, 241, .10), transparent 30%),
+		radial-gradient(circle at bottom right, rgba(6, 182, 212, .10), transparent 30%),
+		linear-gradient(
+			135deg,
+			#f8fafc 0%,
+			#eef2ff 45%,
+			#ffffff 100%
+		);
+}
+
+.account-deleted-auth-page::before {
+	content: "";
+	position: absolute;
+	left: -220px;
+	top: -220px;
+
+	width: 520px;
+	height: 520px;
+
+	border-radius: 50%;
+
+	background: rgba(99,102,241,.08);
+
+	filter: blur(90px);
+}
+
+.account-deleted-auth-page::after {
+	content: "";
+	position: absolute;
+	right: -220px;
+	bottom: -220px;
+
+	width: 520px;
+	height: 520px;
+
+	border-radius: 50%;
+
+	background: rgba(14,165,233,.08);
+
+	filter: blur(90px);
+}
+
+.account-deleted-auth-grid {
+
+	position: relative;
+	z-index: 2;
+
+	width: min(1450px,94%);
+	margin: auto;
+
+	display: grid;
+
+	grid-template-columns: 1.2fr .8fr;
+
+	grid-template-areas:
+		"hero account-deleted"
+		"feature feature";
+
+	column-gap: 60px;
+	row-gap: 80px;
+
+	align-items: start;
+
+}
+
+.account-deleted-hero-section {
+
+	grid-area: hero;
+	padding-top: 50px;
+
+	animation: accountDeletedHeroFade .8s ease;
+
+}
+
+.account-deleted-section {
+
+	grid-area: account-deleted;
+	padding-top: 150px;
+
+	position: sticky;
+	top: 110px;
+
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+
+	animation: accountDeletedFade .8s ease;
+
+}
+
+.account-deleted-feature-section {
+
+	grid-area: feature;
+
+	animation: accountDeletedFeatureFade 1s ease;
+
+}
+
+@keyframes accountDeletedHeroFade {
+
+	from {
+		opacity: 0;
+		transform: translateX(-60px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+}
+
+@keyframes accountDeletedFade {
+
+	from {
+		opacity: 0;
+		transform: translateX(60px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+}
+
+@keyframes accountDeletedFeatureFade {
+
+	from {
+		opacity: 0;
+		transform: translateY(50px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+}
+
+@media (max-width:1200px){
+
+	.account-deleted-auth-grid{
+		column-gap:40px;
+	}
+
+}
+
+@media (max-width:992px){
+
+	.account-deleted-auth-page{
+		padding:70px 0;
+	}
+
+	.account-deleted-auth-grid{
+		width:94%;
+
+		grid-template-columns:1fr;
+
+		grid-template-areas:
+			"hero"
+			"account-deleted"
+			"feature";
+
+		row-gap:55px;
+	}
+
+	.account-deleted-section{
+		position:static;
+		width:100%;
+	}
+
+}
+
+@media (max-width:768px){
+
+	.account-deleted-auth-page{
+		padding:50px 0;
+	}
+
+	.account-deleted-auth-grid{
+		width:95%;
+		row-gap:45px;
+	}
+
+}
+
+@media (max-width:576px){
+
+	.account-deleted-auth-page{
+		padding:35px 0;
+	}
+
+	.account-deleted-auth-grid{
+		width:calc(100% - 24px);
+		row-gap:35px;
+	}
+
+	.account-deleted-section{
+		width:100%;
+	}
+
+}

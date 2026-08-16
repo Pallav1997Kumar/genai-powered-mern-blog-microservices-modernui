@@ -1,0 +1,392 @@
+/* ===========================================
+   AllBlog.scss
+=========================================== */
+
+.modern-all-blog-page {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f7f9ff 0%, #ffffff 100%);
+    padding: 40px 0 70px;
+    margin-top: 100px;
+}
+
+/* ===========================================
+   Hero
+=========================================== */
+
+.blogs-hero {
+    width: 92%;
+    max-width: 1450px;
+    margin: 0 auto 35px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 28px;
+
+    padding: 70px 65px;
+
+    background:
+        radial-gradient(circle at top right,
+            rgba(122,92,255,.12),
+            transparent 45%),
+        linear-gradient(135deg,#ffffff,#f8f7ff);
+
+    box-shadow:
+        0 20px 60px rgba(80,88,160,.08);
+
+    animation: fadeUp .8s ease;
+}
+
+.blogs-hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:520px;
+    height:520px;
+
+    right:-180px;
+    top:-180px;
+
+    border-radius:50%;
+
+    background:rgba(120,87,255,.08);
+}
+
+.blogs-hero-content{
+    position:relative;
+    z-index:2;
+    max-width:650px;
+}
+
+.blogs-hero h1{
+
+    font-size:64px;
+
+    font-weight:800;
+
+    color:#12193d;
+
+    margin-bottom:18px;
+
+    line-height:1.1;
+}
+
+.blogs-hero p{
+
+    font-size:22px;
+
+    color:#63698b;
+
+    line-height:1.8;
+
+    max-width:620px;
+}
+
+/* ===========================================
+   Filter Card
+=========================================== */
+
+.blogs-filter-card{
+
+    width:92%;
+    max-width:1450px;
+
+    margin:0 auto 35px;
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:
+        0 12px 35px rgba(60,70,120,.08);
+
+    transition:.35s;
+}
+
+.blogs-filter-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 20px 55px rgba(60,70,120,.12);
+
+}
+
+/* ===========================================
+   Blog List
+=========================================== */
+
+.blogs-list{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+}
+
+/* ===========================================
+   Pagination
+=========================================== */
+
+.modern-pagination{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:45px auto 0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:18px;
+}
+
+.modern-pagination label{
+
+    font-weight:700;
+
+    color:#50546f;
+
+    font-size:16px;
+}
+
+.modern-pagination select{
+
+    min-width:150px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:14px;
+
+    padding:14px 18px;
+
+    background:#fff;
+
+    font-size:15px;
+
+    box-shadow:
+        0 10px 30px rgba(80,90,140,.10);
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.modern-pagination select:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 18px 40px rgba(90,90,150,.16);
+}
+
+/* ===========================================
+   Shared Card Animation
+=========================================== */
+
+.blogs-list>*{
+
+    animation:cardUp .7s ease both;
+}
+
+.blogs-list>*:nth-child(1){animation-delay:.05s;}
+.blogs-list>*:nth-child(2){animation-delay:.10s;}
+.blogs-list>*:nth-child(3){animation-delay:.15s;}
+.blogs-list>*:nth-child(4){animation-delay:.20s;}
+.blogs-list>*:nth-child(5){animation-delay:.25s;}
+.blogs-list>*:nth-child(6){animation-delay:.30s;}
+
+/* ===========================================
+   Scrollbar
+=========================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#7c5cff;
+
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-track{
+
+    background:#f5f6fb;
+}
+
+/* ===========================================
+   Animations
+=========================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(35px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+    }
+}
+
+@keyframes cardUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+    }
+}
+
+/* ===========================================
+   Responsive
+=========================================== */
+
+@media(max-width:1200px){
+
+    .blogs-hero{
+
+        padding:55px 45px;
+    }
+
+    .blogs-hero h1{
+
+        font-size:52px;
+    }
+
+    .blogs-hero p{
+
+        font-size:20px;
+    }
+
+}
+
+@media(max-width:992px){
+
+    .blogs-hero{
+
+        padding:45px 35px;
+    }
+
+    .blogs-hero h1{
+
+        font-size:42px;
+    }
+
+    .blogs-hero p{
+
+        font-size:18px;
+    }
+
+    .blogs-filter-card{
+
+        padding:22px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .modern-all-blog-page{
+
+        padding:25px 0 45px;
+    }
+
+    .blogs-hero{
+
+        width:95%;
+
+        padding:35px 25px;
+
+        margin-bottom:25px;
+    }
+
+    .blogs-filter-card{
+
+        width:95%;
+    }
+
+    .blogs-list{
+
+        width:95%;
+    }
+
+    .blogs-hero h1{
+
+        font-size:34px;
+    }
+
+    .blogs-hero p{
+
+        font-size:16px;
+
+        line-height:1.7;
+    }
+
+    .modern-pagination{
+
+        flex-direction:column;
+
+        gap:12px;
+    }
+
+    .modern-pagination select{
+
+        width:100%;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .blogs-hero{
+
+        padding:28px 20px;
+    }
+
+    .blogs-hero h1{
+
+        font-size:30px;
+    }
+
+    .blogs-hero p{
+
+        font-size:15px;
+    }
+
+}

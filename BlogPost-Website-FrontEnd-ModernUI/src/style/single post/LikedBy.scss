@@ -1,0 +1,199 @@
+/* ==========================================
+   LikedBy.scss
+========================================== */
+
+/* ---------- Button ---------- */
+
+.liked-by-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    border: none !important;
+    border-radius: 30px !important;
+
+    padding: 10px 22px !important;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+    color: #fff !important;
+
+    transition: all .3s ease;
+}
+
+.liked-by-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(79, 70, 229, .25);
+}
+
+.liked-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 26px;
+    height: 26px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.18);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* ---------- Modal ---------- */
+
+.modal-content {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 22px 26px;
+    border-bottom: 1px solid #ececec;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #202020;
+}
+
+.modal-body {
+    max-height: 520px;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.modal-footer {
+    border-top: 1px solid #ececec;
+    padding: 18px 25px;
+}
+
+/* ---------- User Card ---------- */
+
+.liked-user-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px;
+
+    margin-bottom: 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #ececec;
+
+    border-radius: 16px;
+
+    transition: all .25s ease;
+}
+
+.liked-user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+.liked-user-left {
+    display: flex;
+    align-items: center;
+}
+
+/* ---------- Avatar ---------- */
+
+.liked-user-image {
+    width: 60px;
+    height: 60px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 3px solid #fff;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.12);
+
+    margin-right: 18px;
+}
+
+/* ---------- Details ---------- */
+
+.liked-user-details h6 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: #202020;
+}
+
+.liked-user-details p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+/* ---------- Empty State ---------- */
+
+.no-liked-users {
+    text-align: center;
+
+    padding: 60px 20px;
+}
+
+.no-liked-users h5 {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.no-liked-users p {
+    margin: 0;
+    color: #777;
+}
+
+/* ---------- Scrollbar ---------- */
+
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #c8c8c8;
+    border-radius: 50px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+
+    .liked-user-card {
+        padding: 15px;
+    }
+
+    .liked-user-image {
+        width: 50px;
+        height: 50px;
+        margin-right: 14px;
+    }
+
+    .liked-user-details h6 {
+        font-size: 15px;
+    }
+
+    .liked-user-details p {
+        font-size: 13px;
+    }
+
+    .liked-by-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+}

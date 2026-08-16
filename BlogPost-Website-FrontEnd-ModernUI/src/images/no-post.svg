@@ -1,0 +1,106 @@
+<svg width="700" height="520" viewBox="0 0 700 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#FFF7EF"></stop>
+<stop offset="100%" stop-color="#FFF2E5"></stop>
+</linearGradient>
+
+<linearGradient id="doc" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#FFFFFF"></stop>
+<stop offset="100%" stop-color="#F7F4F2"></stop>
+</linearGradient>
+
+<linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#F95A77"></stop>
+<stop offset="100%" stop-color="#C61D53"></stop>
+</linearGradient>
+
+<filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+<feDropShadow dx="0" dy="18" stdDeviation="18" flood-opacity=".15"></feDropShadow>
+</filter>
+
+</defs>
+
+<circle cx="350" cy="250" r="185" fill="url(#bg)"></circle>
+
+<!-- Clouds -->
+
+<g opacity=".8">
+
+<path d="M155 135c10-25 48-28 62-5c21-6 39 6 39 25c0 16-12 28-29 28H162c-20 0-33-12-33-27c0-14 10-22 26-21z" fill="#F8F5F2"></path>
+
+<path d="M520 95c8-20 38-23 50-4c17-5 32 5 32 21c0 13-11 24-25 24h-52c-16 0-28-10-28-23c0-11 8-18 23-18z" fill="#F8F5F2"></path>
+
+</g>
+
+<!-- Document -->
+
+<g filter="url(#shadow)">
+
+<rect x="260" y="120" width="180" height="230" rx="22" fill="url(#doc)"></rect>
+
+<rect x="260" y="120" width="180" height="45" rx="22" fill="#EED9BF"></rect>
+
+<circle cx="282" cy="143" r="5" fill="#fff"></circle>
+
+<circle cx="300" cy="143" r="5" fill="#fff"></circle>
+
+<circle cx="318" cy="143" r="5" fill="#fff"></circle>
+
+<rect x="292" y="195" width="112" height="12" rx="6" fill="#E8D8C8"></rect>
+
+<rect x="292" y="225" width="95" height="12" rx="6" fill="#E8D8C8"></rect>
+
+<rect x="292" y="255" width="120" height="12" rx="6" fill="#E8D8C8"></rect>
+
+<rect x="292" y="285" width="86" height="12" rx="6" fill="#E8D8C8"></rect>
+
+</g>
+
+<!-- Magnifying Glass -->
+
+<g filter="url(#shadow)">
+
+<circle cx="395" cy="235" r="60" stroke="url(#glass)" stroke-width="14" fill="none"></circle>
+
+<rect x="430" y="275" width="26" height="82" rx="13" transform="rotate(-45 430 275)" fill="#2C2E63"></rect>
+
+</g>
+
+<!-- Red X -->
+
+<g filter="url(#shadow)">
+
+<circle cx="255" cy="305" r="32" fill="url(#glass)"></circle>
+
+<path d="M242 292L268 318M268 292L242 318" stroke="white" stroke-width="6" stroke-linecap="round"></path>
+
+</g>
+
+<!-- Decorative Dots -->
+
+<circle cx="205" cy="215" r="5" fill="#F9B5AE"></circle>
+
+<circle cx="510" cy="310" r="5" fill="#F9B5AE"></circle>
+
+<circle cx="475" cy="180" r="5" fill="#F4B24D"></circle>
+
+<circle cx="240" cy="355" r="4" fill="#89D58C"></circle>
+
+<circle cx="500" cy="235" r="4" fill="#8F6BFF"></circle>
+
+<path d="M530 250h10M535 245v10" stroke="#A29EFF" stroke-width="3" stroke-linecap="round"></path>
+
+<!-- Plants -->
+
+<g opacity=".3">
+
+<path d="M250 375c12-28 35-40 35-40c-5 18-8 34-3 48" stroke="#D7C4AF" stroke-width="6" stroke-linecap="round"></path>
+
+<path d="M445 375c-12-28-35-40-35-40c5 18 8 34 3 48" stroke="#D7C4AF" stroke-width="6" stroke-linecap="round"></path>
+
+</g>
+
+</svg>

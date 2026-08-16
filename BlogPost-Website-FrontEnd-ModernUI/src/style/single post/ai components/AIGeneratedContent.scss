@@ -1,0 +1,376 @@
+.ai-generated-content {
+  position: relative;
+  margin: 32px 0;
+  padding: 30px;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 28px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(139, 92, 246, 0.14),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(99, 102, 241, 0.1),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f8f7ff 50%,
+      #faf8ff 100%
+    );
+
+  box-shadow:
+    0 20px 60px -20px rgba(79, 70, 229, 0.2),
+    0 4px 20px rgba(15, 23, 42, 0.04);
+
+  // ==========================================================
+  // Decorative Glows
+  // ==========================================================
+
+  &__glow {
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+    filter: blur(75px);
+
+    opacity: 0.5;
+
+    z-index: -1;
+
+    &--top {
+      top: -150px;
+      right: -80px;
+
+      background: rgba(99, 102, 241, 0.22);
+    }
+
+    &--bottom {
+      bottom: -150px;
+      left: -80px;
+
+      background: rgba(168, 85, 247, 0.18);
+    }
+  }
+
+  // ==========================================================
+  // Header
+  // ==========================================================
+
+  &__header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 28px;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    border-radius: 16px;
+
+    color: #ffffff;
+    font-size: 21px;
+
+    background: linear-gradient(
+      135deg,
+      #4f46e5 0%,
+      #7c3aed 100%
+    );
+
+    box-shadow:
+      0 10px 25px rgba(79, 70, 229, 0.28),
+      inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+
+  &__title {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 23px;
+    font-weight: 750;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.025em;
+  }
+
+  &__subtitle {
+    margin: 5px 0 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    line-height: 1.5;
+  }
+
+  // ==========================================================
+  // AI Sections
+  // ==========================================================
+
+  &__sections {
+    position: relative;
+
+    display: grid;
+
+    // IMPORTANT:
+    // One section per row
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  // ==========================================================
+  // Individual AI Card
+  // ==========================================================
+
+  &__card {
+    position: relative;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 24px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.76);
+
+    box-shadow:
+      0 4px 15px rgba(15, 23, 42, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      background 0.25s ease;
+
+    // Small top highlight
+    &::before {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      left: 24px;
+      right: 24px;
+
+      height: 1px;
+
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(99, 102, 241, 0.25),
+        transparent
+      );
+
+      opacity: 0;
+
+      transition: opacity 0.25s ease;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+
+      border-color: rgba(99, 102, 241, 0.18);
+
+      background: rgba(255, 255, 255, 0.88);
+
+      box-shadow:
+        0 14px 35px rgba(79, 70, 229, 0.08),
+        0 4px 10px rgba(15, 23, 42, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+
+  // ==========================================================
+  // Footer
+  // ==========================================================
+
+  &__footer {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 26px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 0.02em;
+
+    span {
+      width: 5px;
+      height: 5px;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background: linear-gradient(
+        135deg,
+        #6366f1,
+        #a855f7
+      );
+    }
+  }
+
+  // ==========================================================
+  // Tablet
+  // ==========================================================
+
+  @media (max-width: 768px) {
+    margin: 26px 0;
+
+    padding: 22px;
+
+    border-radius: 24px;
+
+    &__header {
+      gap: 13px;
+
+      margin-bottom: 22px;
+    }
+
+    &__icon {
+      width: 48px;
+      height: 48px;
+
+      border-radius: 14px;
+
+      font-size: 20px;
+    }
+
+    &__title {
+      font-size: 21px;
+    }
+
+    &__subtitle {
+      font-size: 13px;
+    }
+
+    &__sections {
+      gap: 16px;
+    }
+
+    &__card {
+      padding: 20px;
+
+      border-radius: 18px;
+    }
+  }
+
+  // ==========================================================
+  // Mobile
+  // ==========================================================
+
+  @media (max-width: 480px) {
+    margin: 20px 0;
+
+    padding: 16px;
+
+    border-radius: 20px;
+
+    &__header {
+      gap: 11px;
+
+      margin-bottom: 18px;
+    }
+
+    &__icon {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 12px;
+
+      font-size: 17px;
+    }
+
+    &__title {
+      font-size: 19px;
+    }
+
+    &__subtitle {
+      margin-top: 3px;
+
+      font-size: 12px;
+    }
+
+    &__sections {
+      gap: 13px;
+    }
+
+    &__card {
+      padding: 16px;
+
+      border-radius: 16px;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+
+    &__footer {
+      margin-top: 20px;
+
+      font-size: 10px;
+    }
+  }
+
+  // ==========================================================
+  // Reduced Motion
+  // ==========================================================
+
+  @media (prefers-reduced-motion: reduce) {
+    &__card {
+      transition: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}

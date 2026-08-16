@@ -1,0 +1,319 @@
+/* ===========================
+   SingleOnlyPostSection.scss
+=========================== */
+
+.modern-single-post {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid #ececec;
+    margin-bottom: 40px;
+}
+
+/* =========================================
+   Hero Image
+========================================= */
+
+.post-hero-image {
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    border-radius: 18px;
+    margin-bottom: 32px;
+    background: #f4f4f4;
+}
+
+.post-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .4s;
+}
+
+.post-hero-image:hover img {
+    transform: scale(1.03);
+}
+
+/* =========================================
+   Title
+========================================= */
+
+.post-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: #171717;
+    margin-bottom: 25px;
+}
+
+/* =========================================
+   Meta
+========================================= */
+
+.post-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 25px 0;
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+    margin-bottom: 30px;
+}
+
+.author-section {
+    display: flex;
+    align-items: center;
+}
+
+.author-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 18px;
+    border: 3px solid #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.15);
+}
+
+.author-details h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.author-details p {
+    margin-top: 6px;
+    color: #666;
+    font-size: .95rem;
+}
+
+.author-details span {
+    color: #2563eb;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.post-date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #777;
+    font-size: .95rem;
+}
+
+.post-date i {
+    font-size: 1.2rem;
+    color: #2563eb;
+}
+
+/* =========================================
+   Buttons
+========================================= */
+
+.post-action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.update-btn,
+.delete-btn {
+
+    min-width: 170px;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 11px 25px !important;
+    font-weight: 600 !important;
+    transition: .3s;
+}
+
+.update-btn:hover,
+.delete-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   Like Section
+========================================= */
+
+.like-section {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 22px 0;
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+    margin-bottom: 35px;
+}
+
+.like-btn {
+    border-radius: 30px !important;
+    padding: 10px 25px !important;
+    font-weight: 600 !important;
+}
+
+.liked-user-area {
+    display: flex;
+    align-items: center;
+}
+
+/* =========================================
+   Blog Content
+========================================= */
+
+.post-content {
+
+    color: #3d3d3d;
+    line-height: 1.95;
+    font-size: 18px;
+    margin-top: 25px;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+
+    color: #161616;
+    margin-top: 38px;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+.post-content p {
+    margin-bottom: 22px;
+}
+
+.post-content img {
+    max-width: 100%;
+    border-radius: 15px;
+    margin: 28px 0;
+}
+
+.post-content ul,
+.post-content ol {
+    margin: 22px 0;
+    padding-left: 30px;
+}
+
+.post-content li {
+    margin-bottom: 12px;
+}
+
+.post-content blockquote {
+
+    border-left: 5px solid #2563eb;
+    background: #f8faff;
+    padding: 22px;
+    margin: 30px 0;
+    border-radius: 10px;
+}
+
+.post-content pre {
+
+    background: #151515;
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.post-content code {
+    font-family: Consolas, monospace;
+}
+
+/* =========================================
+   AI Content
+========================================= */
+
+.ai-content-wrapper {
+
+    margin-top: 45px;
+    background: #f8fbff;
+    border-radius: 18px;
+    padding: 28px;
+    border: 1px solid #dfefff;
+}
+
+/* =========================================
+   Error
+========================================= */
+
+.error-message {
+    color: red;
+    margin-top: 18px;
+    font-weight: 600;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width:992px) {
+
+    .modern-single-post {
+        padding: 25px;
+    }
+
+    .post-title {
+        font-size: 2rem;
+    }
+
+    .post-hero-image {
+        height: 400px;
+    }
+
+    .post-meta-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .like-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .modern-single-post {
+        padding: 18px;
+    }
+
+    .post-title {
+        font-size: 1.7rem;
+    }
+
+    .post-hero-image {
+        height: 280px;
+    }
+
+    .author-image {
+        width: 58px;
+        height: 58px;
+    }
+
+    .post-action-buttons {
+        flex-direction: column;
+    }
+
+    .update-btn,
+    .delete-btn {
+        width: 100%;
+    }
+
+    .post-content {
+        font-size: 16px;
+    }
+
+}

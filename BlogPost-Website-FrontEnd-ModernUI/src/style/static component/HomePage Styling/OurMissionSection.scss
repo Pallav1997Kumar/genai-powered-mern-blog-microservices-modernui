@@ -1,0 +1,1754 @@
+.our-mission-section{
+    position:relative;
+    overflow:hidden;
+    padding:180px 0;
+    background:#050816;
+    isolation:isolate;
+}
+
+.our-mission-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%,rgba(79,172,254,.08),transparent 40%),
+    radial-gradient(circle at 80% 30%,rgba(0,242,254,.07),transparent 35%),
+    radial-gradient(circle at 50% 100%,rgba(138,92,246,.08),transparent 45%);
+    z-index:-5;
+}
+
+.our-mission-section::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(180deg,rgba(255,255,255,.02),transparent 18%,transparent 82%,rgba(255,255,255,.02));
+    pointer-events:none;
+    z-index:-4;
+}
+
+.mission-container{
+    position:relative;
+    width:min(1320px,92%);
+    margin:0 auto;
+    z-index:5;
+}
+
+.mission-background-layer{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-2;
+}
+
+.mission-radial-glow{
+    position:absolute;
+    width:850px;
+    height:850px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:
+        radial-gradient(circle,rgba(0,229,255,.18),rgba(73,119,255,.09),transparent 72%);
+    filter:blur(90px);
+    animation:missionRadialBreath 18s ease-in-out infinite;
+    will-change:transform,opacity;
+}
+
+.mission-blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(130px);
+    opacity:.65;
+    will-change:transform;
+}
+
+.mission-blob-one{
+    width:420px;
+    height:420px;
+    left:-120px;
+    top:120px;
+    background:#3378ff;
+    animation:missionBlobDriftOne 28s ease-in-out infinite alternate;
+}
+
+.mission-blob-two{
+    width:360px;
+    height:360px;
+    right:-80px;
+    top:60px;
+    background:#00cfff;
+    animation:missionBlobDriftTwo 25s ease-in-out infinite alternate;
+}
+
+.mission-blob-three{
+    width:470px;
+    height:470px;
+    left:28%;
+    bottom:-160px;
+    background:#7c4dff;
+    animation:missionBlobDriftThree 31s ease-in-out infinite alternate;
+}
+
+.mission-blob-four{
+    width:300px;
+    height:300px;
+    right:22%;
+    bottom:120px;
+    background:#4fc3f7;
+    animation:missionBlobDriftFour 23s ease-in-out infinite alternate;
+}
+
+.mission-glass-reflection{
+    position:absolute;
+    width:42%;
+    height:180%;
+    top:-40%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);
+    filter:blur(12px);
+    mix-blend-mode:screen;
+}
+
+.mission-glass-one{
+    left:-30%;
+    transform:rotate(-18deg);
+    animation:missionGlassSweepOne 20s linear infinite;
+}
+
+.mission-glass-two{
+    right:-35%;
+    transform:rotate(16deg);
+    animation:missionGlassSweepTwo 24s linear infinite;
+}
+
+.mission-particle{
+    position:absolute;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:rgba(255,255,255,.85);
+    box-shadow:0 0 12px rgba(0,238,255,.7);
+    will-change:transform,opacity;
+}
+
+.mission-particle-1{
+    left:8%;
+    top:16%;
+    animation:missionParticleFloatOne 13s ease-in-out infinite;
+}
+.mission-particle-2{
+    left:14%;
+    top:64%;
+    animation:missionParticleFloatTwo 17s ease-in-out infinite;
+}
+.mission-particle-3{
+    left:21%;
+    top:32%;
+    animation:missionParticleFloatThree 15s ease-in-out infinite;
+}
+.mission-particle-4{
+    left:29%;
+    top:77%;
+    animation:missionParticleFloatFour 18s ease-in-out infinite;
+}
+.mission-particle-5{
+    left:38%;
+    top:14%;
+    animation:missionParticleFloatFive 14s ease-in-out infinite;
+}
+.mission-particle-6{
+    left:45%;
+    top:53%;
+    animation:missionParticleFloatSix 19s ease-in-out infinite;
+}
+.mission-particle-7{
+    left:54%;
+    top:25%;
+    animation:missionParticleFloatSeven 16s ease-in-out infinite;
+}
+.mission-particle-8{
+    left:61%;
+    top:74%;
+    animation:missionParticleFloatEight 21s ease-in-out infinite;
+}
+
+.mission-particle-9{
+    left:69%;
+    top:18%;
+    animation:missionParticleFloatOne 18s ease-in-out infinite 1s;
+}
+.mission-particle-10{
+    left:76%;
+    top:45%;
+    animation:missionParticleFloatTwo 20s ease-in-out infinite .8s;
+}
+.mission-particle-11{
+    left:84%;
+    top:67%;
+    animation:missionParticleFloatThree 17s ease-in-out infinite 1.4s;
+}
+.mission-particle-12{
+    left:92%;
+    top:28%;
+    animation:missionParticleFloatFour 22s ease-in-out infinite .5s;
+}
+
+.mission-particle-13{
+    left:12%;
+    top:88%;
+    animation:missionParticleFloatFive 21s ease-in-out infinite 1.8s;
+}
+.mission-particle-14{
+    left:18%;
+    top:48%;
+    animation:missionParticleFloatSix 18s ease-in-out infinite .4s;
+}
+.mission-particle-15{
+    left:26%;
+    top:10%;
+    animation:missionParticleFloatSeven 23s ease-in-out infinite 1.2s;
+}
+.mission-particle-16{
+    left:33%;
+    top:60%;
+    animation:missionParticleFloatEight 16s ease-in-out infinite .7s;
+}
+
+.mission-particle-17{
+    left:41%;
+    top:82%;
+    animation:missionParticleFloatOne 19s ease-in-out infinite 2s;
+}
+.mission-particle-18{
+    left:49%;
+    top:36%;
+    animation:missionParticleFloatTwo 22s ease-in-out infinite 1.5s;
+}
+.mission-particle-19{
+    left:58%;
+    top:12%;
+    animation:missionParticleFloatThree 17s ease-in-out infinite .9s;
+}
+.mission-particle-20{
+    left:65%;
+    top:58%;
+    animation:missionParticleFloatFour 20s ease-in-out infinite 1.7s;
+}
+
+.mission-particle-21{
+    left:73%;
+    top:86%;
+    animation:missionParticleFloatFive 24s ease-in-out infinite .6s;
+}
+.mission-particle-22{
+    left:81%;
+    top:24%;
+    animation:missionParticleFloatSix 18s ease-in-out infinite 1.1s;
+}
+.mission-particle-23{
+    left:87%;
+    top:52%;
+    animation:missionParticleFloatSeven 22s ease-in-out infinite .3s;
+}
+.mission-particle-24{
+    left:94%;
+    top:74%;
+    animation:missionParticleFloatEight 19s ease-in-out infinite 1.6s;
+}
+
+.mission-particle-25{
+    left:6%;
+    top:42%;
+    animation:missionParticleFloatOne 21s ease-in-out infinite 2.1s;
+}
+.mission-particle-26{
+    left:36%;
+    top:92%;
+    animation:missionParticleFloatTwo 18s ease-in-out infinite 1.3s;
+}
+.mission-particle-27{
+    left:71%;
+    top:6%;
+    animation:missionParticleFloatThree 23s ease-in-out infinite .2s;
+}
+.mission-particle-28{
+    left:97%;
+    top:38%;
+    animation:missionParticleFloatFour 20s ease-in-out infinite 1.9s;
+}
+
+
+@keyframes missionParticleFloatOne{
+    0%{
+        transform:translate3d(0,0,0) scale(.9);
+        opacity:.2;
+    }
+    25%{
+        transform:translate3d(8px,-14px,0) scale(1);
+    }
+    50%{
+        transform:translate3d(-6px,-24px,0) scale(1.15);
+        opacity:1;
+    }
+    75%{
+        transform:translate3d(10px,-10px,0) scale(.95);
+    }
+    100%{
+        transform:translate3d(0,0,0) scale(.9);opacity:.2;
+    }
+}
+
+@keyframes missionParticleFloatTwo{
+    0%{
+        transform:translate3d(0,0,0);
+    }
+    30%{
+        transform:translate3d(-10px,12px,0);
+    }
+    60%{
+        transform:translate3d(14px,-8px,0);
+    }
+    100%{
+        transform:translate3d(0,0,0);
+    }
+}
+
+@keyframes missionParticleFloatThree{
+    0%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-22px) translateX(8px);
+    }
+    100%{
+        transform:translateY(0);
+    }
+}
+
+@keyframes missionParticleFloatFour{
+    0%{
+        transform:translateX(0) scale(1);
+    }
+    50%{
+        transform:translateX(-18px) scale(1.2);
+    }
+    100%{
+        transform:translateX(0) scale(1);
+    }
+}
+
+@keyframes missionParticleFloatFive{
+    0%{
+        transform:translate(0,0);
+    }
+    40%{
+        transform:translate(12px,-18px);
+    }
+    80%{
+        transform:translate(-8px,-10px);
+    }
+    100%{
+        transform:translate(0,0);
+    }
+}
+
+@keyframes missionParticleFloatSix{
+    0%{
+        transform:scale(.8);
+        opacity:.3;
+    }
+    50%{
+        transform:scale(1.3);
+        opacity:1;
+    }
+    100%{
+        transform:scale(.8);
+        opacity:.3;
+    }
+}
+
+@keyframes missionParticleFloatSeven{
+    0%{
+        transform:translateY(0) rotate(0deg);
+    }
+    50%{
+        transform:translateY(-16px) rotate(180deg);
+    }
+    100%{
+        transform:translateY(0) rotate(360deg);
+    }
+}
+
+@keyframes missionParticleFloatEight{
+    0%{
+        transform:translate3d(0,0,0);
+    }
+    25%{
+        transform:translate3d(-8px,-10px,0);
+    }
+    50%{
+        transform:translate3d(10px,-18px,0);
+    }
+    75%{
+        transform:translate3d(-4px,-8px,0);
+    }
+    100%{
+        transform:translate3d(0,0,0);
+    }
+}
+
+.mission-light-streak{
+    position:absolute;
+    width:2px;
+    height:260px;
+    border-radius:999px;
+    background:
+        linear-gradient(to bottom,transparent,rgba(255,255,255,.9),rgba(0,238,255,.7),transparent);
+    filter:blur(.5px);
+    opacity:.18;
+    will-change:transform,opacity;
+}
+
+.mission-streak-1{
+    left:8%;
+    top:-12%;
+    transform:rotate(-24deg);
+    animation:missionStreakTravelOne 18s linear infinite;
+}
+
+.mission-streak-2{
+    left:24%;
+    top:-18%;
+    transform:rotate(14deg);
+    animation:missionStreakTravelTwo 21s linear infinite;
+}
+
+.mission-streak-3{
+    left:41%;
+    top:-15%;
+    transform:rotate(-11deg);
+    animation:missionStreakTravelThree 19s linear infinite;
+}
+
+.mission-streak-4{
+    left:58%;
+    top:-20%;
+    transform:rotate(20deg);
+    animation:missionStreakTravelFour 24s linear infinite;
+}
+
+.mission-streak-5{
+    left:71%;
+    top:-16%;
+    transform:rotate(-18deg);
+    animation:missionStreakTravelFive 22s linear infinite;
+}
+
+.mission-streak-6{
+    left:83%;
+    top:-10%;
+    transform:rotate(11deg);
+    animation:missionStreakTravelSix 20s linear infinite;
+}
+
+.mission-streak-7{
+    left:92%;
+    top:-18%;
+    transform:rotate(-8deg);
+    animation:missionStreakTravelSeven 23s linear infinite;
+}
+
+.mission-streak-8{
+    left:49%;
+    top:-24%;
+    transform:rotate(6deg);
+    animation:missionStreakTravelEight 26s linear infinite;
+}
+
+.mission-orbit-ring{
+    position:absolute;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    backdrop-filter:blur(6px);
+    will-change:transform;
+}
+
+.mission-orbit-1{
+    width:520px;
+    height:520px;
+    left:-120px;
+    top:120px;
+    animation:missionRingRotateOne 46s linear infinite;
+}
+
+.mission-orbit-2{
+    width:720px;
+    height:720px;
+    right:-220px;
+    top:-80px;
+    animation:missionRingRotateTwo 60s linear infinite reverse;
+}
+
+.mission-orbit-3{
+    width:440px;
+    height:440px;
+    left:50%;
+    bottom:-140px;
+    transform:translateX(-50%);
+    animation:missionRingRotateThree 38s linear infinite;
+}
+
+.mission-orbit-4{
+    width:280px;
+    height:280px;
+    right:18%;
+    bottom:80px;
+    animation:missionRingRotateFour 31s linear infinite reverse;
+}
+
+
+.mission-section-heading{
+    position:relative;
+    max-width:860px;
+    margin:0 auto 110px;
+    text-align:center;
+    z-index:5;
+}
+
+.mission-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 18px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:999px;
+    background:rgba(255,255,255,.04);
+    backdrop-filter:blur(18px);
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:#9fdcff;
+    box-shadow:0 0 30px rgba(0,183,255,.08);
+    margin-bottom:28px;
+    animation:missionEyebrowReveal .9s cubic-bezier(.22,1,.36,1) forwards;
+    opacity:0;
+    transform:translateY(14px);
+}
+
+.mission-section-heading h2{
+    margin:0;
+    font-size:clamp(3rem,5vw,5.5rem);
+    font-weight:800;
+    line-height:1.08;
+    letter-spacing:-.04em;
+    color:#fff;
+}
+
+.mission-heading-word{
+    display:inline-block;
+    white-space:nowrap;
+    margin-right:.2em;
+    position:relative;
+}
+
+.mission-word-space{
+    display:inline-block;
+    width:.12em;
+}
+
+.mission-heading-letter{
+    display:inline-block;
+    opacity:0;
+    filter:blur(10px);
+    color:rgba(255,255,255,.72) !important;
+    -webkit-text-fill-color:rgba(255,255,255,.72) !important;
+    transform:translateY(25px);
+    will-change:transform,opacity,filter;
+    animation:missionLetterReveal .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.mission-highlight-word{
+    position:relative;
+    color:#ffffff;
+    background:linear-gradient(90deg,#59d8ff,#7f8cff,#42f5d7,#59d8ff);
+    background-size:300% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:missionGradientFlow 9s linear infinite;
+}
+
+.mission-highlight-word::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:8px;
+    height:16px;
+    background:radial-gradient(circle,rgba(69,212,255,.25),transparent 70%);
+    filter:blur(14px);
+    opacity:.65;
+    animation:missionHighlightGlow 7s ease-in-out infinite;
+    z-index:-1;
+}
+
+.mission-section-description{
+    max-width:720px;
+    margin:34px auto 0;
+    font-size:1.08rem;
+    line-height:1.9;
+    color:rgba(255,255,255,.72);
+    opacity:0;
+    transform:translateY(10px);
+    animation:missionDescriptionReveal 1s cubic-bezier(.22,1,.36,1) .9s forwards;
+}
+
+.mission-layout{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    align-items:center;
+    gap:90px;
+    z-index:4;
+}
+
+.mission-cards{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.mission-section-visible .mission-heading-letter{
+    animation-play-state:running;
+}
+
+.mission-section-visible .mission-section-description{
+    animation-play-state:running;
+}
+
+.mission-section-visible .mission-eyebrow{
+    animation-play-state:running;
+}
+
+@media (max-width:1200px){
+    .mission-layout{
+        grid-template-columns:1fr;
+        gap:80px;
+    }
+    .mission-cards{
+        order:1;
+    }
+}
+
+@media (max-width:768px){
+    .our-mission-section{
+        padding:120px 0;
+    }
+    .mission-section-heading{
+        margin-bottom:70px;
+    }
+    .mission-section-heading h2{
+        font-size:clamp(2.4rem,9vw,3.8rem);
+    }
+    .mission-section-description{
+        font-size:1rem;
+        line-height:1.8;
+    }
+    .mission-layout{
+        gap:60px;
+    }
+}
+
+.label{
+    position:relative;
+    font-size:.95rem;
+    font-weight:700;
+    letter-spacing:.05em;
+    color:#ffffff;
+    z-index:2;
+}
+
+
+.mission-card{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    padding:34px;
+    border-radius:28px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(24px);
+    cursor:pointer;
+    transform:translateY(40px);
+    opacity:0;
+    will-change:transform,opacity;
+    animation:missionCardReveal 1s cubic-bezier(.22,1,.36,1) forwards,missionCardIdleMotion 9s ease-in-out infinite;
+    transition:
+    transform .65s cubic-bezier(.22,1,.36,1),
+    box-shadow .65s cubic-bezier(.22,1,.36,1),
+    border-color .65s ease,
+    background .65s ease;
+}
+
+.mission-card+.mission-card{
+    margin-top:8px;
+}
+
+.mission-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(130deg,rgba(255,255,255,.04),transparent 45%,rgba(255,255,255,.02));
+    opacity:.9;
+    pointer-events:none;
+}
+
+.mission-card::after{
+    content:"";
+    position:absolute;
+    inset:1px;
+    border-radius:27px;
+    background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 70%);
+    pointer-events:none;
+}
+
+.mission-card-border{
+    position:absolute;
+    inset:0;
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.08);
+    opacity:.5;
+    transition:all .6s ease;
+}
+
+.mission-card-glass{
+    position:absolute;
+    inset:0;
+    border-radius:28px;
+    background:rgba(255,255,255,.02);
+    backdrop-filter:blur(20px);
+}
+
+.mission-card-reflection{
+    position:absolute;
+    top:-140%;
+    left:-45%;
+    width:48%;
+    height:320%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
+    transform:rotate(18deg);
+    opacity:.55;
+    transition:transform 1.2s cubic-bezier(.22,1,.36,1);
+    }
+
+.mission-card-glow{
+    position:absolute;
+    inset:-2px;
+    border-radius:30px;
+    background:radial-gradient(circle at center,rgba(0,212,255,.18),transparent 70%);
+    opacity:.35;
+    filter:blur(34px);
+    transition:opacity .7s ease,transform .7s ease;
+}
+
+.mission-card-content{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:28px;
+    z-index:5;
+    transition:transform .6s cubic-bezier(.22,1,.36,1);
+}
+
+.mission-icon-wrapper{
+    position:relative;
+    width:88px;
+    height:88px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    animation:missionIconContainerFloat 8s ease-in-out infinite;
+}
+
+.mission-icon-ring{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.12);
+    animation:missionIconmissionRingRotate 18s linear infinite;
+}
+
+.mission-icon-bg{
+    position:absolute;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#1f7dff,#45d9ff);
+    filter:blur(.2px);
+    box-shadow:0 0 28px rgba(63,195,255,.28);
+    animation:missionIconGlowPulse 7s ease-in-out infinite;
+}
+
+.mission-icon{
+    position:relative;
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    z-index:2;
+    transition:transform .65s cubic-bezier(.22,1,.36,1);
+    animation:missionIconFloat 6s ease-in-out infinite;
+}
+
+.mission-icon svg{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.mission-content{
+    position:relative;
+    transition:transform .6s cubic-bezier(.22,1,.36,1);
+}
+
+.mission-subtitle{
+    display:inline-block;
+    margin-bottom:10px;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#8ddcff;
+}
+
+.mission-content h3{
+    margin:0 0 12px;
+    font-size:1.75rem;
+    font-weight:700;
+    line-height:1.2;
+    color:#fff;
+}
+
+.mission-content p{
+    margin:0;
+    font-size:1rem;
+    line-height:1.85;
+    color:rgba(255,255,255,.72);
+    max-width:470px;
+}
+
+.mission-hover-shine{
+    position:absolute;
+    top:-180%;
+    left:-30%;
+    width:42%;
+    height:420%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    transform:rotate(20deg);
+    opacity:0;
+    transition:transform 1.15s cubic-bezier(.22,1,.36,1),opacity .5s ease;
+}
+
+.mission-hover-gradient{
+    position:absolute;
+    inset:0;
+    border-radius:28px;
+    background:
+        linear-gradient(135deg,rgba(0,229,255,.08),transparent 45%,rgba(128,92,255,.08));
+    opacity:0;
+    transition:opacity .65s ease;
+}
+
+.mission-card:hover{
+    transform:translateY(-12px) rotate(.4deg);
+    border-color:rgba(120,220,255,.3);
+    box-shadow:0 30px 80px rgba(0,0,0,.35),0 0 60px rgba(0,210,255,.12);
+}
+
+.mission-card:hover .mission-card-border{
+    border-color:rgba(116,219,255,.45);
+    box-shadow:0 0 30px rgba(0,220,255,.18);
+}
+
+.mission-card:hover .mission-card-reflection{
+    transform:translateX(260%) rotate(18deg);
+}
+
+.mission-card:hover .mission-card-content{
+    transform:translateY(-6px);
+}
+
+.mission-card:hover .mission-content{
+    transform:translateY(-2px);
+}
+
+.mission-card:hover .mission-icon{
+    transform:rotate(12deg) scale(1.08);
+}
+
+.mission-card:hover .mission-card-glow{
+    opacity:.8;
+    transform:scale(1.08);
+}
+
+.mission-card:hover .mission-hover-gradient{
+    opacity:1;  
+}
+
+.mission-card:hover .mission-hover-shine{
+    opacity:1;
+    transform:translateX(420%) rotate(20deg);
+}
+
+.mission-card.blue .mission-icon-bg{
+    background:linear-gradient(135deg,#2979ff,#49d8ff);
+}
+
+.mission-card.orange .mission-icon-bg{
+    background:linear-gradient(135deg,#ff8f3d,#ffd54f);
+}
+
+.mission-card.green .mission-icon-bg{
+    background:linear-gradient(135deg,#2ecc71,#5df2b8);
+}
+
+.mission-ambient-layer{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:1;
+}
+
+.mission-ambient{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:.22;
+    will-change:transform,opacity;
+}
+
+.mission-ambient-1{
+    width:260px;
+    height:260px;
+    left:-80px;
+    top:14%;
+    background:#42c8ff;
+    animation:missionAmbientFloatOne 26s ease-in-out infinite;
+}
+
+.mission-ambient-2{
+    width:340px;
+    height:340px;
+    right:-120px;
+    top:34%;
+    background:#7a5cff;
+    animation:missionAmbientFloatTwo 30s ease-in-out infinite;
+}
+
+.mission-ambient-3{
+    width:220px;
+    height:220px;
+    left:28%;
+    bottom:-80px;
+    background:#00e5ff;
+    animation:missionAmbientFloatThree 24s ease-in-out infinite;
+}
+
+.mission-ambient-4{
+    width:180px;
+    height:180px;
+    right:24%;
+    bottom:8%;
+    background:#4f9dff;
+    animation:missionAmbientFloatFour 22s ease-in-out infinite;
+}
+
+.mission-tiny-orb{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 18px rgba(79,216,255,.9);
+    will-change:transform,opacity;
+}
+
+.mission-orb-1{
+    left:12%;
+    top:20%;
+    animation:missionOrbDriftOne 10s ease-in-out infinite;
+}
+
+.mission-orb-2{
+    left:32%;
+    top:78%;
+    animation:missionOrbDriftTwo 12s ease-in-out infinite;
+}
+
+.mission-orb-3{
+    left:55%;
+    top:28%;
+    animation:missionOrbDriftThree 11s ease-in-out infinite;
+}
+
+.mission-orb-4{
+    left:74%;
+    top:68%;
+    animation:missionOrbDriftFour 13s ease-in-out infinite;
+}
+
+.mission-orb-5{
+    left:88%;
+    top:22%;
+    animation:missionOrbDriftFive 9s ease-in-out infinite;
+}
+
+.mission-orb-6{
+    left:46%;
+    top:8%;
+    animation:missionOrbDriftSix 14s ease-in-out infinite;
+}
+
+.mission-card:hover .mission-subtitle{
+    color:#d8f7ff;
+    letter-spacing:.22em;
+    transition:all .45s ease;
+}
+
+.mission-card:hover h3{
+    transform:translateY(-2px);
+    transition:transform .45s cubic-bezier(.22,1,.36,1);
+}
+
+.mission-card:hover p{
+    color:rgba(255,255,255,.9);
+    transition:color .45s ease;
+}
+
+.mission-card:active{
+    transform:translateY(-6px) scale(.985);
+    transition-duration:.15s;
+}
+
+.mission-card:hover .mission-icon-ring{
+    border-color:rgba(255,255,255,.32);
+    animation-duration:8s;
+}
+
+.mission-card:hover .mission-icon-bg{
+    box-shadow:0 0 40px rgba(79,216,255,.45);
+    filter:brightness(1.15);
+}
+
+.mission-card.blue:hover{
+    background:rgba(44,121,255,.08);
+}
+
+.mission-card.orange:hover{
+    background:rgba(255,170,51,.08);
+}
+
+.mission-card.green:hover{
+    background:rgba(46,204,113,.08);
+}
+
+.mission-section-visible .mission-card{
+    animation-play-state:running;
+}
+
+.mission-section-visible .mission-ambient,
+.mission-section-visible .mission-tiny-orb{
+    animation-play-state:running;
+}
+
+@media (max-width:992px){
+    .mission-card{
+        padding:28px;
+    }
+
+    .mission-card-content{
+        gap:22px;
+    }
+
+    .mission-icon-wrapper{
+        width:74px;
+        height:74px;
+    }
+
+    .mission-icon-bg{
+        width:60px;
+        height:60px;
+    }
+    
+    .mission-content h3{
+        font-size:1.45rem;
+    }
+
+    .mission-content p{
+        font-size:.95rem;
+        line-height:1.75;
+    }
+}
+
+@media (max-width:640px){
+    .mission-card{
+        padding:24px;
+        border-radius:22px;
+    }
+    
+    .mission-card-content{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:18px;
+    }
+    
+    .mission-icon-wrapper{
+        width:68px;
+        height:68px;
+    }
+    
+    .mission-icon-bg{
+        width:54px;
+        height:54px;
+    }
+
+    .mission-icon{
+        width:28px;
+        height:28px;
+    }
+
+    .mission-content h3{
+        font-size:1.3rem;
+    }
+
+    .mission-content p{
+        font-size:.92rem;
+    }
+
+    .mission-hover-shine,
+    .mission-card-reflection{
+        display:none;
+    }
+}
+
+
+@keyframes missionEyebrowReveal{
+    0%{
+        opacity:0;
+        transform:translateY(14px);
+        filter:blur(8px);
+    }
+
+    60%{
+        opacity:1;
+        transform:translateY(-2px);
+        filter:blur(2px);
+    }
+
+    100%{
+        opacity:1;
+        transform:translateY(0);
+        filter:blur(0);
+    }
+}
+
+@keyframes missionLetterReveal{
+    0%{
+        opacity:0;
+        transform:translateY(25px);
+        filter:blur(12px);
+    }
+
+    55%{
+        opacity:.8;
+        transform:translateY(6px);
+        filter:blur(4px);
+    }
+
+    100%{
+        opacity:1;
+        transform:translateY(0);
+        filter:blur(0);
+    }
+}
+
+@keyframes missionDescriptionReveal{
+    0%{
+        opacity:0;
+        transform:translateY(10px);
+        filter:blur(8px);
+    }
+
+    100%{
+        opacity:1;
+        transform:translateY(0);
+        filter:blur(0);
+    }
+}
+
+@keyframes missionCardReveal{
+    0%{
+        opacity:0;
+        transform:translateY(42px) scale(.96);
+        filter:blur(12px);
+    }
+    
+    55%{
+        opacity:.75;
+        transform:translateY(10px) scale(.985);
+        filter:blur(4px);
+    }
+    
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes missionGradientFlow{
+    0%{
+        background-position:0% 50%;
+    }
+    
+    50%{
+        background-position:100% 50%;
+    }
+    
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+@keyframes missionHighlightGlow{
+    0%{
+        opacity:.35;
+        transform:scale(.95);
+    }
+
+    50%{
+        opacity:.75;
+        transform:scale(1.08);
+    }
+    
+    100%{
+        opacity:.35;
+        transform:scale(.95);
+    }
+}
+
+@keyframes missionRadialBreath{
+    0%{
+        transform:translate(-50%,-50%) scale(.92);
+        opacity:.35;
+    }
+
+    50%{
+        transform:translate(-50%,-50%) scale(1.08);
+        opacity:.75;
+    }
+    
+    100%{
+        transform:translate(-50%,-50%) scale(.92);
+        opacity:.35;
+    }
+}
+
+@keyframes missionBlobDriftOne{
+    0%{
+        transform:translate3d(0,0,0) scale(1);
+    }
+    
+    25%{
+        transform:translate3d(40px,-20px,0) scale(1.05);
+    }
+    
+    50%{
+        transform:translate3d(80px,30px,0) scale(.96);
+    }
+    
+    75%{
+        transform:translate3d(30px,60px,0) scale(1.04);
+    }
+    
+    100%{
+        transform:translate3d(-20px,20px,0) scale(1);
+    }
+}
+
+@keyframes missionBlobDriftTwo{
+    0%{
+        transform:translate3d(0,0,0) scale(1);
+    }
+    
+    30%{
+        transform:translate3d(-40px,40px,0) scale(1.06);
+    }
+    
+    60%{
+        transform:translate3d(-80px,-20px,0) scale(.94);
+    }
+    
+    100%{
+        transform:translate3d(-30px,10px,0) scale(1);
+    }
+}
+
+@keyframes missionBlobDriftThree{
+    0%{
+        transform:translate3d(0,0,0) scale(1);
+    }
+    
+    20%{
+        transform:translate3d(20px,-40px,0) scale(1.04);
+    }
+    
+    55%{
+        transform:translate3d(-60px,-10px,0) scale(.95);
+    }
+    
+    100%{
+        transform:translate3d(-10px,50px,0) scale(1.02);
+    }
+}
+
+@keyframes missionBlobDriftFour{
+    0%{
+        transform:translate3d(0,0,0) scale(1);
+    }
+    
+    35%{
+        transform:translate3d(-25px,-35px,0) scale(1.05);
+    }
+    
+    70%{
+        transform:translate3d(35px,25px,0) scale(.96);
+    }
+    
+    100%{
+        transform:translate3d(10px,-10px,0) scale(1);
+    }
+}
+
+@keyframes missionGlassSweepOne{
+    0%{
+        transform:translateX(-20%) rotate(-18deg);
+        opacity:.08;
+    }
+    
+    50%{
+        transform:translateX(120%) rotate(-18deg);
+        opacity:.22;
+    }
+    
+    100%{
+        transform:translateX(260%) rotate(-18deg);
+        opacity:.08;
+    }
+}
+
+@keyframes missionGlassSweepTwo{
+    0%{
+        transform:translateX(20%) rotate(16deg);
+        opacity:.05;
+    }
+    
+    50%{
+        transform:translateX(-120%) rotate(16deg);
+        opacity:.2;
+    }
+    
+    100%{
+        transform:translateX(-260%) rotate(16deg);
+        opacity:.05;
+    }
+}
+
+
+@keyframes missionCardIdleMotion{
+    0%{
+        transform:translateY(0) rotate(0deg);
+    }
+    20%{
+        transform:translateY(-2px) rotate(.15deg);
+    }
+    40%{
+        transform:translateY(1px) rotate(-.12deg);
+    }
+    60%{
+        transform:translateY(-3px) rotate(.18deg);
+    }
+    80%{
+        transform:translateY(1px) rotate(-.08deg);
+    }
+    100%{
+        transform:translateY(0) rotate(0deg);
+    }
+}
+
+@keyframes missionIconContainerFloat{
+    0%{
+        transform:translateY(0);
+    }
+    25%{
+        transform:translateY(-2px);
+    }
+    50%{
+        transform:translateY(-6px);
+    }
+    75%{
+        transform:translateY(-2px);
+    }
+    100%{
+        transform:translateY(0);
+    }
+}
+
+@keyframes missionIconmissionRingRotate{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes missionIconGlowPulse{
+    0%{
+        transform:scale(.96);
+        box-shadow:0 0 18px rgba(79,216,255,.18);
+    }
+    50%{
+        transform:scale(1.08);
+        box-shadow:0 0 40px rgba(79,216,255,.45);
+    }
+    100%{
+        transform:scale(.96);
+        box-shadow:0 0 18px rgba(79,216,255,.18);
+    }
+}
+
+@keyframes missionIconFloat{
+    0%{
+        transform:translateY(0) rotate(0deg);
+    }
+    25%{
+        transform:translateY(-2px) rotate(-2deg);
+    }
+    50%{
+        transform:translateY(-5px) rotate(2deg);
+    }
+    75%{
+        transform:translateY(-2px) rotate(-1deg);
+    }
+    100%{
+        transform:translateY(0) rotate(0deg);
+    }
+}
+
+@keyframes missionAmbientFloatOne{
+    0%{
+        transform:translate3d(0,0,0) scale(1);
+        opacity:.18;
+    }
+    50%{
+        transform:translate3d(40px,-30px,0) scale(1.15);
+        opacity:.32;
+    }
+    100%{
+        transform:translate3d(0,0,0) scale(1);
+        opacity:.18;
+    }
+}
+
+@keyframes missionAmbientFloatTwo{
+    0%{
+        transform:translate3d(0,0,0) scale(1);
+    }
+    50%{
+        transform:translate3d(-50px,40px,0) scale(1.08);
+    }
+    100%{
+        transform:translate3d(0,0,0) scale(1);
+    }
+}
+
+@keyframes missionAmbientFloatThree{
+    0%{
+        transform:translate3d(0,0,0);
+    }
+    50%{
+        transform:translate3d(25px,-40px,0);
+    }
+    100%{
+        transform:translate3d(0,0,0);
+    }
+}
+
+@keyframes missionAmbientFloatFour{
+    0%{
+        transform:translate3d(0,0,0) scale(.95);
+    }
+    50%{
+        transform:translate3d(-35px,20px,0) scale(1.12);
+    }
+    100%{
+        transform:translate3d(0,0,0) scale(.95);
+    }
+}
+
+@keyframes missionOrbDriftOne{
+    0%{
+        transform:translateY(0);
+        opacity:.5;
+    }
+    50%{
+        transform:translateY(-18px);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(0);
+        opacity:.5;
+    }
+}
+
+@keyframes missionOrbDriftTwo{
+    0%{
+        transform:translateX(0);
+    }
+    50%{
+        transform:translateX(16px);
+    }
+    100%{
+        transform:translateX(0);
+    }
+}
+
+@keyframes missionOrbDriftThree{
+    0%{
+        transform:translate(0,0);
+    }
+    50%{
+        transform:translate(-12px,-16px);
+    }
+    100%{
+        transform:translate(0,0);
+    }
+}
+
+@keyframes missionOrbDriftFour{
+    0%{
+        transform:translate(0,0) scale(1);
+    }
+    50%{
+        transform:translate(14px,10px) scale(1.2);
+    }
+    100%{
+        transform:translate(0,0) scale(1);
+    }
+}
+
+@keyframes missionOrbDriftFive{
+    0%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(16px);
+    }
+    100%{
+        transform:translateY(0);
+    }
+}
+
+@keyframes missionOrbDriftSix{
+    0%{
+        transform:translate(0,0);
+    }
+    50%{
+        transform:translate(-14px,12px);
+    }
+    100%{
+        transform:translate(0,0);
+    }
+}
+
+@keyframes missionStreakTravelOne{
+    0%{
+        transform:translateY(-220px) rotate(-24deg);
+        opacity:0;
+    }
+    20%{
+        opacity:.18;
+    }
+    80%{
+        opacity:.18;
+    }
+    100%{
+        transform:translateY(110vh) rotate(-24deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelTwo{
+    0%{
+        transform:translateY(-260px) rotate(14deg);
+        opacity:0;
+    }
+    25%{
+        opacity:.22;
+    }
+    75%{
+        opacity:.22;
+    }
+    100%{
+        transform:translateY(110vh) rotate(14deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelThree{
+    0%{
+        transform:translateY(-200px) rotate(-11deg);
+        opacity:0;
+    }
+    20%{
+        opacity:.16;
+    }
+    80%{
+        opacity:.16;
+    }
+    100%{
+        transform:translateY(110vh) rotate(-11deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelFour{
+    0%{
+        transform:translateY(-280px) rotate(20deg);
+        opacity:0;
+    }
+    30%{
+        opacity:.2;
+    }
+    70%{
+        opacity:.2;
+    }
+    100%{
+        transform:translateY(110vh) rotate(20deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelFive{
+    0%{
+        transform:translateY(-240px) rotate(-18deg);
+        opacity:0;
+    }
+    20%{
+        opacity:.18;
+    }
+    80%{
+        opacity:.18;
+    }
+    100%{
+        transform:translateY(110vh) rotate(-18deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelSix{
+    0%{
+        transform:translateY(-260px) rotate(11deg);
+        opacity:0;
+    }
+    25%{
+        opacity:.22;
+    }
+    75%{
+        opacity:.22;
+    }
+    100%{
+        transform:translateY(110vh) rotate(11deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelSeven{
+    0%{
+        transform:translateY(-220px) rotate(-8deg);
+        opacity:0;
+    }
+    20%{
+        opacity:.18;
+    }
+    80%{
+        opacity:.18;
+    }
+    100%{
+        transform:translateY(110vh) rotate(-8deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionStreakTravelEight{
+    0%{
+        transform:translateY(-300px) rotate(6deg);
+        opacity:0;
+    }
+    30%{
+        opacity:.2;
+    }
+    70%{
+        opacity:.2;
+    }
+    100%{
+        transform:translateY(110vh) rotate(6deg);
+        opacity:0;
+    }
+}
+
+@keyframes missionRingRotateOne{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes missionRingRotateTwo{
+    0%{
+        transform:rotate(360deg);
+    }
+    100%{
+        transform:rotate(0deg);
+    }
+}
+
+@keyframes missionRingRotateThree{
+    0%{
+        transform:translateX(-50%) rotate(0deg);
+    }
+    100%{
+        transform:translateX(-50%) rotate(360deg);
+    }
+}
+
+@keyframes missionRingRotateFour{
+    0%{
+        transform:rotate(360deg);
+    }
+    100%{
+        transform:rotate(0deg);
+    }
+}
