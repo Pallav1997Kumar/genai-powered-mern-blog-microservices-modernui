@@ -1,266 +1,386 @@
-const dotenv = require("dotenv");
-const axios = require("axios");
+const genAiService = require("../services/blog-genai.service.js");
 
-const { generateAccessToken } = require("../googleAuthToken.js");
-const { extractBlogTitles } = require("../utils/functions.js");
+const logger = require("../utils/logger.js");
 
-dotenv.config({ path: "./config.env" });
-
-const GEMINI_MODEL_NAME = "gemini-2.5-flash-lite";
+const FILE_NAME = "generativeAI.controller.js";
 
 
-const getBlogDescriptionSummary = async function(req, res, next){
+
+// ============================================================
+// Generate Blog Summary - starts
+// ============================================================
+async function getBlogDescriptionSummary(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog summary request received`);
+
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        return res.status(400).json({ errorMessage: "Blog description is required" });
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
     }
 
     try {
-            
-        // Get OAuth access token
-        const accessToken = await generateAccessToken();
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate summary`);
 
-        const geminiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent`,
-            {
-                contents: [
-                    {
-                        parts: [
-                            { 
-                                text: `Summarize the following blog description into a concise, engaging, and SEO-friendly paragraph that highlights the main ideas and key takeaways, while preserving the original intent:\n\n"${blogText}"\n\nSummary:`
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 15000
-                }
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
+        const result = await genAiService.generateBlogSummary(blogText);
 
-        const geminiResponseData = geminiResponse.data;
+        logger.success(`[${FILE_NAME}] Blog summary generated successfully`);
 
-        // First candidate from the API response
-        const firstCandidateFromResponse = geminiResponseData.candidates[0];
-        // The content block inside the first candidate
-        const contentBlockOfFirstCandidate = firstCandidateFromResponse.content;
-        // The parts array inside the content block
-        const partsOfFirstContentBlock = contentBlockOfFirstCandidate.parts;
-        // The first part of the content block
-        const firstPartOfContentBlock = partsOfFirstContentBlock[0];
-        // The generated text from the first part
-        const generatedText = firstPartOfContentBlock.text;
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog summary`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog summary request could not be completed`);
 
-        const plainTextSummary = generatedText.replace(/\*|_|#/g, "").trim();
-
-        const aiGeneratedSummary = plainTextSummary;
-
-        return res.status(200).json({ blogSummary: aiGeneratedSummary });
-    } 
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({ errorMessage: "Internal Server Error" });
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
     }
 }
+// ============================================================
+// Generate Blog Summary - ends
+// ============================================================
 
 
-const suggestBlogTitlesFromBlogDescription = async function(req, res){
+
+// ============================================================
+// Generate Blog TLDR - starts
+// ============================================================
+async function getBlogDescriptionTLDR(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog TLDR request received`);
+
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        return res.status(400).json({ errorMessage: "Blog description is required" });
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
     }
 
     try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate TLDR`);
 
-        // Get OAuth access token
-        const accessToken = await generateAccessToken();
+        const result = await genAiService.generateBlogTLDR(blogText);
 
-        const geminiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent`,
-            {
-                contents: [
-                    {
-                        parts: [
-                            { 
-                                text: `Suggest 5 catchy blog titles for the following description:\n\n${blogText}` 
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 150
-                }
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
+        logger.success(`[${FILE_NAME}] Blog TLDR generated successfully`);
 
-        const geminiResponseData = geminiResponse.data;
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog TLDR`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog TLDR request could not be completed`);
 
-        // First candidate from the API response
-        const firstCandidateFromResponse = geminiResponseData.candidates[0];
-        // The content block inside the first candidate
-        const contentBlockOfFirstCandidate = firstCandidateFromResponse.content;
-        // The parts array inside the content block
-        const partsOfFirstContentBlock = contentBlockOfFirstCandidate.parts;
-        // The first part of the content block
-        const firstPartOfContentBlock = partsOfFirstContentBlock[0];
-        // The generated text from the first part
-        const generatedText = firstPartOfContentBlock.text;
-        
-        const geminiGeneratedBlogTitles = extractBlogTitles(generatedText);
-
-        return res.status(200).json({ geminiGeneratedBlogTitles: geminiGeneratedBlogTitles });
-
-    } 
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({ errorMessage: "Internal Server Error" });
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
     }
 }
+// ============================================================
+// Generate Blog TLDR - ends
+// ============================================================
 
 
-const suggestBlogDescriptionsFromBlogTitle = async function(req, res){
+
+// ============================================================
+// Generate Blog Key Takeaways - starts
+// ============================================================
+async function getBlogDescriptionKeyTakeaways(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog key takeaways request received`);
+
+    const blogText = req.body.blogText;
+
+    if (!blogText) {
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
+    }
+
+    try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate key takeaways`);
+
+        const result = await genAiService.generateBlogKeyTakeaways(blogText);
+
+        logger.success(`[${FILE_NAME}] Blog key takeaways generated successfully`);
+
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog key takeaways`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog key takeaways request could not be completed`);
+
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
+    }
+}
+// ============================================================
+// Generate Blog Key Takeaways - ends
+// ============================================================
+
+
+
+// ============================================================
+// Generate Blog Conclusion - starts
+// ============================================================
+async function getBlogDescriptionConclusion(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog conclusion request received`);
+
+    const blogText = req.body.blogText;
+
+    if (!blogText) {
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
+    }
+
+    try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate conclusion`);
+
+        const result = await genAiService.generateBlogConclusion(blogText);
+
+        logger.success(`[${FILE_NAME}] Blog conclusion generated successfully`);
+
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog conclusion`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog conclusion request could not be completed`);
+
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
+    }
+}
+// ============================================================
+// Generate Blog Conclusion - ends
+// ============================================================
+
+
+
+// ============================================================
+// Generate Blog FAQ - starts
+// ============================================================
+async function getBlogDescriptionFAQ(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog FAQ request received`);
+
+    const blogText = req.body.blogText;
+
+    if (!blogText) {
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
+    }
+
+    try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate FAQ`);
+
+        const result = await genAiService.generateBlogFAQ(blogText);
+
+        logger.success(`[${FILE_NAME}] Blog FAQ generated successfully`);
+
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog FAQ`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog FAQ request could not be completed`);
+
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
+    }
+}
+// ============================================================
+// Generate Blog FAQ - ends
+// ============================================================
+
+
+
+// ============================================================
+// Generate Blog Highlights - starts
+// ============================================================
+async function getBlogDescriptionHighlights(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog highlights request received`);
+
+    const blogText = req.body.blogText;
+
+    if (!blogText) {
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
+    }
+
+    try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate highlights`);
+
+        const result = await genAiService.generateBlogHighlights(blogText);
+
+        logger.success(`[${FILE_NAME}] Blog highlights generated successfully`);
+
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog highlights`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog highlights request could not be completed`);
+
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
+    }
+}
+// ============================================================
+// Generate Blog Highlights - ends
+// ============================================================
+
+
+
+// ============================================================
+// Suggest Blog Titles - starts
+// ============================================================
+async function suggestBlogTitlesFromBlogDescription(req, res) {
+    logger.info(`[${FILE_NAME}] Suggest blog titles request received`);
+
+    const blogText = req.body.blogText;
+
+    if (!blogText) {
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
+    }
+
+    try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to suggest titles`);
+
+        const result = await genAiService.suggestBlogTitles(blogText);
+
+        logger.success(`[${FILE_NAME}] Blog title suggestions generated successfully`);
+
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to suggest blog titles`, error);
+        logger.warn(`[${FILE_NAME}] Suggest blog titles request could not be completed`);
+
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
+    }
+}
+// ============================================================
+// Suggest Blog Titles - ends
+// ============================================================
+
+
+
+// ============================================================
+// Generate Blog Description - starts
+// ============================================================
+async function suggestBlogDescriptionsFromBlogTitle(req, res) {
+    logger.info(`[${FILE_NAME}] Generate blog description request received`);
+
     const blogTitle = req.body.blogTitle;
 
     if (!blogTitle) {
-        return res.status(400).json({ errorMessage: "Blog description is required" });
+        logger.warn(`[${FILE_NAME}] Blog title is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog title is required"
+        });
     }
 
     try {
+        logger.info(`[${FILE_NAME}] Calling blog AI service to generate description`);
 
-        // Get OAuth access token
-        const accessToken = await generateAccessToken();
+        const result = await genAiService.generateBlogDescription(blogTitle);
 
-        const geminiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent`,
-            {
-                contents: [
-                    {
-                        parts: [
-                            { 
-                                text: `Write a detailed blog description (around 2500 characters) for the following blog title:\n\n"${blogTitle}"\n\nDescription:` 
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 15000
-                }
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
+        logger.success(`[${FILE_NAME}] Blog description generated successfully`);
 
-        const geminiResponseData = geminiResponse.data;
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to generate blog description`, error);
+        logger.warn(`[${FILE_NAME}] Generate blog description request could not be completed`);
 
-        // First candidate from the API response
-        const firstCandidateFromResponse = geminiResponseData.candidates[0];
-        // The content block inside the first candidate
-        const contentBlockOfFirstCandidate = firstCandidateFromResponse.content;
-        // The parts array inside the content block
-        const partsOfFirstContentBlock = contentBlockOfFirstCandidate.parts;
-        // The first part of the content block
-        const firstPartOfContentBlock = partsOfFirstContentBlock[0];
-        // The generated text from the first part
-        const generatedText = firstPartOfContentBlock.text;
-        
-        const geminiGeneratedBlogDescription = generatedText;
-
-        return res.status(200).json({ geminiGeneratedBlogDescription: geminiGeneratedBlogDescription });
-
-    } 
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({ errorMessage: "Internal Server Error" });
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
     }
 }
+// ============================================================
+// Generate Blog Description - ends
+// ============================================================
 
 
-const enhanceBlogDescription = async function (req, res) {
+
+// ============================================================
+// Enhance Blog Description - starts
+// ============================================================
+async function enhanceBlogDescription(req, res) {
+    logger.info(`[${FILE_NAME}] Enhance blog description request received`);
+
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        return res.status(400).json({ errorMessage: "Blog description is required" });
+        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        return res.status(400).json({
+            errorMessage: "Blog description is required"
+        });
     }
 
     try {
-        
-        // Get OAuth access token
-        const accessToken = await generateAccessToken();
+        logger.info(`[${FILE_NAME}] Calling blog AI service to enhance description`);
 
-        const geminiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent`,
-            {
-                contents: [
-                    {
-                        parts: [
-                            { 
-                                text: `Enhance and improve the following blog description to make it more engaging, professional, and SEO-friendly, while preserving the original meaning:\n\n"${blogText}"\n\nEnhanced Description:`
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 15000
-                }
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
+        const result = await genAiService.enhanceBlogDescription(blogText);
 
-        const geminiResponseData = geminiResponse.data;
+        logger.success(`[${FILE_NAME}] Blog description enhanced successfully`);
 
-        // First candidate from the API response
-        const firstCandidateFromResponse = geminiResponseData.candidates[0];
-        // The content block inside the first candidate
-        const contentBlockOfFirstCandidate = firstCandidateFromResponse.content;
-        // The parts array inside the content block
-        const partsOfFirstContentBlock = contentBlockOfFirstCandidate.parts;
-        // The first part of the content block
-        const firstPartOfContentBlock = partsOfFirstContentBlock[0];
-        // The generated text from the first part
-        const generatedText = firstPartOfContentBlock.text;
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to enhance blog description`, error);
+        logger.warn(`[${FILE_NAME}] Enhance blog description request could not be completed`);
 
-        const enhancedBlogDescription = generatedText;
-
-        return res.status(200).json({ enhancedBlogDescription: enhancedBlogDescription });
-    } 
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({ errorMessage: "Internal Server Error" });
+        return res.status(error.status || 500).json({
+            errorMessage: error.message || "Internal Server Error"
+        });
     }
 }
+// ============================================================
+// Enhance Blog Description - ends
+// ============================================================
 
 
 
+// ============================================================
+// Controller Exports - starts
+// ============================================================
 module.exports = {
     getBlogDescriptionSummary,
+    getBlogDescriptionTLDR,
+    getBlogDescriptionKeyTakeaways,
+    getBlogDescriptionConclusion,
+    getBlogDescriptionFAQ,
+    getBlogDescriptionHighlights,
+
     suggestBlogTitlesFromBlogDescription,
     suggestBlogDescriptionsFromBlogTitle,
     enhanceBlogDescription
 };
+// ============================================================
+// Controller Exports - ends
+// ============================================================

@@ -1,25 +1,57 @@
 const dotenv = require("dotenv");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-dotenv.config({path: "./config.env"});
+
+const FILE_NAME = "database.config.js";
+
+
+
+// ============================================================
+// Environment Configuration - starts
+// ============================================================
+dotenv.config({
+    path: "./config.env"
+});
 
 const databaseURL = process.env.databaseURL;
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
 
 
-const connectDatabase = async function(){
+
+// ============================================================
+// Database Connection - starts
+// ============================================================
+const connectDatabase = async function() {
+    console.log(`[${FILE_NAME}] Database connection request started`);
+
     try {
-        const connection = await mongoose.connect(databaseURL);
-        // const connection = await mongoose.connect(databaseURL, {
-        //     useNewUrlParser: true,
-        //     useUnifiedTopology: true,
-        // }); 
-        console.log("Connected to Database");
-    } 
-    catch (error) {
-        console.log("Unable to connect to Database");
-        console.log(error);
+        console.log(`[${FILE_NAME}] Connecting to MongoDB database`);
+
+        await mongoose.connect(databaseURL);
+
+        console.log(`[${FILE_NAME}] Connected to MongoDB database successfully`);
+    }
+    catch(error) {
+        console.error(`[${FILE_NAME}] Unable to connect to MongoDB database`);
+        console.error(error);
+
         process.exit(1);
     }
-}
+};
+// ============================================================
+// Database Connection - ends
+// ============================================================
 
-module.exports = { connectDatabase };
+
+
+// ============================================================
+// Module Exports - starts
+// ============================================================
+module.exports = {
+    connectDatabase
+};
+// ============================================================
+// Module Exports - ends
+// ============================================================
