@@ -4,23 +4,23 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop.js";
-import NavBar from "./components/fixed component/NavBar.js";
-import Footer from "./components/fixed component/Footer.js";
+import NavBar from "./components/fixed component/NavBar.jsx";
+import Footer from "./components/fixed component/Footer.jsx";
 
-import ContactUsPage from './pages/ContactUsPage.js';
-import HomePage from './pages/HomePage.js';
-import LoginPage from './pages/LoginPage.js';
-import RegisterPage from './pages/RegisterPage.js';
-import DeletedAccountPage from './pages/DeletedAccountPage.js';
-import AllBlogsPage from './pages/AllBlogsPage.js';
-import LogoutPage from './pages/LogoutPage.js';
-import UpdateBlogPostPage from './pages/UpdateBlogPostPage.js';
-import SingleBlogPostPage from './pages/SingleBlogPostPage.js';
-import WriteBlogPostPage from './pages/WriteBlogPostPage.js';
-import EditProfilePage from './pages/EditProfilePage.js';
-import AllBlogsHomePage from './pages/AllBlogsHomePage.js';
-import WhatIsBlogPage from './pages/WhatIsBlogPage.js';
-import BlogSearchPage from './pages/BlogSearchPage.js';
+import ContactUsPage from './pages/ContactUsPage.jsx';
+import HomePage from './pages/HomePage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
+import DeletedAccountPage from './pages/DeletedAccountPage.jsx';
+import AllBlogsPage from './pages/AllBlogsPage.jsx';
+import LogoutPage from './pages/LogoutPage.jsx';
+import UpdateBlogPostPage from './pages/UpdateBlogPostPage.jsx';
+import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx';
+import WriteBlogPostPage from './pages/WriteBlogPostPage.jsx';
+import EditProfilePage from './pages/EditProfilePage.jsx';
+import AllBlogsHomePage from './pages/AllBlogsHomePage.jsx';
+import WhatIsBlogPage from './pages/WhatIsBlogPage.jsx';
+import BlogSearchPage from './pages/BlogSearchPage.jsx';
 
 
 /*const router = createBrowserRouter([

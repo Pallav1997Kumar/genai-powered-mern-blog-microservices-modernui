@@ -1,8 +1,8 @@
 import "../../style/authorization/Logout.scss";
 
-import AuthShowcase from "./AuthShowcase";
-import LogoutBox from "./LogoutBox";
-import BlogGrowthSection from "./BlogGrowthSection";
+import AuthShowcase from "./AuthShowcase.jsx";
+import LogoutBox from "./LogoutBox.jsx";
+import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function Logout() {
 	return (

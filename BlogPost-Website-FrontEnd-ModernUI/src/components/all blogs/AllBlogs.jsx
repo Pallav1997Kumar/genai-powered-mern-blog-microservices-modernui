@@ -4,13 +4,13 @@ import axios from "axios";
 
 import "../../style/all blogs/AllBlog.scss";
 
-import NoPostSpecificCategory from "./NoPostSpecificCategory";
-import AllBlogsPostContainer from "./AllBlogsPostContainer";
-import NoPostFromUser from "./NoPostFromUser";
-import ApplyFilterAndSort from "./ApplyFilterAndSort";
-import NoPostForFilter from "./NoPostForFilter";
+import NoPostSpecificCategory from "./NoPostSpecificCategory.jsx";
+import AllBlogsPostContainer from "./AllBlogsPostContainer.jsx";
+import NoPostFromUser from "./NoPostFromUser.jsx";
+import ApplyFilterAndSort from "./ApplyFilterAndSort.jsx";
+import NoPostForFilter from "./NoPostForFilter.jsx";
 
-import backendBaseURL from "../../backendBaseURL";
+import backendBaseURL from "../../backendBaseURL.js";
 
 function AllBlogs() {
 

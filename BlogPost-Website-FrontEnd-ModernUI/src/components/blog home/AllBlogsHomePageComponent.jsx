@@ -8,8 +8,9 @@ import { getAllBlogCategory } from "../../store/allBlogCategorySlice.js";
 import "../../style/blog home/AllBlogsHomePage.scss";
 import Button from "react-bootstrap/Button";
 
-import CategoryCard from "./CategoryCard.js";
-import EachCategoryBlogPost from "./EachCategoryBlogPost.js";
+import CategoryCard from "./CategoryCard.jsx";
+import EachCategoryBlogPost from "./EachCategoryBlogPost.jsx";
+
 import backendBaseURL from "../../backendBaseURL.js";
 
 

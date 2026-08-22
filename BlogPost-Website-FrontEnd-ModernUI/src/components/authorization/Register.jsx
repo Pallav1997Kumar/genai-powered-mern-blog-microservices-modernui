@@ -1,8 +1,8 @@
 import "../../style/authorization/Register.scss";
 
-import AuthShowcase from "./AuthShowcase";
-import RegisterBox from "./RegisterBox";
-import BlogGrowthSection from "./BlogGrowthSection";
+import AuthShowcase from "./AuthShowcase.jsx";
+import RegisterBox from "./RegisterBox.jsx";
+import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function Register() {
 	return (

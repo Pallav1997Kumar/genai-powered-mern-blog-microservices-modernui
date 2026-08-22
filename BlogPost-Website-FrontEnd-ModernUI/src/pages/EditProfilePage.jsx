@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import EditProfile from "../components/edit profile/EditProfile";
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
+import EditProfile from "../components/edit profile/EditProfile.jsx";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
 
 function EditProfilePage(){
     useEffect(function(){

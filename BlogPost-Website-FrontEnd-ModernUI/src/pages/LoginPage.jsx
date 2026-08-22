@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import Login from "../components/authorization/Login";
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
+import Login from "../components/authorization/Login.jsx";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
 
 
 function LoginPage(){

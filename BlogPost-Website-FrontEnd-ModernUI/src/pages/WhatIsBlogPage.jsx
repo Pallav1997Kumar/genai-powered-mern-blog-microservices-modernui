@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
-import WhatIsBlog from "../components/static component/WhatIsBlog";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
+import WhatIsBlog from "../components/static component/WhatIsBlog.jsx";
 
 
 function WhatIsBlogPage(){

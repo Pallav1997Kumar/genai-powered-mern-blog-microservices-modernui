@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import backendBaseURL from "../../backendBaseURL";
-import CategoryCard from "./CategoryCard";
+
+import CategoryCard from "./CategoryCard.jsx";
 
 
 function EachCategoryBlogPost(props) {

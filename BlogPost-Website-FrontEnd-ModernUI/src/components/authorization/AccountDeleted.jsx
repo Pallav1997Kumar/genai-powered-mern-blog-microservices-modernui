@@ -1,8 +1,8 @@
 import "../../style/authorization/AccountDeleted.scss";
 
-import AuthShowcase from "./AuthShowcase";
-import AccountDeletedBox from "./AccountDeletedBox";
-import BlogGrowthSection from "./BlogGrowthSection";
+import AuthShowcase from "./AuthShowcase.jsx";
+import AccountDeletedBox from "./AccountDeletedBox.jsx";
+import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function AccountDeleted() {
 	return (

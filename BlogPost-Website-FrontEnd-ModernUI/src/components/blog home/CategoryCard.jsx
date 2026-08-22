@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import "../../style/blog home/CategoryCard.scss";
 
-import BlogPostCard from "./BlogPostCard.js";
+import BlogPostCard from "./BlogPostCard.jsx";
+
 
 function CategoryCard(props) {
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import AllBlogsHomePageComponent from "../components/blog home/AllBlogsHomePageComponent";
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
+import AllBlogsHomePageComponent from "../components/blog home/AllBlogsHomePageComponent.jsx";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
 
 
 function AllBlogsHomePage(){

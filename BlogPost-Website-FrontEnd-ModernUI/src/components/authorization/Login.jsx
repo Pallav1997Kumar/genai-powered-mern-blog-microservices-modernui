@@ -1,8 +1,8 @@
 import "../../style/authorization/Login.scss";
 
-import AuthShowcase from "./AuthShowcase";
-import LoginBox from "./LoginBox";
-import BlogGrowthSection from "./BlogGrowthSection";
+import AuthShowcase from "./AuthShowcase.jsx";
+import LoginBox from "./LoginBox.jsx";
+import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function Login() {
 	return (

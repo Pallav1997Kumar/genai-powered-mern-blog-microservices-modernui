@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
-import ContactUs from "../components/static component/ContactUs";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
+import ContactUs from "../components/static component/ContactUs.jsx";
 
 
 function ContactUsPage(){

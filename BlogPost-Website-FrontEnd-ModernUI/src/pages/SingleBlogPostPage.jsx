@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
-import SingleBlogPost from "../components/single post/SingleBlogPost";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
+import SingleBlogPost from "../components/single post/SingleBlogPost.jsx";
 
 
 function SingleBlogPostPage(){

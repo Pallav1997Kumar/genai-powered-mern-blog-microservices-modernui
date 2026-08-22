@@ -11,10 +11,10 @@ import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 import "../../style/single post/SingleOnlyPostSection.scss";
 
-import LikedBy from "./LikedBy.js";
+import LikedBy from "./LikedBy.jsx";
+import AIGeneratedContent from "./ai components/AIGeneratedContent.jsx";
 
 import backendBaseURL from "../../backendBaseURL.js";
-import AIGeneratedContent from "./ai components/AIGeneratedContent.jsx";
 
 
 function SingleOnlyPostSection(props) {

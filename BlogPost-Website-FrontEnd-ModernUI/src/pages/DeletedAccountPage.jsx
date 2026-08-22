@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import AccountDeleted from "../components/authorization/AccountDeleted";
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
+import AccountDeleted from "../components/authorization/AccountDeleted.jsx";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
 
 
 function DeletedAccountPage(){

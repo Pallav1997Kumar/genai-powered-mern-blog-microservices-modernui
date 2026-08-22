@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import BlogSearch from "../components/blog search/BlogSearch";
-import ErrorBoundary from "../components/error boundary/ErrorBoundary";
+import BlogSearch from "../components/blog search/BlogSearch.jsx";
+import ErrorBoundary from "../components/error boundary/ErrorBoundary.jsx";
 
 
 function BlogSearchPage(){

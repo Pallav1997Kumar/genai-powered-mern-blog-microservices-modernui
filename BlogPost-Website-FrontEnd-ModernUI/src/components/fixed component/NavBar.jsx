@@ -1,7 +1,7 @@
 import "../../style/fixed component/NavBar.scss";
 
-import NavbarDesktop from "./NavbarDesktop.js";
-import NavbarMobile from "./NavbarMobile.js";
+import NavbarDesktop from "./NavbarDesktop.jsx";
+import NavbarMobile from "./NavbarMobile.jsx";
 
 
 function NavBar() {
