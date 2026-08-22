@@ -155,9 +155,12 @@ async function loginUser(email,password){
 
 
 // ============================================================
-// Service Exports
+// Service Exports - starts
 // ============================================================
 module.exports = {
     registerUser: registerUser,
     loginUser: loginUser
 };
+// ============================================================
+// Service Exports - ends
+// ============================================================

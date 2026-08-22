@@ -154,7 +154,7 @@ const updateUserPassword = async function(req,res){
 
 
 // ============================================================
-// Controller Exports
+// Controller Exports - starts
 // ============================================================
 module.exports = {
     updateUserProfilePhoto: updateUserProfilePhoto,
@@ -162,3 +162,6 @@ module.exports = {
     updateUserEmailUsername:updateUserEmailUsername,
     updateUserPassword:updateUserPassword
 };
+// ============================================================
+// Controller Exports - ends
+// ============================================================

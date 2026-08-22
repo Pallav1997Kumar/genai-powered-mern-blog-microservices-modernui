@@ -109,7 +109,7 @@ const searchBlogUserByName = async function(req, res, next) {
         logger.info(`[${FILE_NAME}] Blog user search text and user IDs extracted`);
 
         logger.info(`[${FILE_NAME}] Calling user service for blog user search`);
-        const result = await blogUserService.searchBlogUserByName(searchText, blogUsersId);
+        const result = await userService.searchBlogUserByName(searchText, blogUsersId);
         logger.success(`[${FILE_NAME}] Blog user search completed successfully`);
 
         logger.info(`[${FILE_NAME}] Sending blog user search response to client`);
@@ -132,7 +132,7 @@ const searchBlogUserByName = async function(req, res, next) {
 
 
 // ============================================================
-// Controller Exports
+// Controller Exports - starts
 // ============================================================
 module.exports = {
     getUserById,
@@ -140,3 +140,6 @@ module.exports = {
     deleteUserById,
     searchBlogUserByName 
 };
+// ============================================================
+// Controller Exports - ends
+// ============================================================

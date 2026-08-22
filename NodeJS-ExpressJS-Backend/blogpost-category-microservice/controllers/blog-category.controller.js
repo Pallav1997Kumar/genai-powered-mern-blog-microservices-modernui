@@ -148,7 +148,7 @@ const searchBlogCategory = async function(req, res, next) {
 
 
 // ============================================================
-// Controller Exports
+// Controller Exports - starts
 // ============================================================
 module.exports = {
     getAllBlogCategoryList,
@@ -156,3 +156,6 @@ module.exports = {
     getBlogCategoryByCategoryName,
     searchBlogCategory
 };
+// ============================================================
+// Controller Exports - ends
+// ============================================================

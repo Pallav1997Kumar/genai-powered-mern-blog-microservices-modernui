@@ -1,18 +1,72 @@
 const express = require("express");
+
 const router = express.Router();
 
 const {
     getUserById,
     getUserByUsername,
     deleteUserById,
-    searchBlogUserByName 
+    searchBlogUserByName
 } = require("../controllers/user.controller.js");
 
 
-router.get("/id/:id", getUserById);
-router.get("/username/:username", getUserByUsername);
-router.delete("/id/:id", deleteUserById);
-router.post("/search", searchBlogUserByName);
+
+// ============================================================
+// Get user by ID - starts
+// ============================================================
+router.get(
+    "/id/:id",
+    getUserById
+);
+// ============================================================
+// Get user by ID - ends
+// ============================================================
 
 
+
+// ============================================================
+// Get user by username - starts
+// ============================================================
+router.get(
+    "/username/:username",
+    getUserByUsername
+);
+// ============================================================
+// Get user by username - ends
+// ============================================================
+
+
+
+// ============================================================
+// Delete user by ID - starts
+// ============================================================
+router.delete(
+    "/id/:id",
+    deleteUserById
+);
+// ============================================================
+// Delete user by ID - ends
+// ============================================================
+
+
+
+// ============================================================
+// Search blog user by name - starts
+// ============================================================
+router.post(
+    "/search",
+    searchBlogUserByName
+);
+// ============================================================
+// Search blog user by name - ends
+// ============================================================
+
+
+
+// ============================================================
+// Router Export - starts
+// ============================================================
 module.exports = router;
+// ============================================================
+// Router Export - ends
+// ============================================================

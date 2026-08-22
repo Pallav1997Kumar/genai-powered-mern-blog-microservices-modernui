@@ -1,18 +1,72 @@
 const express = require("express");
-const { 
-    blogUserRegistration, 
-    blogUserLogin, 
-    blogUserAccountDelete, 
-    blogUserLogout 
+
+const {
+    blogUserRegistration,
+    blogUserLogin,
+    blogUserAccountDelete,
+    blogUserLogout
 } = require("../controllers/authorization.controller");
 
 const router = express.Router();
 
 
-router.post("/register", blogUserRegistration);
-router.post("/login", blogUserLogin);
-router.delete("/deleteAccount/:userID", blogUserAccountDelete);
-router.post("/logout", blogUserLogout);
+
+// ============================================================
+// Blog user registration - starts
+// ============================================================
+router.post(
+    "/register",
+    blogUserRegistration
+);
+// ============================================================
+// Blog user registration - ends
+// ============================================================
 
 
+
+// ============================================================
+// Blog user login - starts
+// ============================================================
+router.post(
+    "/login",
+    blogUserLogin
+);
+// ============================================================
+// Blog user login - ends
+// ============================================================
+
+
+
+// ============================================================
+// Blog user account delete - starts
+// ============================================================
+router.delete(
+    "/deleteAccount/:userID",
+    blogUserAccountDelete
+);
+// ============================================================
+// Blog user account delete - ends
+// ============================================================
+
+
+
+// ============================================================
+// Blog user logout - starts
+// ============================================================
+router.post(
+    "/logout",
+    blogUserLogout
+);
+// ============================================================
+// Blog user logout - ends
+// ============================================================
+
+
+
+// ============================================================
+// Router Export - starts
+// ============================================================
 module.exports = router;
+// ============================================================
+// Router Export - ends
+// ============================================================

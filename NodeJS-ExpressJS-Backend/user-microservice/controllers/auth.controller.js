@@ -103,10 +103,13 @@ async function logoutUser(req, res) {
 
 
 // ============================================================
-// Controller Exports
+// Controller Exports - starts
 // ============================================================
 module.exports = {
     registerUser: registerUser,
     loginUser: loginUser,
     logoutUser: logoutUser
 };
+// ============================================================
+// Controller Exports - ends
+// ============================================================

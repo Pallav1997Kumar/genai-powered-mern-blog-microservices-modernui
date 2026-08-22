@@ -352,7 +352,7 @@ async function findBlogUsersByNameIgnoreCase(blogUsersId, searchText) {
 
 
 // ============================================================
-// Repository Exports
+// Repository Exports - starts
 // ============================================================
 module.exports = {
     findUserByUsernameOrEmail,
@@ -368,3 +368,6 @@ module.exports = {
     findUserProfileByUsername,
     findBlogUsersByNameIgnoreCase
 };
+// ============================================================
+// Repository Exports - ends
+// ============================================================
