@@ -5,7 +5,7 @@ const logger = require("../utils/logger.js");
 
 const FILE_NAME = "blog-post-write.service.js";
 
-const jwtPrivateKey = process.env.JWT_PRIVATE_KEY;
+const jwtPrivateKey = process.env.jwtPrivateKey;
 
 
 

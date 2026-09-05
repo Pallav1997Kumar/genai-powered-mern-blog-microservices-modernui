@@ -8,7 +8,7 @@ const FILE_NAME = "profile.service.js";
 // ============================================================
 // Update Profile Photo - starts
 // ============================================================
-const updateUserProfilePhoto = async function(userID,imageDetail){
+const updateUserProfilePhoto = async function(userID, imageDetail){
     logger.info(`[${FILE_NAME}] Update user profile photo service started`);
 
     try {

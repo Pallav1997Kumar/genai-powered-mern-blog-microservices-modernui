@@ -70,7 +70,10 @@ const deleteBlogPostByPostId = async function(req, res, next) {
 
     try {
         logger.info(`[${FILE_NAME}] Extracting authentication token from request body or cookies`);
-        const token = req.body.token || req.cookies.jwt_access_token;
+        const authorization = req.headers.authorization;
+        const token = authorization?.startsWith("Bearer ")
+            ? authorization.split(" ")[1]
+            : null;
 
         logger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
         const postID = req.params.postID;

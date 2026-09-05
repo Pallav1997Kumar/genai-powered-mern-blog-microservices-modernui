@@ -1,5 +1,3 @@
-const jwt = require("jsonwebtoken");
-
 const blogPostService = require("../services/blog-post.service.js");
 const userService = require("../services/blog-user.service.js");
 const blogCategoryService = require("../services/blog-category.service.js");
@@ -27,37 +25,31 @@ const addNewBlogPost = async function (req, res) {
 
         if (!token) {
             logger.warn(`[${FILE_NAME}] Add blog post request received without authentication token`);
-
             return res.status(401).json({
                 message: "Not Authenticated"
             });
         }
-
         logger.info(`[${FILE_NAME}] Authentication token found for blog post creation`);
 
         logger.info(`[${FILE_NAME}] Checking blog post image details`);
-
         if (!data.imageDetail || data.imageDetail === "") {
             logger.warn(`[${FILE_NAME}] Blog post image was not provided`);
-
             return res.status(417).json({
                 message: "Please upload the image"
             });
         }
-
         logger.info(`[${FILE_NAME}] Blog post image details validated successfully`);
 
         logger.info(`[${FILE_NAME}] Calling blog post service to add new blog post`);
-
-        const result = await blogPostService.addNewBlogPost(data, token);
-
+        const result = await blogPostService.addBlogPost(data, token);
         logger.info(`[${FILE_NAME}] Blog post creation service completed successfully`);
+        
         logger.success(`[${FILE_NAME}] New blog post added successfully`);
 
         logger.info(`[${FILE_NAME}] Preparing blog post creation response`);
         logger.info(`[${FILE_NAME}] Sending blog post creation response to client`);
 
-        return res.status(200).json(result);
+        return res.status(200).json(result.message);
     }
     catch (error) {
         logger.error(`[${FILE_NAME}] Failed to add new blog post`, error);
@@ -87,16 +79,14 @@ const deleteParticularBlogPost = async function (req, res) {
 
         if (!token) {
             logger.warn(`[${FILE_NAME}] Delete blog post request received without authentication token`);
-
             return res.status(401).json({
                 message: "Not Authenticated"
             });
         }
-
         logger.info(`[${FILE_NAME}] Authentication token found for blog post deletion`);
 
         logger.info(`[${FILE_NAME}] Calling blog post service to delete particular blog post`);
-        const result = await blogPostService.deleteParticularBlogPost(postID, token);
+        const result = await blogPostService.deleteBlogPost(postID, token);
 
         logger.info(`[${FILE_NAME}] Blog post deletion service completed successfully`);
         logger.success(`[${FILE_NAME}] Particular blog post deleted successfully`);
@@ -137,7 +127,6 @@ const updateParticularBlogPost = async function (req, res) {
 
         if (!token) {
             logger.warn(`[${FILE_NAME}] Update blog post request received without authentication token`);
-
             return res.status(401).json({
                 message: "Not Authenticated"
             });
@@ -146,7 +135,7 @@ const updateParticularBlogPost = async function (req, res) {
         logger.info(`[${FILE_NAME}] Authentication token found for blog post update`);
 
         logger.info(`[${FILE_NAME}] Calling blog post service to update particular blog post`);
-        const result = await blogPostService.updateParticularBlogPost(postID, data, token);
+        const result = await blogPostService.updateBlogPost(postID, data, token);
 
         logger.info(`[${FILE_NAME}] Blog post update service completed successfully`);
         logger.success(`[${FILE_NAME}] Particular blog post updated successfully`);

@@ -260,7 +260,7 @@ const suggestBlogTitles = async function(blogText) {
         logger.info(`[${FILE_NAME}] Calling gen-ai service to suggest blog titles`);
 
         const response = await httpClient.post(
-            `${GEN_AI_SERVICE}/api/gen-ai/blog-generation/suggest-blog-titles`,
+            `${GENAI_SERVICE}/api/gen-ai/blog-generation/suggest-blog-titles`,
             {
                 blogText
             }
@@ -300,7 +300,7 @@ const generateBlogDescription = async function(blogTitle) {
         logger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog description`);
 
         const response = await httpClient.post(
-            `${GEN_AI_SERVICE}/api/gen-ai/blog-generation/generate-blog-description`,
+            `${GENAI_SERVICE}/api/gen-ai/blog-generation/generate-blog-description`,
             {
                 blogTitle
             }
@@ -340,7 +340,7 @@ const enhanceBlogDescription = async function(blogText) {
         logger.info(`[${FILE_NAME}] Calling gen-ai service to enhance blog description`);
 
         const response = await httpClient.post(
-            `${GEN_AI_SERVICE}/api/gen-ai/blog-generation/enhance-blog-description`,
+            `${GENAI_SERVICE}/api/gen-ai/blog-generation/enhance-blog-description`,
             {
                 blogText
             }

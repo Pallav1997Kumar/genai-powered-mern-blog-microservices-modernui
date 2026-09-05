@@ -16,7 +16,7 @@ const updateUserProfilePhoto = async function(req,res){
         
         const result = await profileService.updateUserProfilePhoto(
             req.params.userID,
-            req.body
+            req.body.imageDetail
         );
 
         logger.success(`[${FILE_NAME}] User profile photo updated successfully`);
