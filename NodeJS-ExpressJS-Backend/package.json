@@ -1,0 +1,22 @@
+{
+  "name": "blog-application-using-expressjs-microservice",
+  "version": "1.0.0",
+  "description": "\"All Microservice of Blog Application using Nodejs Expressjs\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node start-services.js",
+    "gateway": "npm --prefix microservice-api-gateway run dev",
+    "user": "npm --prefix user-microservice run dev",
+    "blogpost": "npm --prefix blogpost-microservice run dev",
+    "category": "npm --prefix blogpost-category-microservice run dev",
+    "comment": "npm --prefix blogpost-comment-microservice run dev",
+    "like": "npm --prefix blogpost-like-microservice run dev",
+    "genai": "npm --prefix generative-ai-microservice run dev"
+  },
+  "author": "Pallav Kumar",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

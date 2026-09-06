@@ -1,0 +1,40 @@
+# Node modules Frontend
+BlogPost-Website-FrontEnd-ModernUI/node_modules/
+
+# Node modules Backend
+NodeJS-ExpressJS-Backend/node_modules/
+NodeJS-ExpressJS-Backend/blogpost-category-microservice/node_modules/
+NodeJS-ExpressJS-Backend/blogpost-comment-microservice/node_modules/
+NodeJS-ExpressJS-Backend/blogpost-like-microservice/node_modules/
+NodeJS-ExpressJS-Backend/blogpost-microservice/node_modules/
+NodeJS-ExpressJS-Backend/generative-ai-microservice/node_modules/
+NodeJS-ExpressJS-Backend/image-upload-microservice/node_modules/
+NodeJS-ExpressJS-Backend/microservice-api-gateway/node_modules/
+NodeJS-ExpressJS-Backend/user-microservice/node_modules/
+
+# Build output
+BlogPost-Website-FrontEnd-ModernUI/build/
+
+# Environment variables
+NodeJS-ExpressJS-Backend/blogpost-category-microservice/config.env
+NodeJS-ExpressJS-Backend/blogpost-comment-microservice/config.env
+NodeJS-ExpressJS-Backend/blogpost-like-microservice/config.env
+NodeJS-ExpressJS-Backend/blogpost-microservice/config.env
+NodeJS-ExpressJS-Backend/generative-ai-microservice/config.env
+NodeJS-ExpressJS-Backend/image-upload-microservice/config.env
+NodeJS-ExpressJS-Backend/microservice-api-gateway/config.env
+NodeJS-ExpressJS-Backend/user-microservice/config.env
+
+# Environment variables Frontend
+BlogPost-Website-FrontEnd-ModernUI/.env
+
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System files
+.DS_Store
+Thumbs.db
