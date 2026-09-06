@@ -12,20 +12,66 @@ import {
 import "../../style/all blogs/NoPostFromUser.scss";
 
 function NoPostFromUser() {
+
+	// ============================================================
+	// Navigation And Location - starts
+	// ============================================================
+
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// Getting username from URL
+	// ============================================================
+	// Navigation And Location - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Get Username From URL - starts
+	// ============================================================
+
+	// Extract username from the current profile URL
 	const usernameURL = location.pathname.split("/")[3];
 
-	// Getting logged in user from Redux
+	// ============================================================
+	// Get Username From URL - ends
+	// ============================================================
+
+	
+	
+	// ============================================================
+	// Get Logged In User From Redux - starts
+	// ============================================================
+
+	// Get the currently logged in user's details from Redux
 	const loggedinUser = useSelector(
 		(state) => state.userSlice.userDetail
 	);
 
+	// ============================================================
+	// Get Logged In User From Redux - ends
+	// ============================================================
+
+	
+
+	// ============================================================
+	// Check User Own Profile - starts
+	// ============================================================
+
+	// Check whether the logged in user is viewing their own profile
 	const userOwnProfile =
 		loggedinUser &&
 		loggedinUser.username === usernameURL;
+
+	// ============================================================
+	// Check User Own Profile - ends
+	// ============================================================
+	
+
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
 
 	return (
 		<section className="no-post">
@@ -171,6 +217,11 @@ function NoPostFromUser() {
 			</div>
 		</section>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default NoPostFromUser;

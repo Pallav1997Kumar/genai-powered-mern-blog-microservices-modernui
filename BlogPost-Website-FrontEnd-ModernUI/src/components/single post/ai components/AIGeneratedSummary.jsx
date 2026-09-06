@@ -10,34 +10,76 @@ import { getPlainText } from "../../../utils/utility functions.js";
 
 
 function AIGeneratedSummary(props) {
-    const postDescription = props.postDescription;
 
+    // ============================================================
+    // Get Blog Post Description - starts
+    // ============================================================
+    const postDescription = props.postDescription;
+    // ============================================================
+    // Get Blog Post Description - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Initialize State Variables - starts
+    // ============================================================
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // ============================================================
+    // Initialize State Variables - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Generate AI-Generated Blog Summary - starts
+    // ============================================================
 
     async function handleGenerateAIGeneratedSummary() {
+
+        // Reset Error and Set Loading State
         setError(null);
         setLoading(true);
 
+        // Prepare Blog Content for API Request
         const values = {
             blogText: getPlainText(postDescription)
         };
 
         try {
+            // Call AI Blog Summary API
             const response = await axios.post(
                 `${backendBaseURL}/api/generativeAI/generateBlogSummary`,
                 values
             );
 
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.log(response);
+            }
+
             setSummary(response.data.blogSummary);
         } catch (error) {
-            console.log(error);
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.error(error);
+            }
             setError("Failed to generate summary. Please try again");
         } finally {
             setLoading(false);
         }
     }
+
+    // ============================================================
+    // Generate AI-Generated Blog Summary - ends
+    // ============================================================
+
+
+
+
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
     return (
         <motion.section
@@ -237,6 +279,11 @@ function AIGeneratedSummary(props) {
 
         </motion.section>
     );
+
+    // ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default AIGeneratedSummary;

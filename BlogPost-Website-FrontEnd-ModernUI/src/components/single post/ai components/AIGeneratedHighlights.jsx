@@ -10,34 +10,76 @@ import { getPlainText } from "../../../utils/utility functions.js";
 
 
 function AIGeneratedHighlights(props) {
-    const postDescription = props.postDescription;
 
+    // ============================================================
+    // Get Blog Post Description - starts
+    // ============================================================
+    const postDescription = props.postDescription;
+    // ============================================================
+    // Get Blog Post Description - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Initialize State Variables - starts
+    // ============================================================
     const [highlights, setHighlights] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // ============================================================
+    // Initialize State Variables - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Generate AI-Generated Blog Highlights - starts
+    // ============================================================
 
     async function handleGenerateAIGeneratedHighlights() {
+
+        // Reset Error and Set Loading State
         setError(null);
         setLoading(true);
 
+        // Prepare Blog Content for API Request
         const values = {
             blogText: getPlainText(postDescription)
         };
 
         try {
+            // Call AI Blog Highlights API
             const response = await axios.post(
                 `${backendBaseURL}/api/generativeAI/generateBlogHighlights`,
                 values
             );
 
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.log(response);
+            }
+
             setHighlights(response.data.blogHighlights);
         } catch (error) {
-            console.log(error);
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.error(error);
+            }
             setError("Failed to generate highlights. Please try again");
         } finally {
             setLoading(false);
         }
     }
+
+    // ============================================================
+    // Generate AI-Generated Blog Highlights - ends
+    // ============================================================
+
+
+
+    
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
     return (
         <motion.section
@@ -262,6 +304,11 @@ function AIGeneratedHighlights(props) {
 
         </motion.section>
     );
+
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 }
 
 export default AIGeneratedHighlights;

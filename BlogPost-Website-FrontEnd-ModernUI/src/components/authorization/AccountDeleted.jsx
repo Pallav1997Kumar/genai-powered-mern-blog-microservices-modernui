@@ -5,6 +5,11 @@ import AccountDeletedBox from "./AccountDeletedBox.jsx";
 import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function AccountDeleted() {
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<div className="account-deleted-auth-page">
 			<div className="account-deleted-auth-grid">
@@ -36,6 +41,10 @@ function AccountDeleted() {
 			</div>
 		</div>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
 }
 
 export default AccountDeleted;

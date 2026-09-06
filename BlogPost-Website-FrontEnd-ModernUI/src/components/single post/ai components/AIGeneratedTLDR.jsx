@@ -10,34 +10,75 @@ import { getPlainText } from "../../../utils/utility functions.js";
 
 
 function AIGeneratedTLDR(props) {
+    // ============================================================
+    // Get Blog Post Description - starts
+    // ============================================================
     const postDescription = props.postDescription;
+    // ============================================================
+    // Get Blog Post Description - ends
+    // ============================================================
 
+
+
+    // ============================================================
+    // Initialize State Variables - starts
+    // ============================================================
     const [tldr, setTldr] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // ============================================================
+    // Initialize State Variables - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Generate AI-Generated Blog TLDR - starts
+    // ============================================================
 
     async function handleGenerateAIGeneratedTLDR() {
+
+        // Reset Error and Set Loading State
         setError(null);
         setLoading(true);
 
+        // Prepare Blog Content for API Request
         const values = {
             blogText: getPlainText(postDescription)
         };
 
         try {
+            // Call AI Blog TLDR API
             const response = await axios.post(
                 `${backendBaseURL}/api/generativeAI/generateBlogTldr`,
                 values
             );
 
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.log(response);
+            }
+
             setTldr(response.data.blogTLDR);
         } catch (error) {
-            console.log(error);
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.error(error);
+            }
             setError("Failed to generate TLDR. Please try again");
         } finally {
             setLoading(false);
         }
     }
+
+    // ============================================================
+    // Generate AI-Generated Blog TLDR - ends
+    // ============================================================
+
+
+
+    
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
     return (
         <motion.section
@@ -236,6 +277,11 @@ function AIGeneratedTLDR(props) {
 
         </motion.section>
     );
+
+    // ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default AIGeneratedTLDR;

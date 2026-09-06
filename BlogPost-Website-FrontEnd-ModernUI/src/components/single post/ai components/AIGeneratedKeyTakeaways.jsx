@@ -10,29 +10,60 @@ import { getPlainText } from "../../../utils/utility functions.js";
 
 
 function AIGeneratedKeyTakeaways(props) {
-    const postDescription = props.postDescription;
 
+    // ============================================================
+    // Get Blog Post Description - starts
+    // ============================================================
+    const postDescription = props.postDescription;
+    // ============================================================
+    // Get Blog Post Description - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Initialize State Variables - starts
+    // ============================================================
     const [keyTakeaways, setKeyTakeaways] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // ============================================================
+    // Initialize State Variables - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Generate AI-Generated Blog Key Takeaways - starts
+    // ============================================================
 
     async function handleGenerateAIGeneratedKeyTakeaways() {
+
+        // Reset Error and Set Loading State
         setError(null);
         setLoading(true);
 
+        // Prepare Blog Content for API Request
         const values = {
             blogText: getPlainText(postDescription)
         };
 
         try {
+            // Call AI Blog Key Takeaways API
             const response = await axios.post(
                 `${backendBaseURL}/api/generativeAI/generateBlogKeyTakeaways`,
                 values
             );
 
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.log(response);
+            }
+
             setKeyTakeaways(response.data.blogKeyTakeaways);
         } catch (error) {
-            console.log(error);
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                console.error(error);
+            }
             setError(
                 "Failed to generate key takeaways. Please try again"
             );
@@ -40,6 +71,17 @@ function AIGeneratedKeyTakeaways(props) {
             setLoading(false);
         }
     }
+
+    // ============================================================
+    // Generate AI-Generated Blog Key Takeaways - ends
+    // ============================================================
+
+
+
+
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
     return (
         <motion.section
@@ -271,6 +313,11 @@ function AIGeneratedKeyTakeaways(props) {
 
         </motion.section>
     );
+
+    // ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default AIGeneratedKeyTakeaways;

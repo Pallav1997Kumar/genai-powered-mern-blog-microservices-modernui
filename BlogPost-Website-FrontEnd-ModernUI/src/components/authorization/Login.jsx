@@ -5,6 +5,11 @@ import LoginBox from "./LoginBox.jsx";
 import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function Login() {
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<div className="login-auth-page">
 			<div className="login-auth-grid">
@@ -37,6 +42,10 @@ function Login() {
 
 		</div>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
 }
 
 export default Login;

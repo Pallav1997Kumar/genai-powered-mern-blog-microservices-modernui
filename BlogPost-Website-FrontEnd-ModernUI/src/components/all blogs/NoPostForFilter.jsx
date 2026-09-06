@@ -14,6 +14,12 @@ import "../../style/all blogs/NoPostForFilter.scss";
 function NoPostForFilter() {
 	const navigate = useNavigate();
 
+
+	
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<div className="filter-no-post">
 			<div className="no-post-container">
@@ -118,6 +124,11 @@ function NoPostForFilter() {
 			</div>
 		</div>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default NoPostForFilter;

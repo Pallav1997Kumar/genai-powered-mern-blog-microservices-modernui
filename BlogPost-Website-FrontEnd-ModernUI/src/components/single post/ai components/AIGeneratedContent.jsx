@@ -9,6 +9,11 @@ import "../../../style/single post/ai components/AIGeneratedContent.scss";
 
 
 function AIGeneratedContent(props) {
+
+  // ============================================================
+  // JSX Section - starts
+  // ============================================================
+
   return (
     <section className="ai-generated-content">
       <div className="ai-generated-content__glow ai-generated-content__glow--top" />
@@ -75,6 +80,11 @@ function AIGeneratedContent(props) {
       </div>
     </section>
   );
+
+  // ============================================================
+  // JSX Section - ends
+  // ============================================================
+
 }
 
 export default AIGeneratedContent;

@@ -5,6 +5,11 @@ import { AiOutlineLogout } from "react-icons/ai";
 import "../../style/authorization/LogoutBox.scss";
 
 function LogoutBox() {
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<motion.div
 			className="logout-box"
@@ -69,6 +74,11 @@ function LogoutBox() {
 			</div>
 		</motion.div>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default LogoutBox;

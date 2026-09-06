@@ -34,42 +34,141 @@ import backendBaseURL from "../../backendBaseURL.js";
 
 
 function NavbarMobile() {
+	
+	// ============================================================
+	// Navigation - starts
+	// ============================================================
 	const navigate = useNavigate();
+	// ============================================================
+	// Navigation - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Redux - starts
+	// ============================================================
+
 	const dispatch = useDispatch();
 
+	// Get logged in user details from Redux store
 	const user = useSelector((user) => user.userSlice.userDetail);
 
-	//Getting logged in user detail from local storage
+	// ============================================================
+	// Redux - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Get Current User From Local Storage - starts
+	// ============================================================
+
 	const currentUser = localStorage.getItem("user");
 	const currentUserObject = JSON.parse(currentUser);
+	
+	// ============================================================
+	// Get Current User From Local Storage - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Menu State - starts
+	// ============================================================
 
 	const [displayMenus, setDisplayMenus] = useState(false);
 
-	//Modal Box
+	// ============================================================
+	// Menu State - ends
+	// ============================================================
+
+
+	
+	// ============================================================
+	// Account Modal State - starts
+	// ============================================================
+
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
 	const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+	
+	// ============================================================
+	// Account Modal State - ends
+	// ============================================================
 
-	useEffect(function () {}, [currentUserObject]);
+
+
+	// ============================================================
+	// Update User Details - starts
+	// ============================================================
+
+	useEffect(function () {
+		// This effect runs when the current user object changes
+	}, [currentUserObject]);
+
+	// ============================================================
+	// Update User Details - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Logout User - starts
+	// ============================================================
 
 	async function logoutHandler() {
-		try {
-			const response = await axios.post(
-				`${backendBaseURL}/api/authorization/logout`
-			);
-			localStorage.removeItem("user");
-			Cookies.remove("jwt_access_token");
-			dispatch(logout());
-			navigate("/logout");
-			setShowLogoutModal(false);
-		} catch (error) {
-			console.log(error);
-		}
-	}
 
-	async function deleteAccountHandler() {
+		// Get authentication token from cookies
 		const token = Cookies.get("jwt_access_token");
 		const values = { token };
 		try {
+
+			// Send logout request to the backend
+			const response = await axios.post(
+				`${backendBaseURL}/api/authorization/logout`,
+				values
+			);
+
+			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.log(response);
+			}
+
+			// Remove user authentication data
+			localStorage.removeItem("user");
+			Cookies.remove("jwt_access_token");
+
+			// Clear logged in user details from Redux
+			dispatch(logout());
+
+			// Navigate to logout page
+			navigate("/logout");
+
+			// Close logout modal
+			setShowLogoutModal(false);
+		} catch (error) {
+			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.error(error);
+			}
+		}
+	}
+	
+	// ============================================================
+	// Logout User - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Delete User Account - starts
+	// ============================================================
+
+	async function deleteAccountHandler() {
+		
+		// Get authentication token from cookies
+		const token = Cookies.get("jwt_access_token");
+		const values = { token };
+		try {
+			// Send delete account request to the backend
 			const response = await fetch(
 				`${backendBaseURL}/api/authorization/deleteAccount/${currentUserObject.userID}`,
 				{
@@ -79,14 +178,35 @@ function NavbarMobile() {
 				}
 			);
 			const data = await response.json();
+
+			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.log(data);
+			}
+			
+			// Navigate to account deleted confirmation page
 			navigate("/accountDeleted");
+
+			// Close delete account modal
 			setShowDeleteAccountModal(false);
+
+			// Remove user data from local storage
 			localStorage.removeItem("user");
+
+			// Clear logged in user details from Redux
 			dispatch(logout());
 		} catch (error) {
-			console.log(error);
+			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.error(error);
+			}
 		}
 	}
+
+	// ============================================================
+	// Delete User Account - ends
+	// ============================================================
+
+
+
 
 	return (
 		<>

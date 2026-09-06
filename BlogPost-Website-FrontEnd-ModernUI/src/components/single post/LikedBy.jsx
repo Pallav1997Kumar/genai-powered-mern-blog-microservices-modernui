@@ -8,13 +8,27 @@ import "../../style/single post/LikedBy.scss";
 
 function LikedBy(props) {
 
+	// ============================================================
+	// Blog Post Like State - starts
+	// ============================================================
+
 	const blogPostLikedList = props.blogPostLikedList;
 
 	const [showLike, setShowLike] = useState(false);
 
+	// ============================================================
+	// Blog Post Like State - ends
+	// ============================================================
+
+
+	
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<>
-
 			<Button
 				className="liked-by-button"
 				onClick={function () {
@@ -35,80 +49,44 @@ function LikedBy(props) {
 				centered
 				size="lg"
 			>
-
 				<Modal.Header closeButton>
-
-					<Modal.Title>
-
-						People who liked this post
-
-					</Modal.Title>
-
+					<Modal.Title>People who liked this post</Modal.Title>
 				</Modal.Header>
 
 				<Modal.Body>
+					{blogPostLikedList && blogPostLikedList.length > 0 ? (
+						blogPostLikedList.map(function (eachLike) {
+							return (
+								<div className="liked-user-card" key={eachLike._id}>
+									<div className="liked-user-left">
+										<Image
+											src={
+												eachLike.userDetails
+													.userProfilePhoto
+											}
+											roundedCircle
+											className="liked-user-image"
+										/>
 
-					{
-						blogPostLikedList &&
-						blogPostLikedList.length > 0 ?
+										<div className="liked-user-details">
+											<h6>{eachLike.userDetails.fullName}</h6>
 
-							blogPostLikedList.map(function (eachLike) {
-
-								return (
-
-									<div
-										className="liked-user-card"
-										key={eachLike._id}
-									>
-
-										<div className="liked-user-left">
-
-											<Image
-												src={eachLike.userDetails.userProfilePhoto}
-												roundedCircle
-												className="liked-user-image"
-											/>
-
-											<div className="liked-user-details">
-
-												<h6>
-													{eachLike.userDetails.fullName}
-												</h6>
-
-												<p>
-													@
-													{eachLike.userDetails.username}
-												</p>
-
-											</div>
-
+											<p>@{eachLike.userDetails.username}</p>
 										</div>
-
 									</div>
+								</div>
+							);
+						})
+					) : (
+						<div className="no-liked-users">
+							<h5>No likes yet</h5>
 
-								);
-
-							})
-
-							:
-
-							<div className="no-liked-users">
-
-								<h5>
-									No likes yet
-								</h5>
-
-								<p>
-									Be the first person to like this post.
-								</p>
-
-							</div>
-					}
-
+							<p>Be the first person to like this post.</p>
+						</div>
+					)}
 				</Modal.Body>
 
 				<Modal.Footer>
-
 					<Button
 						variant="secondary"
 						onClick={function () {
@@ -117,13 +95,14 @@ function LikedBy(props) {
 					>
 						Close
 					</Button>
-
 				</Modal.Footer>
-
 			</Modal>
-
 		</>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
 
 }
 

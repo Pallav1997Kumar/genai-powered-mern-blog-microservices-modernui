@@ -22,7 +22,11 @@ import backendBaseURL from "../../backendBaseURL.js";
 
 
 function RegisterBox() {
-	//All inputs fields
+	
+    // ============================================================
+    // Registration Form State - starts
+    // ============================================================
+
 	const [firstName, setFirstName] = useState("");
 	const [middleName, setMiddleName] = useState("");
 	const [lastName, setLastName] = useState("");
@@ -39,7 +43,16 @@ function RegisterBox() {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
 
-	//All input fields validation check
+    // ============================================================
+    // Registration Form State - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Input Validation State - starts
+    // ============================================================
+
 	const [isValidFirstName, setIsValidFirstName] = useState(true);
 	const [isValidLastName, setIsValidLarstName] = useState(true);
 	const [isValidUserName, setIsValidUserName] = useState(true);
@@ -48,6 +61,16 @@ function RegisterBox() {
 	const [isValidPassword, setIsValidPassword] = useState(true);
 	const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 	const [isValidGender, setIsValidGender] = useState(true);
+
+    // ============================================================
+    // Input Validation State - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // First Name Input Change Handler - starts
+    // ============================================================
 
 	function firstNameChangleHandler(event) {
 		setFirstName(event.target.value);
@@ -59,9 +82,29 @@ function RegisterBox() {
 		}
 	}
 
+    // ============================================================
+    // First Name Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Middle Name Input Change Handler - starts
+    // ============================================================
+
 	function middleNameChangleHandler(event) {
 		setMiddleName(event.target.value);
 	}
+
+    // ============================================================
+    // Middle Name Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Last Name Input Change Handler - starts
+    // ============================================================
 
 	function lastNameChangleHandler(event) {
 		setLastName(event.target.value);
@@ -73,6 +116,16 @@ function RegisterBox() {
 		}
 	}
 
+    // ============================================================
+    // Last Name Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Gender Input Change Handler - starts
+    // ============================================================
+
 	function genderChangleHandler(event) {
 		setGender(event.target.value);
 		if (event.target.value.trim().length > 0) {
@@ -82,6 +135,16 @@ function RegisterBox() {
 			setIsValidGender(false);
 		}
 	}
+
+    // ============================================================
+    // Gender Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Date of Birth Input Change Handler - starts
+    // ============================================================
 
 	function dateOfBirthChangleHandler(event) {
 		setDob(event.target.value);
@@ -93,6 +156,16 @@ function RegisterBox() {
 		}
 	}
 
+    // ============================================================
+    // Date of Birth Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Username Input Change Handler - starts
+    // ============================================================
+
 	function usernameChangleHandler(event) {
 		setUsername(event.target.value);
 		if (event.target.value.trim().length > 0) {
@@ -102,6 +175,16 @@ function RegisterBox() {
 			setIsValidUserName(false);
 		}
 	}
+
+    // ============================================================
+    // Username Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Email Address Input Change Handler - starts
+    // ============================================================
 
 	function emailAddressChangleHandler(event) {
 		setEmail(event.target.value);
@@ -113,6 +196,16 @@ function RegisterBox() {
 		}
 	}
 
+    // ============================================================
+    // Email Address Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Password Input Change Handler - starts
+    // ============================================================
+
 	function passwordChangleHandler(event) {
 		setPassword(event.target.value);
 		if (event.target.value.trim().length > 0) {
@@ -123,6 +216,17 @@ function RegisterBox() {
 		}
 	}
 
+    // ============================================================
+    // Password Input Change Handler - ends
+    // ============================================================
+
+
+
+
+    // ============================================================
+    // Confirm Password Input Change Handler - starts
+    // ============================================================
+
 	function confirmPasswordChangleHandler(event) {
 		setConfirmPassword(event.target.value);
 		if (event.target.value.trim().length > 0) {
@@ -132,6 +236,16 @@ function RegisterBox() {
 			setIsValidConfirmPassword(false);
 		}
 	}
+
+    // ============================================================
+    // Confirm Password Input Change Handler - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Validate Registration Inputs - starts
+    // ============================================================
 
 	function isAllInputsValid() {
 		if (
@@ -173,10 +287,27 @@ function RegisterBox() {
 		return true;
 	}
 
+    // ============================================================
+    // Validate Registration Inputs - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Registration Form Submission Handler - starts
+    // ============================================================
+
 	async function submitHandler(event) {
+
+        // Prevent the browser from refreshing the page
 		event.preventDefault();
+
+        // Validate all required registration fields
 		const isValidInputs = isAllInputsValid();
+
 		if (isValidInputs) {
+
+            // Prepare registration request payload
 			const inputs = {
 				firstName,
 				middleName,
@@ -188,12 +319,27 @@ function RegisterBox() {
 				password,
 				confirmPassword,
 			};
+
+
 			try {
+                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                    console.log(inputs);
+                }
+
+                // Send registration request to the backend
 				const response = await axios.post(
 					`${backendBaseURL}/api/authorization/register`,
 					inputs
 				);
+
+                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+                    console.log(response);
+                }
+
+                // Display successful registration message
 				setSuccessMessage(response.data);
+
+                // Reset registration form fields
 				setFirstName("");
 				setMiddleName("");
 				setLastName("");
@@ -203,10 +349,17 @@ function RegisterBox() {
 				setEmail("");
 				setPassword("");
 				setConfirmPassword("");
+
+                // Clear previous registration error state
 				setErrorMessage("");
 				setIsErrorWhileRegistration(false);
-			} catch (error) {
-                console.error(error)
+			} 
+            catch (error) {
+                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				    console.error(error);
+			    }
+
+                // Display the appropriate backend error message
 				if (error.message === "Request failed with status code 401") {
 					setErrorMessage(error.response.data);
 				} 
@@ -219,11 +372,24 @@ function RegisterBox() {
                 else {
 					setErrorMessage(error.message);
 				}
+
+                // Clear success state and mark registration as failed
 				setSuccessMessage("");
 				setIsErrorWhileRegistration(true);
 			}
 		}
 	}
+
+    // ============================================================
+    // Registration Form Submission Handler - ends 
+    // ============================================================
+
+
+    
+
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
 	return (
         <motion.div
@@ -233,7 +399,6 @@ function RegisterBox() {
             transition={{ duration: 0.7 }}
         >
             <div className="register-card">
-
                 <div className="register-icon">
                     <FaUserPlus />
                 </div>
@@ -245,23 +410,26 @@ function RegisterBox() {
                 </p>
 
                 <form>
-
                     <div className="mandatory-text">
                         Fields marked with <span>*</span> are required
                     </div>
 
                     <div className="register-grid">
-
                         {/* LEFT COLUMN */}
 
                         <div className="column">
-
                             <div className="form-group">
                                 <label>
                                     First Name <span>*</span>
                                 </label>
 
-                                <div className={isValidFirstName ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidFirstName
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaUser />
                                     <input
                                         type="text"
@@ -291,7 +459,13 @@ function RegisterBox() {
                                     Last Name <span>*</span>
                                 </label>
 
-                                <div className={isValidLastName ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidLastName
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaUser />
                                     <input
                                         type="text"
@@ -308,7 +482,6 @@ function RegisterBox() {
                                 </label>
 
                                 <div className="gender-group">
-
                                     <label className="radio-card">
                                         <input
                                             type="radio"
@@ -330,7 +503,6 @@ function RegisterBox() {
                                         />
                                         <span>Female</span>
                                     </label>
-
                                 </div>
                             </div>
 
@@ -339,7 +511,13 @@ function RegisterBox() {
                                     Date of Birth <span>*</span>
                                 </label>
 
-                                <div className={isValidDateOfBirth ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidDateOfBirth
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaCalendarAlt />
 
                                     <input
@@ -349,19 +527,23 @@ function RegisterBox() {
                                     />
                                 </div>
                             </div>
-
                         </div>
 
                         {/* RIGHT COLUMN */}
 
                         <div className="column">
-
                             <div className="form-group">
                                 <label>
                                     Username <span>*</span>
                                 </label>
 
-                                <div className={isValidUserName ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidUserName
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaAt />
 
                                     <input
@@ -378,7 +560,13 @@ function RegisterBox() {
                                     Email <span>*</span>
                                 </label>
 
-                                <div className={isValidEmail ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidEmail
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaEnvelope />
 
                                     <input
@@ -395,7 +583,13 @@ function RegisterBox() {
                                     Password <span>*</span>
                                 </label>
 
-                                <div className={isValidPassword ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidPassword
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaLock />
 
                                     <input
@@ -414,7 +608,13 @@ function RegisterBox() {
                                     Confirm Password <span>*</span>
                                 </label>
 
-                                <div className={isValidConfirmPassword ? "input-box" : "input-box invalid"}>
+                                <div
+                                    className={
+                                        isValidConfirmPassword
+                                            ? "input-box"
+                                            : "input-box invalid"
+                                    }
+                                >
                                     <FaLock />
 
                                     <input
@@ -427,15 +627,11 @@ function RegisterBox() {
                                     <FiEye className="eye-icon" />
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
 
                     <div className="agree-section">
-
                         <label className="checkbox">
-
                             <input
                                 type="checkbox"
                                 checked={agree}
@@ -445,13 +641,10 @@ function RegisterBox() {
                             <span>
                                 I agree to the <b>Terms & Conditions</b>
                             </span>
-
                         </label>
-
                     </div>
 
                     <div className="register-button">
-
                         {agree ? (
                             <Button
                                 type="button"
@@ -462,40 +655,33 @@ function RegisterBox() {
                                 <FaArrowRight />
                             </Button>
                         ) : (
-                            <Button
-                                type="button"
-                                variant="secondary"
-                            >
+                            <Button type="button" variant="secondary">
                                 Create Account
                                 <FaArrowRight />
                             </Button>
                         )}
-
                     </div>
 
                     {isErrorWhileRegistration ? (
-                        <p className="error-message">
-                            {errorMessage}
-                        </p>
+                        <p className="error-message">{errorMessage}</p>
                     ) : (
-                        <p className="success-message">
-                            {successMessage}
-                        </p>
+                        <p className="success-message">{successMessage}</p>
                     )}
 
                     <div className="bottom-links">
                         <p>Already have an account?</p>
 
-                        <Link to="/login">
-                            Login Here
-                        </Link>
+                        <Link to="/login">Login Here</Link>
                     </div>
-
                 </form>
-
             </div>
         </motion.div>
     );
+
+    // ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default RegisterBox;

@@ -11,18 +11,21 @@ import "../../style/all blogs/NoPostSpecificCategory.scss";
 function NoPostSpecificCategory({ blogCategory }) {
 	const navigate = useNavigate();
 
+
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<section className="no-post">
 			<div className="no-post-container">
-
 				{/* CSS Illustration */}
 
 				<div className="illustration">
-
 					<div className="illustration-circle"></div>
 
 					<div className="document-card">
-
 						<div className="document-header"></div>
 
 						<div className="document-lines">
@@ -33,21 +36,17 @@ function NoPostSpecificCategory({ blogCategory }) {
 						</div>
 
 						<div className="document-dot"></div>
-
 					</div>
 
 					<div className="search-glass">
-
 						<div className="glass"></div>
 
 						<div className="handle"></div>
-
 					</div>
 
 					<div className="floating floating-one"></div>
 					<div className="floating floating-two"></div>
 					<div className="floating floating-three"></div>
-
 				</div>
 
 				{/* Heading */}
@@ -69,7 +68,6 @@ function NoPostSpecificCategory({ blogCategory }) {
 				{/* Action Cards */}
 
 				<div className="action-cards">
-
 					<button
 						type="button"
 						className="action-card"
@@ -120,12 +118,15 @@ function NoPostSpecificCategory({ blogCategory }) {
 
 						<ArrowRight />
 					</button>
-
 				</div>
-
 			</div>
 		</section>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default NoPostSpecificCategory;

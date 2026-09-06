@@ -23,29 +23,6 @@ import WhatIsBlogPage from './pages/WhatIsBlogPage.jsx';
 import BlogSearchPage from './pages/BlogSearchPage.jsx';
 
 
-/*const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/contact",
-    element: <ContactUs />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/blogs",
-    element: <AllBlogs />,
-  }
-]);*/
-
 function App() {
   return (
     <div>

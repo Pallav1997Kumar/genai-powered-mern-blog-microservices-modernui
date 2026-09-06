@@ -5,6 +5,11 @@ import LogoutBox from "./LogoutBox.jsx";
 import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function Logout() {
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<div className="logout-auth-page">
 			<div className="logout-auth-grid">
@@ -36,6 +41,11 @@ function Logout() {
 			</div>
 		</div>
 	);
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+	
 }
 
 export default Logout;

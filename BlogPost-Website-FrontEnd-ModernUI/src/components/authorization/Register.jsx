@@ -5,6 +5,11 @@ import RegisterBox from "./RegisterBox.jsx";
 import BlogGrowthSection from "./BlogGrowthSection.jsx";
 
 function Register() {
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<div className="register-auth-page">
 			<div className="register-auth-grid">
@@ -35,6 +40,11 @@ function Register() {
 			</div>
 		</div>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default Register;

@@ -9,34 +9,76 @@ import { getPlainText } from "../../../utils/utility functions.js";
 
 
 function AIGeneratedConclusion(props) {
-    const postDescription = props.postDescription;
 
+    // ============================================================
+    // Get Blog Post Description - starts
+    // ============================================================
+    const postDescription = props.postDescription;
+    // ============================================================
+    // Get Blog Post Description - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Initialize State Variables - starts
+    // ============================================================
     const [conclusion, setConclusion] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // ============================================================
+    // Initialize State Variables - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Generate AI-Generated Blog Conclusion - starts
+    // ============================================================
 
     async function handleGenerateAIGeneratedConclusion() {
+
+        // Reset Error and Set Loading State
         setError(null);
         setLoading(true);
 
+        // Prepare Blog Content for API Request
         const values = {
             blogText: getPlainText(postDescription)
         };
 
         try {
+            // Call AI Blog Conclusion API
             const response = await axios.post(
                 `${backendBaseURL}/api/generativeAI/generateBlogConclusion`,
                 values
             );
 
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.log(response);
+			}
+
             setConclusion(response.data.blogConclusion);
         } catch (error) {
-            console.log(error);
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.error(error);
+			}
             setError("Failed to generate conclusion. Please try again");
         } finally {
             setLoading(false);
         }
     }
+
+    // ============================================================
+    // Generate AI-Generated Blog Conclusion - starts
+    // ============================================================
+
+
+
+
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
     return (
         <motion.section
@@ -198,6 +240,10 @@ function AIGeneratedConclusion(props) {
             </AnimatePresence>
         </motion.section>
     );
+
+    // ============================================================
+    // JSX Section - ends
+    // ============================================================
 }
 
 export default AIGeneratedConclusion;

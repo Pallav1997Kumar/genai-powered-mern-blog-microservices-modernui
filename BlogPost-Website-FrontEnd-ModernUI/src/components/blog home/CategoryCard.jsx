@@ -7,31 +7,71 @@ import BlogPostCard from "./BlogPostCard.jsx";
 
 function CategoryCard(props) {
 
+	// ============================================================
+	// Navigation - starts
+	// ============================================================
+
 	const navigate = useNavigate();
 
+	// ============================================================
+	// Navigation - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Get Blogs For Display - starts
+	// ============================================================
+
+	// Get the blog posts that need to be displayed
 	const displayBlogs = props.blogsDisplay;
 
+	// Set different blog counts for different screen sizes
 	const displayBlogsForDesktop = displayBlogs;
 	const displayBlogsForTablet = displayBlogs.slice(0, 3);
 	const displayBlogsForMobileOne = displayBlogs.slice(0, 2);
 	const displayBlogsForMobileTwo = displayBlogs.slice(2);
 
+	// ============================================================
+	// Get Blogs For Display - ends
+	// ============================================================
+
+
+
+	// ============================================================
+	// Handle View All Click - starts
+	// ============================================================
+
 	function viewAllHandleClick() {
 
+		// Navigate to the main blogs page when displaying all blogs
 		if (props.cardHeading === "ALL BLOGS") {
 			navigate("/blogs");
 		}
 		else {
 
+			// Create the category URL from the card heading
 			const link = props.cardHeading
 				.replaceAll(" ", "_")
 				.toLowerCase();
 
+			// Navigate to the selected blog category
 			navigate(`/blogs/category/${link}`);
 
 		}
 
 	}
+
+	// ============================================================
+	// Handle View All Click - ends
+	// ============================================================
+
+
+
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
 
 	return (
 		<section className="modern-category-section">
@@ -164,6 +204,10 @@ function CategoryCard(props) {
 			}
 		</section>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
 
 }
 

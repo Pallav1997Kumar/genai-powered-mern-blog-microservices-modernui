@@ -5,6 +5,11 @@ import { AiOutlineDelete } from "react-icons/ai";
 import "../../style/authorization/AccountDeletedBox.scss";
 
 function AccountDeletedBox() {
+
+	// ============================================================
+    // JSX Section - starts
+    // ============================================================
+
 	return (
 		<motion.div
 			className="account-deleted-box"
@@ -69,6 +74,11 @@ function AccountDeletedBox() {
 			</div>
 		</motion.div>
 	);
+
+	// ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default AccountDeletedBox;

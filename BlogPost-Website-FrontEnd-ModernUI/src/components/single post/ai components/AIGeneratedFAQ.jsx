@@ -10,34 +10,76 @@ import { getPlainText } from "../../../utils/utility functions.js";
 
 
 function AIGeneratedFAQ(props) {
+    
+    // ============================================================
+    // Get Blog Post Description - starts
+    // ============================================================
     const postDescription = props.postDescription;
+    // ============================================================
+    // Get Blog Post Description - ends
+    // ============================================================
 
+
+
+    // ============================================================
+    // Initialize State Variables - starts
+    // ============================================================
     const [faq, setFaq] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // ============================================================
+    // Initialize State Variables - ends
+    // ============================================================
+
+
+
+    // ============================================================
+    // Generate AI-Generated Blog FAQ - starts
+    // ============================================================
 
     async function handleGenerateAIGeneratedFAQ() {
+        
+        // Reset Error and Set Loading State
         setError(null);
         setLoading(true);
 
+        // Prepare Blog Content for API Request
         const values = {
             blogText: getPlainText(postDescription)
         };
 
         try {
+            // Call AI Blog FAQ API
             const response = await axios.post(
                 `${backendBaseURL}/api/generativeAI/generateBlogFAQ`,
                 values
             );
 
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.log(response);
+			}
+
             setFaq(response.data.blogFAQ);
         } catch (error) {
-            console.log(error);
+            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
+				console.error(error);
+			}
             setError("Failed to generate FAQ. Please try again");
         } finally {
             setLoading(false);
         }
     }
+
+    // ============================================================
+    // Generate AI-Generated Blog FAQ - ends
+    // ============================================================
+
+
+
+
+    // ============================================================
+    // JSX Section - starts
+    // ============================================================
 
     return (
         <motion.section
@@ -262,6 +304,11 @@ function AIGeneratedFAQ(props) {
 
         </motion.section>
     );
+
+    // ============================================================
+    // JSX Section - ends
+    // ============================================================
+
 }
 
 export default AIGeneratedFAQ;
