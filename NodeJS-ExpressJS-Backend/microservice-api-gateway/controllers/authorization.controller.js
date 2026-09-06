@@ -1,4 +1,7 @@
 const userService = require("../services/blog-user.service.js");
+const blogPostService = require("../services/blog-post.service.js");
+const blogCommentService = require("../services/blog-comment.service.js");
+const blogLikeService = require("../services/blog-post-like.service.js");
 
 const handleError = require("../utils/errorHandler.js");
 const logger = require("../utils/logger.js");
@@ -100,8 +103,47 @@ async function blogUserAccountDelete(req,res){
             logger.warn(`[${FILE_NAME}] Account deletion requested without user ID`);
         }
 
+
+        logger.info(`[${FILE_NAME}] Starting deletion of all user blog related data for user: ${userID}`);
+
+        logger.info(`[${FILE_NAME}] Calling blog comment service to delete all comments by user: ${userID}`);
+        const deleteUserCommentsResult = await blogCommentService.deleteCommentsByUserId(userID, token);
+        logger.info(`[${FILE_NAME}] All user comments deleted successfully for user: ${userID}`);
+        logger.success(`[${FILE_NAME}] User comments deletion completed successfully`);
+
+        logger.info(`[${FILE_NAME}] Calling blog like service to delete all likes by user: ${userID}`);
+        const deleteUserLikeResult = await blogLikeService.deleteLikesByUserId(userID, token);
+        logger.info(`[${FILE_NAME}] All user likes deleted successfully for user: ${userID}`);
+        logger.success(`[${FILE_NAME}] User likes deletion completed successfully`);
+
+        logger.info(`[${FILE_NAME}] Calling blog post service to get all blog post IDs for user: ${userID}`);
+        const blogPostIdsByUserId = await blogPostService.getAllBlogPostIdsByUserId(userID);
+        logger.info(`[${FILE_NAME}] Received blog post IDs for user: ${userID}. Total posts: ${blogPostIdsByUserId.length}`);
+        logger.success(`[${FILE_NAME}] Blog post IDs fetched successfully for user: ${userID}`);
+
+        for (const post of blogPostIdsByUserId) {
+            const postID = post._id;
+
+            logger.info(`[${FILE_NAME}] Processing deletion for blog post: ${postID}`);
+
+            logger.info(`[${FILE_NAME}] Calling blog like service to delete all likes for post: ${postID}`);
+            const deleteAllLikesByPostIdResult = await blogLikeService.deleteAllLikesForPost(postID, token);
+            logger.info(`[${FILE_NAME}] All likes deleted successfully for post: ${postID}`);
+            logger.success(`[${FILE_NAME}] Blog likes deletion completed successfully for post: ${postID}`);
+
+            logger.info(`[${FILE_NAME}] Calling blog comment service to delete all comments for post: ${postID}`);
+            const deleteAllCommentsByPostIdResult = await blogCommentService.deleteCommentsByPostId(postID, token);
+            logger.info(`[${FILE_NAME}] All comments deleted successfully for post: ${postID}`);
+            logger.success(`[${FILE_NAME}] Blog comments deletion completed successfully for post: ${postID}`);
+        }
+
+        logger.info(`[${FILE_NAME}] Calling blog post service to delete all blogs for user: ${userID}`);
+        const deleteUserBlogsResult = await blogPostService.deleteBlogPostsByUser(userID, token);
+        logger.info(`[${FILE_NAME}] All user blog posts deleted successfully for user: ${userID}`);
+        logger.success(`[${FILE_NAME}] User blog posts deletion completed successfully`);
+
         logger.info(`[${FILE_NAME}] Calling user service for account deletion`);
-        const result = await userService.deleteUser(userID, token);
+        const deleteUserResult = await userService.deleteUser(userID, token);
         logger.info(`[${FILE_NAME}] User service completed account deletion`);
 
         logger.info(`[${FILE_NAME}] Clearing authentication cookie`);
@@ -111,7 +153,7 @@ async function blogUserAccountDelete(req,res){
         logger.success(`[${FILE_NAME}] Blog user account deleted successfully`);
 
         logger.info(`[${FILE_NAME}] Sending account deletion response to client`);
-        return res.status(200).json(result);
+        return res.status(200).json(deleteUserResult);
     }
     catch(error){
         logger.error(`[${FILE_NAME}] Blog user account deletion failed: `,error);

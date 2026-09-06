@@ -484,6 +484,43 @@ const searchBlogPostByTitle = async function(searchText) {
 
 
 // ============================================================
+// Get All Blog Post IDs By User ID Code Starts
+// ============================================================
+const getAllBlogPostIdsByUserId = async function(userID){
+    logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
+
+    try{
+        logger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog post IDs for user: ${userID}`);
+
+        const response = await httpClient.get(
+            `${BLOG_POST_SERVICE}/api/blog-post/user/userId/${userID}`
+        );
+
+        logger.info(`[${FILE_NAME}] All blog post IDs by user ID response received successfully`);
+        logger.success(`[${FILE_NAME}] All blog post IDs fetched successfully for user: ${userID}`);
+
+        logger.info(`[${FILE_NAME}] Returning all blog post IDs response`);
+
+        return response.data;
+    }
+    catch(error){
+        logger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user: ${userID}`, error);
+        logger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
+
+        throw {
+            message: "Failed to fetch all blog post IDs",
+            status: error.response?.status || 500,
+            data: error.response?.data || error.message
+        };
+    }
+};
+// ============================================================
+// Get All Blog Post IDs By User ID Code Ends
+// ============================================================
+
+
+
+// ============================================================
 // Get User Posts Pagination Code Starts
 // ============================================================
 const getUserPostPagination = async function(userID, params = {}){
@@ -791,6 +828,7 @@ module.exports = {
     getBlogPostPagination,
     searchBlogPostByTitle,
 
+    getAllBlogPostIdsByUserId,
     getUserPostPagination,
     getUniqueUserIds,
     getUniqueCategoriesByUser,

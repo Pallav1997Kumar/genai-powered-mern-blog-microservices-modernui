@@ -3,10 +3,24 @@ const express = require("express");
 const router = express.Router();
 
 const {
+    getAllBlogPostIdsByUserId,
     getBlogPostForParticularUserWithPagination,
     getBlogPostedUniqueUserIds,
     getBlogPostedUniqueCategoriesForParticularUser
 } = require("../controllers/blog-post-user.controller.js");
+
+
+
+// ============================================================
+// Get all blog post IDs for particular user - starts
+// ============================================================
+router.get(
+    "/userId/:userID",
+    getAllBlogPostIdsByUserId
+);
+// ============================================================
+// Get all blog post IDs for particular user - ends
+// ============================================================
 
 
 

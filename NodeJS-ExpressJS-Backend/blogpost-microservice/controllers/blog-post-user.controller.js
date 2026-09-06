@@ -6,6 +6,37 @@ const FILE_NAME = "blog-post-user.controller.js";
 
 
 // ============================================================
+// Get All Blog Post IDs By User ID - starts
+// ============================================================
+const getAllBlogPostIdsByUserId = async function(req, res, next) {
+    logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request received`);
+
+    try {
+        logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        const userID = req.params.userID;
+
+        logger.info(`[${FILE_NAME}] Calling blog post user service to fetch all blog post IDs`);
+        const result =
+            await blogPostUserService.getAllBlogPostIdsByUserId(userID);
+
+        logger.success(`[${FILE_NAME}] All blog post IDs for user fetched successfully`);
+
+        logger.info(`[${FILE_NAME}] Sending all blog post IDs response to client`);
+        return res.status(200).json(result);
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user`, error);
+        logger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
+        next(error);
+    }
+};
+// ============================================================
+// Get All Blog Post IDs By User ID - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get Blog Posts For Particular User With Pagination - starts
 // ============================================================
 const getBlogPostForParticularUserWithPagination = async function(req, res, next) {
@@ -108,6 +139,7 @@ const getBlogPostedUniqueCategoriesForParticularUser = async function(req, res, 
 // Controller Exports - starts
 // ============================================================
 module.exports = {
+    getAllBlogPostIdsByUserId,
     getBlogPostForParticularUserWithPagination,
     getBlogPostedUniqueUserIds,
     getBlogPostedUniqueCategoriesForParticularUser

@@ -127,6 +127,38 @@ async function deleteBlogPostByUserId(userID) {
 
 
 
+ // ============================================================
+ // Get All Blog Post IDs By User ID - starts
+ // ============================================================
+ async function findAllBlogPostIdsByUserId(userID) {
+     logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
+
+     try {
+         logger.info(`[${FILE_NAME}] Fetching blog post IDs belonging to user`);
+
+         const result = await BlogPost.find(
+             {
+                 userID: userID
+             },
+             {
+                 _id: 1
+             }
+         );
+
+         logger.success(`[${FILE_NAME}] Blog post IDs fetched by user ID successfully`);
+         return result;
+     }
+     catch(error) {
+         logger.error(`[${FILE_NAME}] Failed to fetch blog post IDs by user ID`, error);
+         throw error;
+     }
+ }
+ // ============================================================
+ // Get All Blog Post IDs By User ID - ends
+ // ============================================================
+
+
+
 // ============================================================
 // Find Unique Categories By User - starts
 // ============================================================
@@ -682,6 +714,7 @@ module.exports = {
     deleteBlogPostById,
     updateBlogPostById,
     deleteBlogPostByUserId,
+    findAllBlogPostIdsByUserId,
     findUniqueCategoriesByUser,
     findUniqueBlogPostUserIds,
     countBlogPostByUser,

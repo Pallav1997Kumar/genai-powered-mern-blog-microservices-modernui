@@ -6,6 +6,34 @@ const FILE_NAME = "blog-post-user.service.js";
 
 
 // ============================================================
+// Get All Blog Post IDs By User ID - starts
+// ============================================================
+async function getAllBlogPostIdsByUserId(userID) {
+    logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
+
+    try {
+        logger.info(`[${FILE_NAME}] Calling blog post repository to fetch all blog post IDs for user`);
+
+        const blogPostIds = await blogPostRepository.findAllBlogPostIdsByUserId(userID);
+
+        logger.info(`[${FILE_NAME}] Blog post IDs repository response received`);
+
+        logger.success(`[${FILE_NAME}] All blog post IDs for user fetched successfully`);
+
+        return blogPostIds;
+    }
+    catch(error) {
+        logger.error(`[${FILE_NAME}] Failed to get all blog post IDs by user ID`, error);
+        throw error;
+    }
+}
+// ============================================================
+// Get All Blog Post IDs By User ID - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get Blog Posts For Particular User With Pagination - starts
 // ============================================================
 async function getBlogPostForParticularUserWithPagination(userID, page, limit) {
@@ -109,6 +137,7 @@ async function getBlogPostedUniqueCategoriesForParticularUser(userID) {
 // Service Exports - starts
 // ============================================================
 module.exports = {
+    getAllBlogPostIdsByUserId,
     getBlogPostForParticularUserWithPagination,
     getBlogPostedUniqueUserIds,
     getBlogPostedUniqueCategoriesForParticularUser

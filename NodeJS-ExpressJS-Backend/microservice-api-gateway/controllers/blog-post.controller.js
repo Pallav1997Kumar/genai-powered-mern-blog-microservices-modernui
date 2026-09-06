@@ -1,6 +1,8 @@
 const blogPostService = require("../services/blog-post.service.js");
 const userService = require("../services/blog-user.service.js");
 const blogCategoryService = require("../services/blog-category.service.js");
+const blogCommentService = require("../services/blog-comment.service.js");
+const blogLikeService = require("../services/blog-post-like.service.js");
 
 const logger = require("../utils/logger.js");
 const handleError = require("../utils/errorHandler.js");
@@ -85,8 +87,18 @@ const deleteParticularBlogPost = async function (req, res) {
         }
         logger.info(`[${FILE_NAME}] Authentication token found for blog post deletion`);
 
+        logger.info(`[${FILE_NAME}] Calling blog like service to delete all likes for post: ${postID}`);
+        const deleteAllLikesResult = await blogLikeService.deleteAllLikesForPost(postID, token);
+        logger.info(`[${FILE_NAME}] All likes deleted successfully for post: ${postID}`);
+        logger.success(`[${FILE_NAME}] Blog likes deletion completed successfully`);
+
+        logger.info(`[${FILE_NAME}] Calling blog comment service to delete all comments for post: ${postID}`);
+        const deleteAllCommentsResult = await blogCommentService.deleteCommentsByPostId(postID, token);
+        logger.info(`[${FILE_NAME}] All comments deleted successfully for post: ${postID}`);
+        logger.success(`[${FILE_NAME}] Blog comments deletion completed successfully`);
+
         logger.info(`[${FILE_NAME}] Calling blog post service to delete particular blog post`);
-        const result = await blogPostService.deleteBlogPost(postID, token);
+        const deletePostResult = await blogPostService.deleteBlogPost(postID, token);
 
         logger.info(`[${FILE_NAME}] Blog post deletion service completed successfully`);
         logger.success(`[${FILE_NAME}] Particular blog post deleted successfully`);
@@ -94,7 +106,7 @@ const deleteParticularBlogPost = async function (req, res) {
         logger.info(`[${FILE_NAME}] Preparing blog post deletion response`);
         logger.info(`[${FILE_NAME}] Sending blog post deletion response to client`);
 
-        return res.status(200).json(result);
+        return res.status(200).json(deletePostResult);
     } 
     catch (error) {
         logger.error(`[${FILE_NAME}] Failed to delete particular blog post`, error);
@@ -143,7 +155,7 @@ const updateParticularBlogPost = async function (req, res) {
         logger.info(`[${FILE_NAME}] Preparing blog post update response`);
         logger.info(`[${FILE_NAME}] Sending blog post update response to client`);
 
-        return res.status(200).json(result);
+        return res.status(200).json(result.message);
     } 
     catch (error) {
         logger.error(`[${FILE_NAME}] Failed to update particular blog post`, error);
