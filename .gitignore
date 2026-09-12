@@ -16,6 +16,7 @@ NodeJS-ExpressJS-Backend/user-microservice/node_modules/
 BlogPost-Website-FrontEnd-ModernUI/build/
 
 # Environment variables
+NodeJS-ExpressJS-Backend/config.env
 NodeJS-ExpressJS-Backend/blogpost-category-microservice/config.env
 NodeJS-ExpressJS-Backend/blogpost-comment-microservice/config.env
 NodeJS-ExpressJS-Backend/blogpost-like-microservice/config.env

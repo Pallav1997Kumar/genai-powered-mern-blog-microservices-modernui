@@ -9,9 +9,16 @@ const FILE_NAME = "database.config.js";
 // ============================================================
 // Environment Configuration - starts
 // ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
 dotenv.config({
-    path: "./config.env"
+    path: configPath
 });
+
 
 const databaseURL = process.env.databaseURL;
 // ============================================================

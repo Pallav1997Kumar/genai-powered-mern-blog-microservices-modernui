@@ -43,9 +43,16 @@ const FILE_NAME = "server.js";
 // ============================================================
 // Environment Configuration - starts
 // ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
 dotenv.config({
-    path: "./config.env"
+    path: configPath
 });
+
 
 logger.info(`[${FILE_NAME}] Environment configuration loaded`);
 // ============================================================

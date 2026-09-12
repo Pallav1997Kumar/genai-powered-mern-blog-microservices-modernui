@@ -1,7 +1,16 @@
 const { v2: cloudinary } = require("cloudinary");
 const dotenv = require("dotenv");
 
-dotenv.config({path: "./config.env"});
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+
 
 
 cloudinary.config({

@@ -1,7 +1,16 @@
 const dotenv = require("dotenv");
 const { GoogleAuth } = require('google-auth-library');
 
-dotenv.config({ path: "./config.env" });
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+
 
 
 const serviceAccountJson = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
