@@ -79,7 +79,7 @@ logger.info(`[${FILE_NAME}] Blog category routes registered successfully`);
 // ============================================================
 
 
-const port = process.env.PORT || 4005;
+const port = 4005;
 
 
 // ============================================================

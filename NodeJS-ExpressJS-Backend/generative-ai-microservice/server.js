@@ -90,7 +90,7 @@ logger.info(`[${FILE_NAME}] Blog generation routes registered successfully`);
 // ============================================================
 
 
-const port = process.env.PORT || 4007;
+const port = 4007;
 
 
 // ============================================================

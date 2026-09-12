@@ -142,7 +142,7 @@ logger.info(`[${FILE_NAME}] Blog post write routes registered successfully`);
 // ============================================================
 
 
-const port = process.env.PORT || 4002;
+const port = 4002;
 
 
 // ============================================================

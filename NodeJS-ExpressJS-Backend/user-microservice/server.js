@@ -110,7 +110,7 @@ logger.info(`[${FILE_NAME}] Update user information routes registered successful
 // ============================================================
 
 
-const port = process.env.PORT || 4001;
+const port = 4001;
 
 
 // ============================================================

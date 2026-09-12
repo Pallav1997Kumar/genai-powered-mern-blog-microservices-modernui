@@ -78,7 +78,7 @@ logger.info(`[${FILE_NAME}] Blog comment routes registered successfully`);
 // ============================================================
 
 
-const port = process.env.PORT || 4004;
+const port = 4004;
 
 
 // ============================================================

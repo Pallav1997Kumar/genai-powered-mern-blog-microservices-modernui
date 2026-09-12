@@ -78,7 +78,7 @@ logger.info(`[${FILE_NAME}] Blog like routes registered successfully`);
 // ============================================================
 
 
-const port = process.env.PORT || 4003;
+const port = 4003;
 
 
 // ============================================================

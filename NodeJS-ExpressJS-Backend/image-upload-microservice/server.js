@@ -74,7 +74,7 @@ logger.info(`[${FILE_NAME}] Image upload routes registered successfully`);
 // ============================================================
 
 
-const port = process.env.PORT || 4006;
+const port = 4006;
 
 
 // ============================================================
