@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const blogCategoryRepository = require("../repositories/blog-category.repository.js");
 const logger = require("../utils/logger.js");
 
@@ -6,22 +8,51 @@ const FILE_NAME = "blog-category.service.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get All Categories - starts
 // ============================================================
 async function getAllBlogCategoryList() {
-    logger.info(`[${FILE_NAME}] Get all blog categories request started`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get all blog categories request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog category repository`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog category repository`);
+        }
         const result =
             await blogCategoryRepository.getAllBlogCategoryList();
-        logger.info(`[${FILE_NAME}] Blog category repository response received`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Blog category repository response received`);
+        }
         
-        logger.success(`[${FILE_NAME}] Get all blog categories completed successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Get all blog categories completed successfully`);
+        }
         return result;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get all blog categories`, error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to get all blog categories`, error);
+        }
         throw error;
     }
 }
@@ -35,26 +66,39 @@ async function getAllBlogCategoryList() {
 // Get Category By ID - starts
 // ============================================================
 async function getBlogCategoryById(id) {
-    logger.info(`[${FILE_NAME}] Get blog category by ID request started`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get blog category by ID request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog category repository by ID`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog category repository by ID`);
+        }
         const category =
             await blogCategoryRepository.getBlogCategoryById(id);
-        logger.info(`[${FILE_NAME}] Blog category repository response received`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Blog category repository response received`);
+        }
 
         if(!category) {
-            logger.warn(`[${FILE_NAME}] Blog category not found by ID`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Blog category not found by ID`);
+            }
             throw new Error(
                 "Blog category not found"
             );
         }
 
-        logger.success(`[${FILE_NAME}] Blog category fetched by ID successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog category fetched by ID successfully`);
+        }
         return category;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get blog category by ID`, error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to get blog category by ID`, error);
+        }
         throw error;
     }
 }
@@ -68,25 +112,38 @@ async function getBlogCategoryById(id) {
 // Get Category By Name - starts
 // ============================================================
 async function getBlogCategoryByName(categoryName) {
-    logger.info(`[${FILE_NAME}] Get blog category by name request started`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get blog category by name request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog category repository by name`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog category repository by name`);
+        }
         const category =
             await blogCategoryRepository.getBlogCategoryByName(categoryName);
-        logger.info(`[${FILE_NAME}] Blog category repository response received`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Blog category repository response received`);
+        }
 
         if (!category) {
-            logger.warn(`[${FILE_NAME}] Blog category not found by name`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Blog category not found by name`);
+            }
             throw new Error("Blog category not found");
         }
 
-        logger.success(`[${FILE_NAME}] Blog category fetched by name successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog category fetched by name successfully`);
+        }
         return category;
 
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get blog category by name`, error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to get blog category by name`, error);
+        }
         throw error;
     }
 }
@@ -100,26 +157,39 @@ async function getBlogCategoryByName(categoryName) {
 // Get Category Suggestions - starts
 // ============================================================
 async function getCategorySuggestions(categoryName) {
-    logger.info(`[${FILE_NAME}] Get category suggestions request started`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get category suggestions request started`);
+    }
 
     try {
         if (!categoryName || categoryName.trim() === "") {
-            logger.warn(`[${FILE_NAME}] Empty category name received for suggestions`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Empty category name received for suggestions`);
+            }
             return [];
         }
 
-        logger.info(`[${FILE_NAME}] Searching category suggestions`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Searching category suggestions`);
+        }
         const categories = 
             await blogCategoryRepository.findCategoriesByNameIgnoreCase(
                 categoryName.trim()
             );
-        logger.info(`[${FILE_NAME}] Category suggestion repository response received`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Category suggestion repository response received`);
+        }
         
-        logger.success(`[${FILE_NAME}] Category suggestions fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Category suggestions fetched successfully`);
+        }
         return categories;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get category suggestions`, error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to get category suggestions`, error);
+        }
         throw error;
     }
 }

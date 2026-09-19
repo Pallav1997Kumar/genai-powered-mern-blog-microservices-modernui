@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const blogPostRepository = require("../repositories/blog-post.repository.js");
 const logger = require("../utils/logger.js");
 
@@ -6,19 +8,42 @@ const FILE_NAME = "blog-post-user.service.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get All Blog Post IDs By User ID - starts
 // ============================================================
 async function getAllBlogPostIdsByUserId(userID) {
-    logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
+    if (process.env.environment === "development") {
+        logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog post repository to fetch all blog post IDs for user`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch all blog post IDs for user`);
+        }
 
         const blogPostIds = await blogPostRepository.findAllBlogPostIdsByUserId(userID);
 
-        logger.info(`[${FILE_NAME}] Blog post IDs repository response received`);
-
-        logger.success(`[${FILE_NAME}] All blog post IDs for user fetched successfully`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Blog post IDs repository response received`);
+            logger.success(`[${FILE_NAME}] All blog post IDs for user fetched successfully`);
+        }
 
         return blogPostIds;
     }
@@ -37,13 +62,21 @@ async function getAllBlogPostIdsByUserId(userID) {
 // Get Blog Posts For Particular User With Pagination - starts
 // ============================================================
 async function getBlogPostForParticularUserWithPagination(userID, page, limit) {
-    logger.info(`[${FILE_NAME}] Get blog posts for particular user with pagination request started`);
+    if (process.env.environment === "development") {
+        logger.info(`[${FILE_NAME}] Get blog posts for particular user with pagination request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calculating pagination skip value`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Calculating pagination skip value`);
+        }
+
         const skip = (page - 1) * limit;
 
-        logger.info(`[${FILE_NAME}] Calling blog post repository to fetch user blog posts with pagination`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch user blog posts with pagination`);
+        }
+
         const blogPostData =
             await blogPostRepository.findBlogPostByUserWithPagination(
                 userID,
@@ -51,17 +84,23 @@ async function getBlogPostForParticularUserWithPagination(userID, page, limit) {
                 limit
             );
 
-        logger.info(`[${FILE_NAME}] Blog post user pagination repository response received`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Blog post user pagination repository response received`);
+            logger.info(`[${FILE_NAME}] Calling blog post repository to count user blog posts`);
+        }
 
-        logger.info(`[${FILE_NAME}] Calling blog post repository to count user blog posts`);
         const totalCount = await blogPostRepository.countBlogPostByUser(userID);
 
-        logger.info(`[${FILE_NAME}] Blog post user count repository response received`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Blog post user count repository response received`);
+            logger.info(`[${FILE_NAME}] Calculating total pages`);
+        }
 
-        logger.info(`[${FILE_NAME}] Calculating total pages`);
         const totalPages = Math.ceil(totalCount / limit);
 
-        logger.success(`[${FILE_NAME}] Blog posts for particular user with pagination fetched successfully`);
+        if (process.env.environment === "development") {
+            logger.success(`[${FILE_NAME}] Blog posts for particular user with pagination fetched successfully`);
+        }
 
         return {
             currentPage: page,
@@ -85,14 +124,21 @@ async function getBlogPostForParticularUserWithPagination(userID, page, limit) {
 // Get Blog Posted Unique User IDs - starts
 // ============================================================
 async function getBlogPostedUniqueUserIds() {
-    logger.info(`[${FILE_NAME}] Get unique blog posted user IDs request started`);
+    if (process.env.environment === "development") {
+        logger.info(`[${FILE_NAME}] Get unique blog posted user IDs request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique user IDs`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique user IDs`);
+        }
+
         const result = await blogPostRepository.findUniqueBlogPostUserIds();
 
-        logger.info(`[${FILE_NAME}] Unique user IDs repository response received`);
-        logger.success(`[${FILE_NAME}] Unique blog posted user IDs fetched successfully`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Unique user IDs repository response received`);
+            logger.success(`[${FILE_NAME}] Unique blog posted user IDs fetched successfully`);
+        }
 
         return result;
     }
@@ -111,14 +157,21 @@ async function getBlogPostedUniqueUserIds() {
 // Get Blog Posted Unique Categories For Particular User - starts
 // ============================================================
 async function getBlogPostedUniqueCategoriesForParticularUser(userID) {
-    logger.info(`[${FILE_NAME}] Get unique blog posted categories for particular user request started`);
+    if (process.env.environment === "development") {
+        logger.info(`[${FILE_NAME}] Get unique blog posted categories for particular user request started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique categories for user`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique categories for user`);
+        }
+
         const result = await blogPostRepository.findUniqueCategoriesByUser(userID);
 
-        logger.info(`[${FILE_NAME}] Unique user categories repository response received`);
-        logger.success(`[${FILE_NAME}] Unique categories for particular user fetched successfully`);
+        if (process.env.environment === "development") {
+            logger.info(`[${FILE_NAME}] Unique user categories repository response received`);
+            logger.success(`[${FILE_NAME}] Unique categories for particular user fetched successfully`);
+        }
 
         return result;
     }

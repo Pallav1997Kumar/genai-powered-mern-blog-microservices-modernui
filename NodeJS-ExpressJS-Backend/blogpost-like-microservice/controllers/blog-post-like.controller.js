@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const blogPostLikeService = require("../services/blog-post-like.service.js");
 const logger = require("../utils/logger.js");
 
@@ -6,155 +8,243 @@ const FILE_NAME = "blog-post-like.controller.js";
 
 
 // ============================================================
-// Like Blog Post Starts
+// Environment Configuration - starts
 // ============================================================
-const blogPostLike = async function(req,res){
-    logger.info(`==================== [${FILE_NAME}] blogPostLike START ====================`);
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
+// Like Blog Post - starts
+// ============================================================
+async function blogPostLike(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog post like request received`);
+    }
 
     try{
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting authentication token and post ID`);
+        }
+
         const token = req.headers.authorization?.split(" ")[1] || req.body.token;
         const postID = req.params.postID;
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post like service to like post`);
+        }
 
         const result = await blogPostLikeService.blogPostLike(token, postID);
 
-        logger.info(`[${FILE_NAME}] Blog post liked successfully`);
-        logger.info(`==================== [${FILE_NAME}] blogPostLike END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog post liked successfully`);
+            logger.info(`[${FILE_NAME}] Sending like post response to client`);
+        }
 
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Error in blogPostLike: ${error.message}`);
-        logger.info(`==================== [${FILE_NAME}] blogPostLike END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to like blog post`, error);
+            logger.warn(`[${FILE_NAME}] Blog post like request could not be completed`);
+        }
 
         return res.status(error.status || 500).json(error.message);
     }
 };
 // ============================================================
-// Like Blog Post Ends
+// Like Blog Post - ends
 // ============================================================
 
 
 
 // ============================================================
-// Unlike Blog Post Starts
+// Unlike Blog Post - starts
 // ============================================================
-const blogPostUnlike = async function(req,res){
-    logger.info(`==================== [${FILE_NAME}] blogPostUnlike START ====================`);
+async function blogPostUnlike(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog post unlike request received`);
+    }
 
     try{
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting authentication token and post ID`);
+        }
+
         const token = req.headers.authorization?.split(" ")[1] || req.body.token;
         const postID = req.params.postID;
 
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post like service to unlike post`);
+        }
+
         const result = await blogPostLikeService.blogPostUnlike(token, postID);
 
-        logger.info(`[${FILE_NAME}] Blog post unliked successfully`);
-        logger.info(`==================== [${FILE_NAME}] blogPostUnlike END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog post unliked successfully`);
+            logger.info(`[${FILE_NAME}] Sending unlike post response to client`);
+        }
 
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Error in blogPostUnlike: ${error.message}`);
-        logger.info(`==================== [${FILE_NAME}] blogPostUnlike END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to unlike blog post`, error);
+            logger.warn(`[${FILE_NAME}] Blog post unlike request could not be completed`);
+        }
 
         return res.status(error.status || 500).json(error.message);
     }
 };
 // ============================================================
-// Unlike Blog Post Ends
+// Unlike Blog Post - ends
 // ============================================================
 
 
 
 // ============================================================
-// Get All Likes For Particular Blog Starts
+// Get All Likes For Particular Blog - starts
 // ============================================================
-const getAllLikesForParticularBlog = async function(req,res){
-    logger.info(`==================== [${FILE_NAME}] getAllLikesForParticularBlog START ====================`);
+async function getAllLikesForParticularBlog(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get all likes for particular blog request received`);
+    }
 
     try{
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
+        }
+
         const postID = req.params.postID;
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post like service to fetch likes`);
+        }
 
         const result = await blogPostLikeService.getAllLikesForParticularBlog(postID);
 
-        logger.info(`[${FILE_NAME}] Blog post likes fetched successfully`);
-        logger.info(`==================== [${FILE_NAME}] getAllLikesForParticularBlog END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] All blog post likes fetched successfully`);
+            logger.info(`[${FILE_NAME}] Sending likes response to client`);
+        }
 
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Error in getAllLikesForParticularBlog: ${error.message}`);
-        logger.info(`==================== [${FILE_NAME}] getAllLikesForParticularBlog END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch likes for particular blog`, error);
+            logger.warn(`[${FILE_NAME}] Get likes request could not be completed`);
+        }
 
         return res.status(error.status || 500).json(error.message);
     }
 };
 // ============================================================
-// Get All Likes For Particular Blog Ends
+// Get All Likes For Particular Blog - ends
 // ============================================================
 
 
 
 // ============================================================
-// Delete All Likes By User ID Starts
+// Delete All Likes By User ID - starts
 // ============================================================
-const deleteAllLikesByUserId = async function(req,res){
-    logger.info(`==================== [${FILE_NAME}] deleteAllLikesByUserId START ====================`);
+async function deleteAllLikesByUserId(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Delete all likes by user ID request received`);
+    }
 
     try{
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        }
+
         const userID = req.params.userID;
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post like service to delete user likes`);
+        }
 
         const result = await blogPostLikeService.deleteAllLikesByUserId(userID);
 
-        logger.info(`[${FILE_NAME}] All likes of user deleted successfully`);
-        logger.info(`==================== [${FILE_NAME}] deleteAllLikesByUserId END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] All likes by user deleted successfully`);
+            logger.info(`[${FILE_NAME}] Sending delete user likes response to client`);
+        }
 
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Error in deleteAllLikesByUserId: ${error.message}`);
-        logger.info(`==================== [${FILE_NAME}] deleteAllLikesByUserId END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to delete all likes by user`, error);
+            logger.warn(`[${FILE_NAME}] Delete user likes request could not be completed`);
+        }
 
         return res.status(error.status || 500).json(error.message);
     }
 };
 // ============================================================
-// Delete All Likes By User ID Ends
+// Delete All Likes By User ID - ends
 // ============================================================
 
 
 
 // ============================================================
-// Delete All Likes By Post ID Starts
+// Delete All Likes By Post ID - starts
 // ============================================================
-const deleteAllLikesByPostId = async function(req,res){
-    logger.info(`==================== [${FILE_NAME}] deleteAllLikesByPostId START ====================`);
+async function deleteAllLikesByPostId(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Delete all likes by post ID request received`);
+    }
 
     try{
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
+        }
+
         const postID = req.params.postID;
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post like service to delete post likes`);
+        }
 
         const result = await blogPostLikeService.deleteAllLikesByPostId(postID);
 
-        logger.info(`[${FILE_NAME}] All likes of post deleted successfully`);
-        logger.info(`==================== [${FILE_NAME}] deleteAllLikesByPostId END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] All likes by post deleted successfully`);
+            logger.info(`[${FILE_NAME}] Sending delete post likes response to client`);
+        }
 
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Error in deleteAllLikesByPostId: ${error.message}`);
-        logger.info(`==================== [${FILE_NAME}] deleteAllLikesByPostId END ====================`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to delete all likes by post`, error);
+            logger.warn(`[${FILE_NAME}] Delete post likes request could not be completed`);
+        }
 
         return res.status(error.status || 500).json(error.message);
     }
 };
 // ============================================================
-// Delete All Likes By Post ID Ends
+// Delete All Likes By Post ID - ends
 // ============================================================
 
 
 
 
 // ============================================================
-// Controller Exports Starts
+// Controller Exports - starts
 // ============================================================
 module.exports = {
     blogPostLike,
@@ -164,5 +254,5 @@ module.exports = {
     deleteAllLikesByPostId
 };
 // ============================================================
-// Controller Exports Ends
+// Controller Exports - ends
 // ============================================================

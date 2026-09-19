@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const httpClient = require("../utils/httpClient");
 
 const {

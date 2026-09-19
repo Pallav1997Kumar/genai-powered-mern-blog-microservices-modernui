@@ -1,4 +1,5 @@
 const axios = require("axios");
+const dotenv = require("dotenv");
 
 const {
     generateAccessToken
@@ -16,27 +17,60 @@ const GEMINI_API_URL =
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Generate Gemini Content - starts
 // ============================================================
 async function generateGeminiContent(prompt, generationConfig) {
-    logger.info(`[${FILE_NAME}] Gemini content generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Gemini content generation request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Validating Gemini prompt`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Validating Gemini prompt`);
+        }
 
         if (!prompt || typeof prompt !== "string") {
-            logger.warn(`[${FILE_NAME}] Gemini prompt is missing or invalid`);
+
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Gemini prompt is missing or invalid`);
+            }
 
             throw new Error("Gemini prompt is missing or invalid");
         }
 
-        logger.info(`[${FILE_NAME}] Generating Google access token`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Generating Google access token`);
+        }
 
         const accessToken = await generateAccessToken();
 
-        logger.success(`[${FILE_NAME}] Google access token generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Google access token generated successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending content generation request to Gemini`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending content generation request to Gemini`);
+        }
 
         const geminiResponse = await axios.post(
             GEMINI_API_URL,
@@ -61,12 +95,17 @@ async function generateGeminiContent(prompt, generationConfig) {
             }
         );
 
-        logger.success(`[${FILE_NAME}] Gemini API request completed successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Gemini API request completed successfully`);
+        }
 
         const candidates = geminiResponse.data.candidates;
 
         if (!candidates || candidates.length === 0) {
-            logger.warn(`[${FILE_NAME}] Gemini returned no candidates`);
+
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Gemini returned no candidates`);
+            }
 
             throw new Error("Gemini returned no candidates");
         }
@@ -75,18 +114,26 @@ async function generateGeminiContent(prompt, generationConfig) {
             candidates[0]?.content?.parts?.[0]?.text;
 
         if (!generatedText) {
-            logger.warn(`[${FILE_NAME}] Gemini returned no generated text`);
+
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Gemini returned no generated text`);
+            }
 
             throw new Error("Gemini returned no generated text");
         }
 
-        logger.success(`[${FILE_NAME}] Gemini content generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Gemini content generated successfully`);
+        }
 
         return generatedText;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Gemini content generation failed`, error);
-        logger.warn(`[${FILE_NAME}] Gemini content generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Gemini content generation failed`, error);
+            logger.warn(`[${FILE_NAME}] Gemini content generation request could not be completed`);
+        }
 
         throw error;
     }

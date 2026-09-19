@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const {
     generateGeminiContent
 } = require("../services/gemini.service.js");
@@ -18,15 +20,39 @@ const FILE_NAME = "blog-content.controller.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get blog description summary - starts
 // ============================================================
 async function getBlogDescriptionSummary(req, res) {
-    logger.info(`[${FILE_NAME}] Blog description summary request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog description summary request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog description is missing`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog description is missing`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog description is required"
@@ -39,7 +65,10 @@ async function getBlogDescriptionSummary(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog description summary`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog description summary`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -50,15 +79,20 @@ async function getBlogDescriptionSummary(req, res) {
         const plainTextSummary = generatedText;
         const aiGeneratedSummary = plainTextSummary;
 
-        logger.success(`[${FILE_NAME}] Blog description summary generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog description summary generated successfully`);
+        }
 
         return res.status(200).json({
             blogSummary: aiGeneratedSummary
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog description summary`, error);
-        logger.warn(`[${FILE_NAME}] Blog description summary request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog description summary`, error);
+            logger.warn(`[${FILE_NAME}] Blog description summary request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -75,12 +109,18 @@ async function getBlogDescriptionSummary(req, res) {
 // Generate Blog TLDR - starts
 // ============================================================
 async function generateBlogTLDR(req, res) {
-    logger.info(`[${FILE_NAME}] Blog TLDR generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog TLDR generation request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog content is missing for TLDR generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog content is missing for TLDR generation`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog content is required"
@@ -93,7 +133,10 @@ async function generateBlogTLDR(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog TLDR`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog TLDR`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -104,15 +147,20 @@ async function generateBlogTLDR(req, res) {
         const plainTextTLDR = generatedText;
         const aiGeneratedTLDR = plainTextTLDR;
 
-        logger.success(`[${FILE_NAME}] Blog TLDR generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog TLDR generated successfully`);
+        }
 
         return res.status(200).json({
             blogTLDR: aiGeneratedTLDR
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog TLDR`, error);
-        logger.warn(`[${FILE_NAME}] Blog TLDR generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog TLDR`, error);
+            logger.warn(`[${FILE_NAME}] Blog TLDR generation request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -129,12 +177,18 @@ async function generateBlogTLDR(req, res) {
 // Generate Key Takeaways - starts
 // ============================================================
 async function generateBlogKeyTakeaways(req, res) {
-    logger.info(`[${FILE_NAME}] Blog key takeaways generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog key takeaways generation request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog content is missing for key takeaways generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog content is missing for key takeaways generation`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog content is required"
@@ -147,7 +201,10 @@ async function generateBlogKeyTakeaways(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog key takeaways`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog key takeaways`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -159,15 +216,20 @@ async function generateBlogKeyTakeaways(req, res) {
         const aiGeneratedKeyTakeaways =
             JSON.parse(plainTextKeyTakeaways);
 
-        logger.success(`[${FILE_NAME}] Blog key takeaways generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog key takeaways generated successfully`);
+        }
 
         return res.status(200).json({
             blogKeyTakeaways: aiGeneratedKeyTakeaways
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog key takeaways`, error);
-        logger.warn(`[${FILE_NAME}] Blog key takeaways generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog key takeaways`, error);
+            logger.warn(`[${FILE_NAME}] Blog key takeaways generation request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -184,12 +246,18 @@ async function generateBlogKeyTakeaways(req, res) {
 // Generate Conclusion - starts
 // ============================================================
 async function generateBlogConclusion(req, res) {
-    logger.info(`[${FILE_NAME}] Blog conclusion generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog conclusion generation request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog content is missing for conclusion generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog content is missing for conclusion generation`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog content is required"
@@ -202,7 +270,10 @@ async function generateBlogConclusion(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog conclusion`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog conclusion`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -213,15 +284,20 @@ async function generateBlogConclusion(req, res) {
         const plainTextConclusion = generatedText;
         const aiGeneratedConclusion = plainTextConclusion;
 
-        logger.success(`[${FILE_NAME}] Blog conclusion generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog conclusion generated successfully`);
+        }
 
         return res.status(200).json({
             blogConclusion: aiGeneratedConclusion
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog conclusion`, error);
-        logger.warn(`[${FILE_NAME}] Blog conclusion generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog conclusion`, error);
+            logger.warn(`[${FILE_NAME}] Blog conclusion generation request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -238,12 +314,18 @@ async function generateBlogConclusion(req, res) {
 // Generate FAQ - starts
 // ============================================================
 async function generateBlogFAQ(req, res) {
-    logger.info(`[${FILE_NAME}] Blog FAQ generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog FAQ generation request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog content is missing for FAQ generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog content is missing for FAQ generation`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog content is required"
@@ -256,7 +338,10 @@ async function generateBlogFAQ(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog FAQ`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog FAQ`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -267,15 +352,20 @@ async function generateBlogFAQ(req, res) {
         const plainTextFAQ = generatedText;
         const aiGeneratedFAQ = JSON.parse(plainTextFAQ);
 
-        logger.success(`[${FILE_NAME}] Blog FAQ generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog FAQ generated successfully`);
+        }
 
         return res.status(200).json({
             blogFAQ: aiGeneratedFAQ
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog FAQ`, error);
-        logger.warn(`[${FILE_NAME}] Blog FAQ generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog FAQ`, error);
+            logger.warn(`[${FILE_NAME}] Blog FAQ generation request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -292,12 +382,18 @@ async function generateBlogFAQ(req, res) {
 // Generate Highlights - starts
 // ============================================================
 async function generateBlogHighlights(req, res) {
-    logger.info(`[${FILE_NAME}] Blog highlights generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog highlights generation request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog content is missing for highlights generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog content is missing for highlights generation`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog content is required"
@@ -310,7 +406,10 @@ async function generateBlogHighlights(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog highlights`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog highlights`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -322,15 +421,20 @@ async function generateBlogHighlights(req, res) {
         const aiGeneratedHighlights =
             JSON.parse(plainTextHighlights);
 
-        logger.success(`[${FILE_NAME}] Blog highlights generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog highlights generated successfully`);
+        }
 
         return res.status(200).json({
             blogHighlights: aiGeneratedHighlights
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog highlights`, error);
-        logger.warn(`[${FILE_NAME}] Blog highlights generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog highlights`, error);
+            logger.warn(`[${FILE_NAME}] Blog highlights generation request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"

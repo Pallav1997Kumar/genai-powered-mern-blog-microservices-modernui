@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const {
     generateGeminiContent
 } = require("../services/gemini.service.js");
@@ -15,15 +17,39 @@ const FILE_NAME = "blog-generation.controller.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Suggest blog titles from blog description - starts
 // ============================================================
 async function suggestBlogTitlesFromBlogDescription(req, res) {
-    logger.info(`[${FILE_NAME}] Blog title suggestion request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog title suggestion request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog description is missing for title suggestion`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog description is missing for title suggestion`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog description is required"
@@ -36,7 +62,10 @@ async function suggestBlogTitlesFromBlogDescription(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog title suggestions`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog title suggestions`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -47,15 +76,20 @@ async function suggestBlogTitlesFromBlogDescription(req, res) {
         const geminiGeneratedBlogTitles =
             JSON.parse(generatedText);
 
-        logger.success(`[${FILE_NAME}] Blog title suggestions generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog title suggestions generated successfully`);
+        }
 
         return res.status(200).json({
             geminiGeneratedBlogTitles: geminiGeneratedBlogTitles
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog title suggestions`, error);
-        logger.warn(`[${FILE_NAME}] Blog title suggestion request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog title suggestions`, error);
+            logger.warn(`[${FILE_NAME}] Blog title suggestion request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -72,12 +106,18 @@ async function suggestBlogTitlesFromBlogDescription(req, res) {
 // Suggest blog description from blog title - starts
 // ============================================================
 async function suggestBlogDescriptionsFromBlogTitle(req, res) {
-    logger.info(`[${FILE_NAME}] Blog description generation request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog description generation request received`);
+    }
 
     const blogTitle = req.body.blogTitle;
 
     if (!blogTitle) {
-        logger.warn(`[${FILE_NAME}] Blog title is missing for description generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog title is missing for description generation`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog title is required"
@@ -90,7 +130,10 @@ async function suggestBlogDescriptionsFromBlogTitle(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog description generation`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog description generation`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -100,15 +143,20 @@ async function suggestBlogDescriptionsFromBlogTitle(req, res) {
 
         const geminiGeneratedBlogDescription = generatedText;
 
-        logger.success(`[${FILE_NAME}] Blog description generated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog description generated successfully`);
+        }
 
         return res.status(200).json({
             geminiGeneratedBlogDescription: geminiGeneratedBlogDescription
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to generate blog description`, error);
-        logger.warn(`[${FILE_NAME}] Blog description generation request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to generate blog description`, error);
+            logger.warn(`[${FILE_NAME}] Blog description generation request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"
@@ -125,12 +173,18 @@ async function suggestBlogDescriptionsFromBlogTitle(req, res) {
 // Enhance blog description - starts
 // ============================================================
 async function enhanceBlogDescription(req, res) {
-    logger.info(`[${FILE_NAME}] Blog description enhancement request received`);
+
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Blog description enhancement request received`);
+    }
 
     const blogText = req.body.blogText;
 
     if (!blogText) {
-        logger.warn(`[${FILE_NAME}] Blog description is missing for enhancement`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Blog description is missing for enhancement`);
+        }
 
         return res.status(400).json({
             errorMessage: "Blog description is required"
@@ -143,7 +197,10 @@ async function enhanceBlogDescription(req, res) {
     };
 
     try {
-        logger.info(`[${FILE_NAME}] Calling Gemini service for blog description enhancement`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling Gemini service for blog description enhancement`);
+        }
 
         const generatedText =
             await generateGeminiContent(
@@ -153,15 +210,20 @@ async function enhanceBlogDescription(req, res) {
 
         const enhancedBlogDescription = generatedText;
 
-        logger.success(`[${FILE_NAME}] Blog description enhanced successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog description enhanced successfully`);
+        }
 
         return res.status(200).json({
             enhancedBlogDescription: enhancedBlogDescription
         });
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to enhance blog description`, error);
-        logger.warn(`[${FILE_NAME}] Blog description enhancement request could not be completed`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to enhance blog description`, error);
+            logger.warn(`[${FILE_NAME}] Blog description enhancement request could not be completed`);
+        }
 
         return res.status(500).json({
             errorMessage: "Internal Server Error"

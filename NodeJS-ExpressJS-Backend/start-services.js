@@ -1,19 +1,45 @@
+const dotenv = require("dotenv");
 const { spawn } = require("child_process");
 const net = require("net");
 
 // ============================================================
-// CONFIGURATION
+// Environment Configuration - starts
+// ============================================================
+dotenv.config({
+    path: "./config.env"
+});
+// ============================================================
+// Environment Configuration - ends
 // ============================================================
 
+// ============================================================
+// CONFIGURATION - starts
+// ============================================================
 const HOST = "127.0.0.1";
 const PORT_CHECK_INTERVAL = 5000;
 const WAITING_MESSAGE_DELAY = 30000;
+
+const ENVIRONMENT = (process.env.environment || "DEVELOPMENT").toUpperCase();
+
+const IS_DEVELOPMENT = ENVIRONMENT === "DEVELOPMENT";
+const IS_PRODUCTION = ENVIRONMENT === "PRODUCTION";
+
+const API_GATEWAY_PORT = process.env.PORT || 8080;
+
+const API_GATEWAY_URL = IS_DEVELOPMENT
+    ? `http://localhost:${API_GATEWAY_PORT}`
+    : process.env.API_GATEWAY_URL;
+
+if (IS_PRODUCTION && !API_GATEWAY_URL) {
+    console.error("[ERROR] API_GATEWAY_URL is required in PRODUCTION environment.");
+    process.exit(1);
+}
 
 const services = {
     gateway: {
         name: "API Gateway",
         folder: "microservice-api-gateway",
-        port: 8080
+        port: API_GATEWAY_PORT
     },
     user: {
         name: "User Service",
@@ -51,41 +77,59 @@ const services = {
         port: 4007
     }
 };
+// ============================================================
+// CONFIGURATION - ends
+// ============================================================
 
 // ============================================================
-// RUNNING PROCESSES
+// RUNNING PROCESSES - starts
 // ============================================================
-
 const runningProcesses = [];
+// ============================================================
+// RUNNING PROCESSES - ends
+// ============================================================
 
 // ============================================================
-// PRINT HEADER
+// PRINT HEADER - starts
 // ============================================================
-
 function printHeader() {
-    console.log("");
-    console.log("============================================================");
-    console.log("        BLOG APPLICATION MICROSERVICE STARTUP");
-    console.log("============================================================");
-    console.log("");
+    if (IS_DEVELOPMENT) {
+        console.log("");
+        console.log("============================================================");
+        console.log("        BLOG APPLICATION MICROSERVICE STARTUP");
+        console.log("============================================================");
+        console.log("");
+    }
+
+    if (IS_PRODUCTION) {
+        console.log("[STARTUP] Blog application microservices starting...");
+    }
 }
+// ============================================================
+// PRINT HEADER - ends
+// ============================================================
 
 // ============================================================
-// PRINT SERVICE INFORMATION
+// PRINT SERVICE INFORMATION - starts
 // ============================================================
-
 function printServiceInfo(service) {
+    if (!IS_DEVELOPMENT) {
+        return;
+    }
+
     console.log("--------------------------------------------");
     console.log(`Service : ${service.name}`);
     console.log(`Folder  : ${service.folder}`);
     console.log(`Port    : ${service.port}`);
     console.log("--------------------------------------------");
 }
+// ============================================================
+// PRINT SERVICE INFORMATION - ends
+// ============================================================
 
 // ============================================================
-// CHECK WHETHER PORT IS AVAILABLE
+// CHECK WHETHER PORT IS AVAILABLE - starts
 // ============================================================
-
 function checkPort(port, callback) {
     const socket = new net.Socket();
     let finished = false;
@@ -124,11 +168,13 @@ function checkPort(port, callback) {
 
     socket.connect(port, HOST);
 }
+// ============================================================
+// CHECK WHETHER PORT IS AVAILABLE - ends
+// ============================================================
 
 // ============================================================
-// WAIT FOR PORT
+// WAIT FOR PORT - starts
 // ============================================================
-
 function waitForPort(port, callback) {
     const startTime = Date.now();
     let waitingMessageDisplayed = false;
@@ -136,14 +182,21 @@ function waitForPort(port, callback) {
     function checkConnection() {
         checkPort(port, function (isOpen) {
             if (isOpen) {
-                console.log(`✅ Port ${port} is ready`);
+                if (IS_DEVELOPMENT) {
+                    console.log(`✅ Port ${port} is ready`);
+                }
+
                 callback();
                 return;
             }
 
             const elapsedTime = Date.now() - startTime;
 
-            if (elapsedTime >= WAITING_MESSAGE_DELAY && !waitingMessageDisplayed) {
+            if (
+                IS_DEVELOPMENT &&
+                elapsedTime >= WAITING_MESSAGE_DELAY &&
+                !waitingMessageDisplayed
+            ) {
                 waitingMessageDisplayed = true;
                 console.log(`⏳ Still waiting for port ${port}...`);
             }
@@ -154,24 +207,34 @@ function waitForPort(port, callback) {
 
     checkConnection();
 }
+// ============================================================
+// WAIT FOR PORT - ends
+// ============================================================
 
 // ============================================================
-// START SERVICE
+// START SERVICE - starts
 // ============================================================
-
 function startService(service, callback) {
-    console.log("");
-    console.log("");
-    console.log("============================================================");
-    console.log(`🚀 STARTING ${service.name.toUpperCase()}`);
-    console.log("============================================================");
+    if (IS_DEVELOPMENT) {
+        console.log("");
+        console.log("============================================================");
+        console.log(`🚀 STARTING ${service.name.toUpperCase()}`);
+        console.log("============================================================");
+        printServiceInfo(service);
+    }
 
-    printServiceInfo(service);
+    if (IS_PRODUCTION) {
+        console.log(`[STARTUP] Starting ${service.name}...`);
+    }
 
-    const childProcess = spawn("npm", ["--prefix", service.folder, "run", "dev"], {
-        shell: true,
-        stdio: "inherit"
-    });
+    const childProcess = spawn(
+        "npm",
+        ["--prefix", service.folder, "run", "dev"],
+        {
+            shell: true,
+            stdio: IS_DEVELOPMENT ? "inherit" : "ignore"
+        }
+    );
 
     runningProcesses.push({
         name: service.name,
@@ -179,211 +242,314 @@ function startService(service, callback) {
     });
 
     childProcess.on("error", function (error) {
-        console.error("");
-        console.error(`❌ Error starting ${service.name}`);
-        console.error(error);
+        console.error(
+            `[ERROR] Failed to start ${service.name}:`,
+            error.message
+        );
     });
 
     childProcess.on("exit", function (code, signal) {
-        console.log("");
-        console.log(`⚠️ ${service.name} stopped`);
-
-        if (code !== null) {
-            console.log(`Exit code: ${code}`);
+        if (code !== null && code !== 0) {
+            console.error(
+                `[ERROR] ${service.name} stopped with exit code ${code}`
+            );
         }
 
         if (signal !== null) {
-            console.log(`Signal: ${signal}`);
+            console.error(
+                `[ERROR] ${service.name} stopped by signal ${signal}`
+            );
         }
     });
 
     waitForPort(service.port, function () {
-        console.log("");
-        console.log(`🎉 ${service.name} is running`);
-        console.log(`🌐 http://localhost:${service.port}`);
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log(`🎉 ${service.name} is running`);
+
+            if (service.name === "API Gateway") {
+                console.log(`🌐 ${API_GATEWAY_URL}`);
+            } else {
+                console.log(`🌐 http://localhost:${service.port}`);
+            }
+        }
+
+        if (IS_PRODUCTION) {
+            console.log(`[READY] ${service.name} is running`);
+        }
+
         callback();
     });
 }
+// ============================================================
+// START SERVICE - ends
+// ============================================================
 
 // ============================================================
-// START GATEWAY
+// START GATEWAY - starts
 // ============================================================
-
 function startGateway() {
     startService(services.gateway, function () {
-        console.log("");
-        console.log("➡️ Gateway is ready.");
-        console.log("➡️ Starting User Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ Gateway is ready.");
+            console.log("➡️ Starting User Service...");
+        }
+
         startUser();
     });
 }
+// ============================================================
+// START GATEWAY - ends
+// ============================================================
 
 // ============================================================
-// START USER SERVICE
+// START USER SERVICE - starts
 // ============================================================
-
 function startUser() {
     startService(services.user, function () {
-        console.log("");
-        console.log("➡️ User Service is ready.");
-        console.log("➡️ Starting Blog Post Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ User Service is ready.");
+            console.log("➡️ Starting Blog Post Service...");
+        }
+
         startBlogPost();
     });
 }
+// ============================================================
+// START USER SERVICE - ends
+// ============================================================
 
 // ============================================================
-// START BLOG POST SERVICE
+// START BLOG POST SERVICE - starts
 // ============================================================
-
 function startBlogPost() {
     startService(services.blogpost, function () {
-        console.log("");
-        console.log("➡️ Blog Post Service is ready.");
-        console.log("➡️ Starting Like Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ Blog Post Service is ready.");
+            console.log("➡️ Starting Like Service...");
+        }
+
         startLike();
     });
 }
+// ============================================================
+// START BLOG POST SERVICE - ends
+// ============================================================
 
 // ============================================================
-// START LIKE SERVICE
+// START LIKE SERVICE - starts
 // ============================================================
-
 function startLike() {
     startService(services.like, function () {
-        console.log("");
-        console.log("➡️ Like Service is ready.");
-        console.log("➡️ Starting Comment Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ Like Service is ready.");
+            console.log("➡️ Starting Comment Service...");
+        }
+
         startComment();
     });
 }
+// ============================================================
+// START LIKE SERVICE - ends
+// ============================================================
 
 // ============================================================
-// START COMMENT SERVICE
+// START COMMENT SERVICE - starts
 // ============================================================
-
 function startComment() {
     startService(services.comment, function () {
-        console.log("");
-        console.log("➡️ Comment Service is ready.");
-        console.log("➡️ Starting Category Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ Comment Service is ready.");
+            console.log("➡️ Starting Category Service...");
+        }
+
         startCategory();
     });
 }
+// ============================================================
+// START COMMENT SERVICE - ends
+// ============================================================
 
 // ============================================================
-// START CATEGORY SERVICE
+// START CATEGORY SERVICE - starts
 // ============================================================
-
 function startCategory() {
     startService(services.category, function () {
-        console.log("");
-        console.log("➡️ Category Service is ready.");
-        console.log("➡️ Starting Image Upload Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ Category Service is ready.");
+            console.log("➡️ Starting Image Upload Service...");
+        }
+
         startImageUpload();
     });
 }
+// ============================================================
+// START CATEGORY SERVICE - ends
+// ============================================================
 
 // ============================================================
-// IMAGE UPLOAD SERVICE
+// START IMAGE UPLOAD SERVICE - starts
 // ============================================================
-
 function startImageUpload() {
     startService(services.imageUpload, function () {
-        console.log("");
-        console.log("➡️ Image Upload Service is ready.");
-        console.log("➡️ Starting Generative AI Service...");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("➡️ Image Upload Service is ready.");
+            console.log("➡️ Starting Generative AI Service...");
+        }
+
         startGenerativeAI();
     });
 }
+// ============================================================
+// START IMAGE UPLOAD SERVICE - ends
+// ============================================================
 
 // ============================================================
-// START GENERATIVE AI SERVICE
+// START GENERATIVE AI SERVICE - starts
 // ============================================================
-
 function startGenerativeAI() {
     startService(services.generativeAI, function () {
-        console.log("");
-        console.log("============================================================");
-        console.log("             🎉 ALL SERVICES ARE RUNNING");
-        console.log("============================================================");
-        console.log("");
-        console.log("API Gateway              : http://localhost:8080");
-        console.log("User Service             : http://localhost:4001");
-        console.log("Blog Post Service        : http://localhost:4002");
-        console.log("Like Service             : http://localhost:4003");
-        console.log("Comment Service          : http://localhost:4004");
-        console.log("Category Service         : http://localhost:4005");
-        console.log("Image Upload Service     : http://localhost:4006");
-        console.log("Generative AI Service    : http://localhost:4007");
-        console.log("");
-        console.log("Press CTRL + C to stop all services.");
-        console.log("");
+        if (IS_DEVELOPMENT) {
+            console.log("");
+            console.log("============================================================");
+            console.log("             🎉 ALL SERVICES ARE RUNNING");
+            console.log("============================================================");
+            console.log("");
+            console.log(`API Gateway              : ${API_GATEWAY_URL}`);
+            console.log("User Service             : http://localhost:4001");
+            console.log("Blog Post Service        : http://localhost:4002");
+            console.log("Like Service             : http://localhost:4003");
+            console.log("Comment Service          : http://localhost:4004");
+            console.log("Category Service         : http://localhost:4005");
+            console.log("Image Upload Service     : http://localhost:4006");
+            console.log("Generative AI Service    : http://localhost:4007");
+            console.log("");
+            console.log("Press CTRL + C to stop all services.");
+            console.log("");
+        }
+
+        if (IS_PRODUCTION) {
+            console.log("[STARTUP] All services are running successfully.");
+            console.log(`[STARTUP] API Gateway: ${API_GATEWAY_URL}`);
+        }
     });
 }
+// ============================================================
+// START GENERATIVE AI SERVICE - ends
+// ============================================================
 
 // ============================================================
-// STOP ALL SERVICES
+// STOP ALL SERVICES - starts
 // ============================================================
-
 function stopAllServices() {
-    console.log("");
-    console.log("");
-    console.log("============================================================");
-    console.log("              🛑 STOPPING ALL SERVICES");
-    console.log("============================================================");
-    console.log("");
+    if (IS_DEVELOPMENT) {
+        console.log("");
+        console.log("");
+        console.log("============================================================");
+        console.log("              🛑 STOPPING ALL SERVICES");
+        console.log("============================================================");
+        console.log("");
+    }
+
+    if (IS_PRODUCTION) {
+        console.log("[SHUTDOWN] Stopping all services...");
+    }
 
     runningProcesses.forEach(function (item) {
-        console.log(`Stopping ${item.name}...`);
+        if (IS_DEVELOPMENT) {
+            console.log(`Stopping ${item.name}...`);
+        }
 
         if (item.process && !item.process.killed) {
             item.process.kill();
         }
     });
 
-    console.log("");
-    console.log("✅ All services stopped.");
-    console.log("");
+    if (IS_DEVELOPMENT) {
+        console.log("");
+        console.log("✅ All services stopped.");
+        console.log("");
+    }
+
+    if (IS_PRODUCTION) {
+        console.log("[SHUTDOWN] All services stopped.");
+    }
 }
+// ============================================================
+// STOP ALL SERVICES - ends
+// ============================================================
 
 // ============================================================
-// HANDLE CTRL + C
+// HANDLE CTRL + C - starts
 // ============================================================
-
 process.on("SIGINT", function () {
     stopAllServices();
     process.exit(0);
 });
+// ============================================================
+// HANDLE CTRL + C - ends
+// ============================================================
 
 // ============================================================
-// HANDLE TERMINATION
+// HANDLE TERMINATION - starts
 // ============================================================
-
 process.on("SIGTERM", function () {
     stopAllServices();
     process.exit(0);
 });
+// ============================================================
+// HANDLE TERMINATION - ends
+// ============================================================
 
 // ============================================================
-// START APPLICATION
+// VALIDATE ENVIRONMENT - starts
+// ============================================================
+if (!IS_DEVELOPMENT && !IS_PRODUCTION) {
+    console.error(
+        `[ERROR] Unsupported environment: ${ENVIRONMENT}. Use DEVELOPMENT or PRODUCTION.`
+    );
+
+    process.exit(1);
+}
+// ============================================================
+// VALIDATE ENVIRONMENT - ends
 // ============================================================
 
+// ============================================================
+// START APPLICATION - starts
+// ============================================================
 printHeader();
 
-console.log("Starting services in the following order:");
-console.log("");
-console.log("1. API Gateway              → 8080");
-console.log("2. User Service             → 4001");
-console.log("3. Blog Post Service        → 4002");
-console.log("4. Like Service             → 4003");
-console.log("5. Comment Service          → 4004");
-console.log("6. Category Service         → 4005");
-console.log("7. Image Upload Service     → 4006");
-console.log("8. Generative AI Service    → 4007");
-console.log("");
+if (IS_DEVELOPMENT) {
+    console.log("Starting services in the following order:");
+    console.log("");
+    console.log(`1. API Gateway              → ${API_GATEWAY_PORT}`);
+    console.log("2. User Service             → 4001");
+    console.log("3. Blog Post Service        → 4002");
+    console.log("4. Like Service             → 4003");
+    console.log("5. Comment Service          → 4004");
+    console.log("6. Category Service         → 4005");
+    console.log("7. Image Upload Service     → 4006");
+    console.log("8. Generative AI Service    → 4007");
+    console.log("");
+    console.log(`API Gateway URL             → ${API_GATEWAY_URL}`);
+}
+
+if (IS_PRODUCTION) {
+    console.log("[STARTUP] Environment: PRODUCTION");
+}
 
 // ============================================================
 // START FIRST SERVICE
 // ============================================================
-
 startGateway();
+// ============================================================
+// START APPLICATION - ends
+// ============================================================

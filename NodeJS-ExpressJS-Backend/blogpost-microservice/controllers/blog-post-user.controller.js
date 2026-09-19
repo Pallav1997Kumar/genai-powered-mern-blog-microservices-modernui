@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const blogPostUserService = require("../services/blog-post-user.service.js");
 const logger = require("../utils/logger.js");
 
@@ -6,27 +8,64 @@ const FILE_NAME = "blog-post-user.controller.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get All Blog Post IDs By User ID - starts
 // ============================================================
-const getAllBlogPostIdsByUserId = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request received`);
+async function getAllBlogPostIdsByUserId(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        }
+
         const userID = req.params.userID;
 
-        logger.info(`[${FILE_NAME}] Calling blog post user service to fetch all blog post IDs`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post user service to fetch all blog post IDs`);
+        }
+
         const result =
             await blogPostUserService.getAllBlogPostIdsByUserId(userID);
 
-        logger.success(`[${FILE_NAME}] All blog post IDs for user fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] All blog post IDs for user fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending all blog post IDs response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending all blog post IDs response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user`, error);
-        logger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
+        }
+
         next(error);
     }
 };
@@ -39,20 +78,34 @@ const getAllBlogPostIdsByUserId = async function(req, res, next) {
 // ============================================================
 // Get Blog Posts For Particular User With Pagination - starts
 // ============================================================
-const getBlogPostForParticularUserWithPagination = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get blog posts for particular user with pagination request received`);
+async function getBlogPostForParticularUserWithPagination(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get blog posts for particular user with pagination request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        }
+
         const userID = req.params.userID;
 
-        logger.info(`[${FILE_NAME}] Extracting page from request query`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting page from request query`);
+        }
+
         const page = parseInt(req.query.page);
 
-        logger.info(`[${FILE_NAME}] Extracting limit from request query`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting limit from request query`);
+        }
+
         const limit = parseInt(req.query.limit);
 
-        logger.info(`[${FILE_NAME}] Calling blog post user service with pagination parameters`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post user service with pagination parameters`);
+        }
+
         const result =
             await blogPostUserService.getBlogPostForParticularUserWithPagination(
                 userID,
@@ -60,14 +113,25 @@ const getBlogPostForParticularUserWithPagination = async function(req, res, next
                 limit
             );
 
-        logger.success(`[${FILE_NAME}] Blog posts for particular user fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog posts for particular user fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending particular user blog posts response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending particular user blog posts response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch blog posts for particular user`, error);
-        logger.warn(`[${FILE_NAME}] Particular user blog posts request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch blog posts for particular user`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Particular user blog posts request could not be completed`);
+        }
+
         next(error);
     }
 };
@@ -80,21 +144,37 @@ const getBlogPostForParticularUserWithPagination = async function(req, res, next
 // ============================================================
 // Get Blog Posted Unique User IDs - starts
 // ============================================================
-const getBlogPostedUniqueUserIds = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get unique blog posted user IDs request received`);
+async function getBlogPostedUniqueUserIds(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get unique blog posted user IDs request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Calling blog post user service to fetch unique user IDs`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post user service to fetch unique user IDs`);
+        }
+
         const result = await blogPostUserService.getBlogPostedUniqueUserIds();
 
-        logger.success(`[${FILE_NAME}] Unique blog posted user IDs fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Unique blog posted user IDs fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending unique user IDs response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending unique user IDs response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch unique blog posted user IDs`, error);
-        logger.warn(`[${FILE_NAME}] Unique blog posted user IDs request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch unique blog posted user IDs`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Unique blog posted user IDs request could not be completed`);
+        }
+
         next(error);
     }
 };
@@ -107,25 +187,44 @@ const getBlogPostedUniqueUserIds = async function(req, res, next) {
 // ============================================================
 // Get Blog Posted Unique Categories For Particular User - starts
 // ============================================================
-const getBlogPostedUniqueCategoriesForParticularUser = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get unique blog posted categories for particular user request received`);
+async function getBlogPostedUniqueCategoriesForParticularUser(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get unique blog posted categories for particular user request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        }
+
         const userID = req.params.userID;
 
-        logger.info(`[${FILE_NAME}] Calling blog post user service to fetch unique categories`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling blog post user service to fetch unique categories`);
+        }
+
         const result =
             await blogPostUserService.getBlogPostedUniqueCategoriesForParticularUser(userID);
 
-        logger.success(`[${FILE_NAME}] Unique categories for particular user fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Unique categories for particular user fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending unique categories response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending unique categories response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch unique categories for particular user`, error);
-        logger.warn(`[${FILE_NAME}] Unique categories for particular user request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch unique categories for particular user`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Unique categories for particular user request could not be completed`);
+        }
+
         next(error);
     }
 };

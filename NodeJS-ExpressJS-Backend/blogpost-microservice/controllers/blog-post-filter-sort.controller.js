@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const blogPostFilterSortService = require("../services/blog-post-filter-sort.service.js");
 const logger = require("../utils/logger.js");
 
@@ -6,13 +8,35 @@ const FILE_NAME = "blog-post-filter-sort.controller.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Get Blog Post Details With Filter Sort With Pagination - starts
 // ============================================================
-const getBlogPostDetailsWithFilterSortWithPagination = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get blog post details with filter sort and pagination request received`);
+async function getBlogPostDetailsWithFilterSortWithPagination(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get blog post details with filter sort and pagination request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Preparing query and body data for filter sort request`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Preparing query and body data for filter sort request`);
+        }
 
         const result =
             await blogPostFilterSortService.getBlogPostDetailsWithFilterSortWithPagination({
@@ -20,14 +44,25 @@ const getBlogPostDetailsWithFilterSortWithPagination = async function(req, res, 
                 body: req.body
             });
 
-        logger.success(`[${FILE_NAME}] Blog post details with filter sort and pagination fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Blog post details with filter sort and pagination fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending filtered and sorted blog posts response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending filtered and sorted blog posts response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch blog post details with filter sort and pagination`, error);
-        logger.warn(`[${FILE_NAME}] Filter sort and pagination request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch blog post details with filter sort and pagination`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Filter sort and pagination request could not be completed`);
+        }
+
         next(error);
     }
 };
@@ -40,14 +75,21 @@ const getBlogPostDetailsWithFilterSortWithPagination = async function(req, res, 
 // ============================================================
 // Get Blog Post Details With Filter Sort With Pagination For Particular User - starts
 // ============================================================
-const getBlogPostDetailsWithFilterSortWithPaginationForParticularUser = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get filtered and sorted blog posts for particular user request received`);
+async function getBlogPostDetailsWithFilterSortWithPaginationForParticularUser(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get filtered and sorted blog posts for particular user request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
+        }
+
         const userID = req.params.userID;
 
-        logger.info(`[${FILE_NAME}] Preparing query and body data for particular user filter sort request`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Preparing query and body data for particular user filter sort request`);
+        }
 
         const result =
             await blogPostFilterSortService.getBlogPostDetailsWithFilterSortWithPaginationForParticularUser({
@@ -56,14 +98,25 @@ const getBlogPostDetailsWithFilterSortWithPaginationForParticularUser = async fu
                 userID: userID
             });
 
-        logger.success(`[${FILE_NAME}] Filtered and sorted blog posts for particular user fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Filtered and sorted blog posts for particular user fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending particular user filtered blog posts response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending particular user filtered blog posts response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch filtered and sorted blog posts for particular user`, error);
-        logger.warn(`[${FILE_NAME}] Particular user filter sort request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch filtered and sorted blog posts for particular user`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Particular user filter sort request could not be completed`);
+        }
+
         next(error);
     }
 };
@@ -76,14 +129,21 @@ const getBlogPostDetailsWithFilterSortWithPaginationForParticularUser = async fu
 // ============================================================
 // Get Blog Post Details With Filter Sort With Pagination For Particular Category - starts
 // ============================================================
-const getBlogPostDetailsWithFilterSortWithPaginationForParticularCategory = async function(req, res, next) {
-    logger.info(`[${FILE_NAME}] Get filtered and sorted blog posts for particular category request received`);
+async function getBlogPostDetailsWithFilterSortWithPaginationForParticularCategory(req, res, next) {
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Get filtered and sorted blog posts for particular category request received`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Extracting category ID from request parameters`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Extracting category ID from request parameters`);
+        }
+
         const categoryID = req.params.categoryID;
 
-        logger.info(`[${FILE_NAME}] Preparing query and body data for particular category filter sort request`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Preparing query and body data for particular category filter sort request`);
+        }
 
         const result =
             await blogPostFilterSortService.getBlogPostDetailsWithFilterSortWithPaginationForParticularCategory({
@@ -92,14 +152,25 @@ const getBlogPostDetailsWithFilterSortWithPaginationForParticularCategory = asyn
                 categoryID: categoryID
             });
 
-        logger.success(`[${FILE_NAME}] Filtered and sorted blog posts for particular category fetched successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] Filtered and sorted blog posts for particular category fetched successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending particular category filtered blog posts response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending particular category filtered blog posts response to client`);
+        }
+
         return res.status(200).json(result);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to fetch filtered and sorted blog posts for particular category`, error);
-        logger.warn(`[${FILE_NAME}] Particular category filter sort request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to fetch filtered and sorted blog posts for particular category`, error);
+        }
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.warn(`[${FILE_NAME}] Particular category filter sort request could not be completed`);
+        }
+
         next(error);
     }
 };

@@ -1,4 +1,4 @@
-const uploadBlogImageController = function (req, res) {
+function uploadBlogImageController (req, res) {
     res.status(200).json({
         message: "Blog image uploaded successfully!",
         file: req.file,
@@ -6,7 +6,7 @@ const uploadBlogImageController = function (req, res) {
 }
 
 
-const uploadProfilePhotoController = function (req, res) {
+function uploadProfilePhotoController (req, res) {
     res.status(200).json({
         message: "Profile photo uploaded successfully!",
         file: req.file,

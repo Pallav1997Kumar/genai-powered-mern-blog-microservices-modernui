@@ -1,18 +1,41 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 const blogUserRepository = require("../repositories/blog-user.repository.js");
 const logger = require("../utils/logger.js");
 
 const FILE_NAME = "auth.service.js";
 
+
+
+// ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
 const JWT_SECRET = process.env.jwtPrivateKey;
+
 
 
 // ============================================================
 // Register User - starts
 // ============================================================
 async function registerUser(data){
-    logger.info(`[${FILE_NAME}] Register user service started`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Register user service started`);
+    }
 
     try {
         const firstName = data.firstName;
@@ -25,27 +48,37 @@ async function registerUser(data){
         const password = data.password;
         const confirmPassword = data.confirmPassword;
 
-        logger.info(`[${FILE_NAME}] Checking whether username or email already exists`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Checking whether username or email already exists`);
+        }
         const existingUser = 
             await blogUserRepository.findUserByUsernameOrEmail(username, email);
 
         if(existingUser){
-            logger.warn(`[${FILE_NAME}] User registration failed because username or email already exists`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] User registration failed because username or email already exists`);
+            }
             if(existingUser.username === username){
-                logger.warn(`[${FILE_NAME}] User registration failed because username already exists`);
+                if(process.env.environment == "DEVELOPMENT"){
+                    logger.warn(`[${FILE_NAME}] User registration failed because username already exists`);
+                }
                 throw new Error(
                     "Username already used. Please choose another username"
                 );
             }
 
-            logger.warn(`[${FILE_NAME}] User registration failed because email already exists`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] User registration failed because email already exists`);
+            }
             throw new Error(
                 "Email address already exists!"
             );
         }
 
         if(password !== confirmPassword){
-            logger.warn(`[${FILE_NAME}] User registration failed because password and confirm password do not match`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] User registration failed because password and confirm password do not match`);
+            }
             throw new Error(
                 "Password and Confirm Password does not match!"
             );
@@ -64,7 +97,9 @@ async function registerUser(data){
             profilePhoto = "https://res.cloudinary.com/dgxqqp4rn/image/upload/v1761490344/uploads/profilePhotos/Female.jpg";
         }
 
-        logger.info(`[${FILE_NAME}] Creating new user through repository`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Creating new user through repository`);
+        }
         const user = await blogUserRepository.createUser({
                 firstName,
                 middleName,
@@ -78,11 +113,15 @@ async function registerUser(data){
                 userProfilePhoto: profilePhoto
             });
 
-        logger.success(`[${FILE_NAME}] User registered successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] User registered successfully`);
+        }
         return "User has been created successfully";
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to register user`, error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to register user`, error);
+        }
         throw error;
     }
 }
@@ -96,27 +135,37 @@ async function registerUser(data){
 // Login User - starts
 // ============================================================
 async function loginUser(email,password){
-    logger.info(`[${FILE_NAME}] Login user service started`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Login user service started`);
+    }
 
     try {
-        logger.info(`[${FILE_NAME}] Finding user by email`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Finding user by email`);
+        }
         const user = await blogUserRepository.findUserByEmail(email);
 
         if(!user){
-            logger.warn(`[${FILE_NAME}] Login failed because email address was not found`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Login failed because email address was not found`);
+            }
             throw new Error(
                 "Invalid Email Address"
             );
         }
 
         if(password !== user.password){
-            logger.warn(`[${FILE_NAME}] Login failed because password is invalid`);
+            if(process.env.environment == "DEVELOPMENT"){
+                logger.warn(`[${FILE_NAME}] Login failed because password is invalid`);
+            }
             throw new Error(
                 "Invalid Password"
             );
         }
 
-        logger.info(`[${FILE_NAME}] Generating authentication token`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Generating authentication token`);
+        }
 
         const token = jwt.sign(
             {
@@ -128,7 +177,9 @@ async function loginUser(email,password){
             }
         );
 
-        logger.success(`[${FILE_NAME}] User logged in successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] User logged in successfully`);
+        }
 
         return {
             firstName: user.firstName,
@@ -144,7 +195,9 @@ async function loginUser(email,password){
         };
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to login user`, error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to login user`, error);
+        }
         throw error;
     }
 }

@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const profileService = require("../services/profile.service.js");
 const logger = require("../utils/logger.js");
 
@@ -6,27 +8,55 @@ const FILE_NAME = "user-update.controller.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Update User Profile Photo - starts
 // ============================================================
-const updateUserProfilePhoto = async function(req,res){
-    logger.info(`[${FILE_NAME}] Update user profile photo request received`);
+async function updateUserProfilePhoto(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Update user profile photo request received`);
+    }
 
     try{
-        logger.info(`[${FILE_NAME}] Calling profile service to update user profile photo`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling profile service to update user profile photo`);
+        }
         
         const result = await profileService.updateUserProfilePhoto(
             req.params.userID,
             req.body.imageDetail
         );
 
-        logger.success(`[${FILE_NAME}] User profile photo updated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] User profile photo updated successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending profile photo update response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending profile photo update response to client`);
+        }
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to update user profile photo`, error);
-        logger.warn(`[${FILE_NAME}] Update user profile photo request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to update user profile photo`, error);
+            logger.warn(`[${FILE_NAME}] Update user profile photo request could not be completed`);
+        }
 
         return res.status(
             error.status || 500
@@ -45,25 +75,35 @@ const updateUserProfilePhoto = async function(req,res){
 // ============================================================
 // Update User Basic Information - starts
 // ============================================================
-const updateUserBasicInformation = async function(req,res){
-    logger.info(`[${FILE_NAME}] Update user basic information request received`);
+async function updateUserBasicInformation(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Update user basic information request received`);
+    }
 
     try{
-        logger.info(`[${FILE_NAME}] Calling profile service to update user basic information`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling profile service to update user basic information`);
+        }
 
         const result = await profileService.updateUserBasicInformation(
             req.params.userID,
             req.body
         );
 
-        logger.success(`[${FILE_NAME}] User basic information updated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] User basic information updated successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending basic information update response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending basic information update response to client`);
+        }
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to update user basic information`, error);
-        logger.warn(`[${FILE_NAME}] Update user basic information request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to update user basic information`, error);
+            logger.warn(`[${FILE_NAME}] Update user basic information request could not be completed`);
+        }
 
         return res.status(
             error.status || 500
@@ -82,25 +122,35 @@ const updateUserBasicInformation = async function(req,res){
 // ============================================================
 // Update User Email Username - starts
 // ============================================================
-const updateUserEmailUsername = async function(req,res){
-    logger.info(`[${FILE_NAME}] Update user email and username request received`);
+async function updateUserEmailUsername(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Update user email and username request received`);
+    }
 
     try{
-        logger.info(`[${FILE_NAME}] Calling profile service to update user email and username`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling profile service to update user email and username`);
+        }
 
         const result = await profileService.updateUserEmailUsername(
             req.params.userID,
             req.body
         );
 
-        logger.success(`[${FILE_NAME}] User email and username updated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] User email and username updated successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending email and username update response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending email and username update response to client`);
+        }
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to update user email and username`, error);
-        logger.warn(`[${FILE_NAME}] Update user email and username request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to update user email and username`, error);
+            logger.warn(`[${FILE_NAME}] Update user email and username request could not be completed`);
+        }
 
         return res.status(
             error.status || 500
@@ -119,25 +169,35 @@ const updateUserEmailUsername = async function(req,res){
 // ============================================================
 // Update User Password - starts
 // ============================================================
-const updateUserPassword = async function(req,res){
-    logger.info(`[${FILE_NAME}] Update user password request received`);
+async function updateUserPassword(req,res){
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Update user password request received`);
+    }
 
     try{
-        logger.info(`[${FILE_NAME}] Calling profile service to update user password`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Calling profile service to update user password`);
+        }
 
         const result = await profileService.updateUserPassword(
             req.params.userID,
             req.body
         );
 
-        logger.success(`[${FILE_NAME}] User password updated successfully`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.success(`[${FILE_NAME}] User password updated successfully`);
+        }
 
-        logger.info(`[${FILE_NAME}] Sending password update response to client`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Sending password update response to client`);
+        }
         return res.status(200).json(result);
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to update user password`, error);
-        logger.warn(`[${FILE_NAME}] Update user password request could not be completed`);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Failed to update user password`, error);
+            logger.warn(`[${FILE_NAME}] Update user password request could not be completed`);
+        }
 
         return res.status(
             error.status || 500

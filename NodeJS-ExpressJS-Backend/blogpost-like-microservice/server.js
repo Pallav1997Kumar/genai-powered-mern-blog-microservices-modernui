@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 
 const {
@@ -18,11 +19,31 @@ const FILE_NAME = "server.js";
 
 
 // ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
+
+
+
+// ============================================================
 // Express Application Initialization - starts
 // ============================================================
 const app = express();
 
-logger.info(`[${FILE_NAME}] Blogpost Like Service application initialized`);
+if(process.env.environment == "DEVELOPMENT"){
+    logger.info(`[${FILE_NAME}] Blogpost Like Service application initialized`);
+}
 // ============================================================
 // Express Application Initialization - ends
 // ============================================================
@@ -42,7 +63,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-logger.info(`[${FILE_NAME}] Application middleware configured successfully`);
+if(process.env.environment == "DEVELOPMENT"){
+    logger.info(`[${FILE_NAME}] Application middleware configured successfully`);
+}
 // ============================================================
 // Middleware Configuration - ends
 // ============================================================
@@ -57,7 +80,9 @@ app.use(
     healthRouter
 );
 
-logger.info(`[${FILE_NAME}] Health routes configured successfully`);
+if(process.env.environment == "DEVELOPMENT"){
+    logger.info(`[${FILE_NAME}] Health routes configured successfully`);
+}
 // ============================================================
 // Health Routes Configuration - ends
 // ============================================================
@@ -72,7 +97,9 @@ app.use(
     blogPostLikeRoute
 );
 
-logger.info(`[${FILE_NAME}] Blog like routes registered successfully`);
+if(process.env.environment == "DEVELOPMENT"){
+    logger.info(`[${FILE_NAME}] Blog like routes registered successfully`);
+}
 // ============================================================
 // Blog Like Routes - ends
 // ============================================================
@@ -86,7 +113,9 @@ const port = 4003;
 // ============================================================
 async function startServer() {
 
-    logger.info(`[${FILE_NAME}] Server startup request received`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] Server startup request received`);
+    }
 
     try {
         await connectDatabase();
@@ -94,16 +123,20 @@ async function startServer() {
         app.listen(
             port,
             function() {
-                logger.info(`[${FILE_NAME}] Blogpost Like Microservice started successfully`);
-                logger.info(`[${FILE_NAME}] Server running on port ${port}`);
-                logger.info(`[${FILE_NAME}] Health endpoint available at /health`);
+                if(process.env.environment == "DEVELOPMENT"){
+                    logger.info(`[${FILE_NAME}] Blogpost Like Microservice started successfully`);
+                    logger.info(`[${FILE_NAME}] Server running on port ${port}`);
+                    logger.info(`[${FILE_NAME}] Health endpoint available at /health`);
+                }
             }
         );
 
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Unable to start Blogpost Like Microservice`);
-        logger.error(error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Unable to start Blogpost Like Microservice`);
+            logger.error(error);
+        }
 
         process.exit(1);
     }
@@ -119,19 +152,26 @@ async function startServer() {
 // ============================================================
 async function shutdownServer(signal) {
 
-    logger.info(`[${FILE_NAME}] ${signal} signal received`);
+    if(process.env.environment == "DEVELOPMENT"){
+        logger.info(`[${FILE_NAME}] ${signal} signal received`);
 
-    logger.info(`[${FILE_NAME}] Server shutdown request started`);
+        logger.info(`[${FILE_NAME}] Server shutdown request started`);
+    }
 
     try {
         await disconnectDatabase();
-        logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
+
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
+        }
 
         process.exit(0);
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Server shutdown failed`);
-        logger.error(error);
+        if(process.env.environment == "DEVELOPMENT"){
+            logger.error(`[${FILE_NAME}] Server shutdown failed`);
+            logger.error(error);
+        }
 
         process.exit(1);
     }

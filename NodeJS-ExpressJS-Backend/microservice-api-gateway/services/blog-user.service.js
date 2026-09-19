@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const httpClient = require("../utils/httpClient.js");
 const logger = require("../utils/logger.js");
 
@@ -7,6 +9,24 @@ const {
 
 
 const FILE_NAME = "blog-user.service.js";
+
+
+
+// ============================================================
+// Environment Configuration - starts
+// ============================================================
+const configPath =
+    process.env.DEPLOYMENT_STRUCTURE ===
+    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
+        ? "../config.env"
+        : "./config.env";
+
+dotenv.config({
+    path: configPath
+});
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
 
 
 
