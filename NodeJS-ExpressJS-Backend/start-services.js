@@ -227,9 +227,10 @@ function startService(service, callback) {
         console.log(`[STARTUP] Starting ${service.name}...`);
     }
 
+    const command = IS_PRODUCTION ? "start" : "dev";
     const childProcess = spawn(
         "npm",
-        ["--prefix", service.folder, "run", "dev"],
+        ["--prefix", service.folder, "run", command],
         {
             shell: true,
             stdio: IS_DEVELOPMENT ? "inherit" : "ignore"
