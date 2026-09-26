@@ -1,34 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
 
 const healthRouter = require("./routes/health.route.js");
 const blogContentRoute = require("./routes/blog-content.routes.js");
 const blogGenerationRoute = require("./routes/blog-generation.routes.js");
 
+const devLogger = require("./utils/loggers/dev-logger.js");
 const logger = require("./utils/loggers/logger.js");
 
-
 const FILE_NAME = "server.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -37,9 +18,7 @@ dotenv.config({
 // ============================================================
 const app = express();
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Generative AI Service application initialized`);
-}
+devLogger.info(`[${FILE_NAME}] Generative AI Service application initialized`);
 // ============================================================
 // Express Application Initialization - ends
 // ============================================================
@@ -59,9 +38,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Application middleware configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Application middleware configured successfully`);
 // ============================================================
 // Middleware Configuration - ends
 // ============================================================
@@ -76,9 +53,7 @@ app.use(
     healthRouter
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Health routes configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Health routes configured successfully`);
 // ============================================================
 // ============================================================
 // Health Routes Configuration - ends
@@ -94,9 +69,7 @@ app.use(
     blogContentRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog description routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog description routes registered successfully`);
 // ============================================================
 // Blog Description Routes - ends
 // ============================================================
@@ -111,9 +84,7 @@ app.use(
     blogGenerationRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog generation routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog generation routes registered successfully`);
 // ============================================================
 // Blog Generation Routes - ends
 // ============================================================
@@ -126,32 +97,22 @@ const port = 4007;
 // Start Server - starts
 // ============================================================
 async function startServer() {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Server startup request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Server startup request received`);
 
     try {
-
         app.listen(
             port,
             function() {
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.info(`[${FILE_NAME}] Generative AI Service started successfully`);
-                    logger.info(`[${FILE_NAME}] Server running on port ${port}`);
-                    logger.info(`[${FILE_NAME}] Health endpoint available at /health`);
-                }
+                logger.success(`[${FILE_NAME}] Generative AI Service started successfully`);
+                devLogger.success(`[${FILE_NAME}] Server running on port ${port}`);
+                devLogger.success(`[${FILE_NAME}] Health endpoint available at /health`);
             }
         );
 
     }
     catch(error) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Unable to start Generative AI Service`);
-            logger.error(error);
-        }
-
+        logger.error(`[${FILE_NAME}] Unable to start Generative AI Service`);
+        devLogger.error(error);
         process.exit(1);
     }
 }
@@ -165,25 +126,16 @@ async function startServer() {
 // Shutdown Server - starts
 // ============================================================
 async function shutdownServer(signal) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] ${signal} signal received`);
-        logger.info(`[${FILE_NAME}] Server shutdown request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] ${signal} signal received`);
+    devLogger.info(`[${FILE_NAME}] Server shutdown request started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Server shutdown completed successfully`);
         process.exit(0);
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Server shutdown failed`);
-            logger.error(error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Server shutdown failed`);
+        devLogger.error(error);
         process.exit(1);
     }
 }

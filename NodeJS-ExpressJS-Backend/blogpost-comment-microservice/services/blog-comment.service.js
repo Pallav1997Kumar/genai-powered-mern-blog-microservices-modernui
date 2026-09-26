@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
+const ErrorMessage = require("../constants/error-message.constant.js");
 const blogCommentRepository = require("../repositories/blog-comment.repository.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "blog-comment.service.js";
 
@@ -35,62 +36,61 @@ const jwtPrivateKey = process.env.jwtPrivateKey;
 // Add New Blog Comment - starts
 // ============================================================
 async function addNewBlogComment(token, postID, newComment) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Add new blog comment service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Add new blog comment service started`);
 
     try {
         if(!token){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Add comment request received without authentication token`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Add comment request received without authentication token`);
             throw {
                 status:401,
-                message:"Not Authenticated"
+                message:ErrorMessage.NOT_AUTHENTICATED
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Verifying authentication token`);
+        if(!postID){
+            devLogger.warn(`[${FILE_NAME}] Add comment request received without post ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.POST_ID_REQUIRED
+            };
         }
-        const userInformation = jwt.verify(token,jwtPrivateKey);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Authentication token verified successfully`);
+        if(!newComment || newComment.trim().length === 0){
+            devLogger.warn(`[${FILE_NAME}] Blank comment cannot be added`);
+            throw {
+                status:406,
+                message:ErrorMessage.BLANK_COMMENT
+            };
         }
+
+        devLogger.info(`[${FILE_NAME}] Verifying authentication token`);
+        const userInformation = jwt.verify(token, jwtPrivateKey);
+        devLogger.info(`[${FILE_NAME}] Authentication token verified successfully`);
 
         const userID = userInformation.id;
 
-        if(newComment === "" || newComment == null || newComment == undefined){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Blank comment cannot be added`);
-            }
+        if(!userID){
+            devLogger.warn(`[${FILE_NAME}] Authentication token does not contain user ID`);
             throw {
-                status:406,
-                message:"Blank comment cannot be added."
+                status:401,
+                message:ErrorMessage.INVALID_AUTHENTICATION_TOKEN
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Creating comment through repository`);
-        }
+        devLogger.info(`[${FILE_NAME}] Creating comment through repository`);
 
         await blogCommentRepository.createComment({
-            commentDescription: newComment,
+            commentDescription: newComment.trim(),
             commentDateTime: new Date(),
             userID: userID,
             postID: postID
         });
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] New blog comment added successfully`);
-        }
-        return "Commented on the post successfully";
-    } 
-    catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to add new blog comment`, error);
-        }
+        devLogger.success(`[${FILE_NAME}] New blog comment added successfully`);
+        return true;
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to add new blog comment`, error);
         throw error;
     }
 };
@@ -104,64 +104,69 @@ async function addNewBlogComment(token, postID, newComment) {
 // Update Particular Comment - starts
 // ============================================================
 async function updateParticularComment(token, commentID, userID, updatedComment) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Update particular comment service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Update particular comment service started`);
 
     try {
         if(!token){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Update comment request received without authentication token`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Update comment request received without authentication token`);
             throw {
                 status:401,
-                message:"Not Authenticated"
+                message:ErrorMessage.NOT_AUTHENTICATED
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Verifying authentication token`);
+        if(!commentID){
+            devLogger.warn(`[${FILE_NAME}] Update comment request received without comment ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.COMMENT_ID_REQUIRED
+            };
         }
-        const userInformation = jwt.verify(token,jwtPrivateKey);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Authentication token verified successfully`);
+        if(!updatedComment || updatedComment.trim().length === 0){
+            devLogger.warn(`[${FILE_NAME}] Blank updated comment cannot be saved`);
+            throw {
+                status:406,
+                message:ErrorMessage.BLANK_COMMENT
+            };
+        }
+
+        devLogger.info(`[${FILE_NAME}] Verifying authentication token`);
+        const userInformation = jwt.verify(token, jwtPrivateKey);
+        devLogger.info(`[${FILE_NAME}] Authentication token verified successfully`);
+
+        if(!userInformation.id){
+            devLogger.warn(`[${FILE_NAME}] Authentication token does not contain user ID`);
+            throw {
+                status:401,
+                message:ErrorMessage.INVALID_AUTHENTICATION_TOKEN
+            };
+        }
+
+        if(!userID){
+            devLogger.warn(`[${FILE_NAME}] Update comment request received without user ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.USER_ID_REQUIRED
+            };
         }
 
         if(userInformation.id != userID){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] User authentication failed for comment update`);
-            }
+            devLogger.warn(`[${FILE_NAME}] User authentication failed for comment update`);
             throw {
-                status:401,
-                message:"Not Authenticated"
+                status:403,
+                message:ErrorMessage.COMMENT_UPDATE_UNAUTHORIZED
             };
         }
 
-        if(updatedComment === "" || updatedComment == null || updatedComment == undefined){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Blank updated comment cannot be saved`);
-            }
-            throw {
-                status:406,
-                message:"Blank comment cannot be added."
-            };
-        }
+        devLogger.info(`[${FILE_NAME}] Updating comment through repository`);
+        await blogCommentRepository.updateComment(commentID, updatedComment.trim());
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Updating comment through repository`);
-        }
-        await blogCommentRepository.updateComment(commentID, updatedComment);
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Particular blog comment updated successfully`);
-        }
-        return "Comment on the post updated successfully";
-    } 
-    catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to update particular blog comment`, error);
-        }
+        devLogger.success(`[${FILE_NAME}] Particular blog comment updated successfully`);
+        return true;
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to update particular blog comment`, error);
         throw error;
     }
 };
@@ -175,38 +180,47 @@ async function updateParticularComment(token, commentID, userID, updatedComment)
 // Delete Particular Comment - starts
 // ============================================================
 async function deleteParticularComment(token, commentID) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Delete particular comment service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Delete particular comment service started`);
 
     try {
         if(!token){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Delete comment request received without authentication token`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Delete comment request received without authentication token`);
             throw {
                 status:401,
-                message:"Not Authenticated"
+                message:ErrorMessage.NOT_AUTHENTICATED
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Deleting comment through repository`);
+        if(!commentID){
+            devLogger.warn(`[${FILE_NAME}] Delete comment request received without comment ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.COMMENT_ID_REQUIRED
+            };
         }
-        await blogCommentRepository.deleteComment(commentID);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Particular blog comment deleted successfully`);
+        devLogger.info(`[${FILE_NAME}] Verifying authentication token`);
+        const userInformation = jwt.verify(token,jwtPrivateKey);
+        devLogger.info(`[${FILE_NAME}] Authentication token verified successfully`);
+
+        if(!userInformation.id){
+            devLogger.warn(`[${FILE_NAME}] Authentication token does not contain user ID`);
+            throw {
+                status:401,
+                message:ErrorMessage.INVALID_AUTHENTICATION_TOKEN
+            };
         }
-        return "Comment on the post deleted successfully";
-    } 
-    catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to delete particular blog comment`, error);
-        }
+
+        devLogger.info(`[${FILE_NAME}] Deleting comment through repository`);
+        await blogCommentRepository.deleteComment(commentID);
+        devLogger.success(`[${FILE_NAME}] Particular blog comment deleted successfully`);
+
+        return true;
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to delete particular blog comment`, error);
         throw error;
     }
-    
 };
 // ============================================================
 // Delete Particular Comment - ends
@@ -218,25 +232,25 @@ async function deleteParticularComment(token, commentID) {
 // Get All Comments For Particular Blog - starts
 // ============================================================
 async function getAllCommentsForParticularBlog(postID) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get all comments for particular blog service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get all comments for particular blog service started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Fetching comments through repository`);
+        if(!postID){
+            devLogger.warn(`[${FILE_NAME}] Get comments request received without post ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.POST_ID_REQUIRED
+            };
         }
-        const result = await blogCommentRepository.getCommentsByPostId(postID);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog comments fetched successfully`);
-        }
-        return result; 
-    } 
-    catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to get all comments for particular blog`, error);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching comments through repository`);
+        const result = await blogCommentRepository.getCommentsByPostId(postID);
+        devLogger.success(`[${FILE_NAME}] Blog comments fetched successfully`);
+
+        return result;
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to get all comments for particular blog`, error);
         throw error;
     }
 };
@@ -250,25 +264,25 @@ async function getAllCommentsForParticularBlog(postID) {
 // Delete All Comments By User ID - starts
 // ============================================================
 async function deleteAllCommentsByUserId(userID) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Delete all comments by user service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Delete all comments by user service started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Deleting user comments through repository`);
+        if(!userID){
+            devLogger.warn(`[${FILE_NAME}] Delete user comments request received without user ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.USER_ID_REQUIRED
+            };
         }
-        await blogCommentRepository.deleteCommentsByUserId(userID);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] All comments of user deleted successfully`);
-        }
-        return "All comments of user deleted successfully";
-    } 
-    catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to delete all comments by user ID`, error);
-        }
+        devLogger.info(`[${FILE_NAME}] Deleting user comments through repository`);
+        await blogCommentRepository.deleteCommentsByUserId(userID);
+        devLogger.success(`[${FILE_NAME}] All comments of user deleted successfully`);
+
+        return true;
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to delete all comments by user ID`, error);
         throw error;
     }
 };
@@ -282,25 +296,25 @@ async function deleteAllCommentsByUserId(userID) {
 // Delete All Comments By Post ID - starts
 // ============================================================
 async function deleteAllCommentsByPostId(postID) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Delete all comments by post service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Delete all comments by post service started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Deleting post comments through repository`);
+        if(!postID){
+            devLogger.warn(`[${FILE_NAME}] Delete post comments request received without post ID`);
+            throw {
+                status:400,
+                message:ErrorMessage.POST_ID_REQUIRED
+            };
         }
-        await blogCommentRepository.deleteCommentsByPostId(postID);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] All comments of post deleted successfully`);
-        }
-        return "All comments of post deleted successfully";
-    } 
-    catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to delete all comments by post ID`, error);
-        }
+        devLogger.info(`[${FILE_NAME}] Deleting post comments through repository`);
+        await blogCommentRepository.deleteCommentsByPostId(postID);
+        devLogger.success(`[${FILE_NAME}] All comments of post deleted successfully`);
+
+        return true;
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to delete all comments by post ID`, error);
         throw error;
     }
 };

@@ -10,7 +10,7 @@ const {
     suggestBlogTitlesFromBlogDescription,
     suggestBlogDescriptionsFromBlogTitle,
     enhanceBlogDescription
-} = require("../controllers/generativeAIController");
+} = require("../controllers/generative-ai.controller.js");
 
 
 const router = express.Router();

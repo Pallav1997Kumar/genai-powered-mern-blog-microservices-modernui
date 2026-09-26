@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 
 
 function ApplyFilterandSort(props) {
@@ -84,22 +85,16 @@ function ApplyFilterandSort(props) {
 
 	async function fetchUniqueBlogUsersDetails() {
 		try {
-
 			// Fetch all unique blog authors for the main blogs page
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/distinctBlogUsersInfo`
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched unique blog authors:", response);
 			
 			setUniquePostAuthors(response.data);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching unique blog authors:", error);
 		}
 	}
 
@@ -115,22 +110,16 @@ function ApplyFilterandSort(props) {
 
 	async function fetchUniqueBlogCategoriesDetails() {
 		try {
-
 			// Fetch all unique blog categories for the main blogs page
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/distinctBlogCategoriesInfo`
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched unique blog categories:", response);
 
 			setUniquePostCategories(response.data);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching unique blog categories:", error);
 		}
 	}
 
@@ -146,22 +135,16 @@ function ApplyFilterandSort(props) {
 
 	async function fetchUniqueBlogUsersDetailsForParticularCategory() {
 		try {
-
 			// Fetch unique authors for the selected blog category
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/distinctBlogUsersInfo/${blogCategory}`
 			);
-			
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched unique blog authors for category:", response);
 			
 			setUniquePostAuthors(response.data);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching unique blog authors for category:", error);
 		}
 	}
 
@@ -177,22 +160,16 @@ function ApplyFilterandSort(props) {
 
 	async function fetchUniqueBlogCategoriesDetailsForParticularUser() {
 		try {
-
 			// Fetch unique categories for the selected blog user
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/distinctBlogCategoriesInfo/${username}`
 			);
-			
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched unique blog categories for user:", response);
 
 			setUniquePostCategories(response.data);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching unique blog categories for user:", error);
 		}
 	}
 
@@ -316,10 +293,7 @@ function ApplyFilterandSort(props) {
 				allCheckedAuthor,
 				checkedDate,
 			};
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(sortFilterObject);
-			}
+			logger.log(sortFilterObject);
 			props.onGetSortFilterObject(sortFilterObject);
 		}
 		else if(pathname.includes("/blogs/category/")){
@@ -329,10 +303,7 @@ function ApplyFilterandSort(props) {
 				allCheckedAuthor,
 				checkedDate,
 			};
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(sortFilterObject);
-			}
+			logger.log(sortFilterObject);
 			props.onGetSortFilterObject(sortFilterObject);
 		}
 		else if(pathname.includes("/blogs/username/")){
@@ -342,10 +313,7 @@ function ApplyFilterandSort(props) {
 				allCheckedCategory,
 				checkedDate,
 			};
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(sortFilterObject);
-			}
+			logger.log(sortFilterObject);
 			props.onGetSortFilterObject(sortFilterObject);
 		}
 

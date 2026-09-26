@@ -11,6 +11,8 @@ import ApplyFilterAndSort from "./ApplyFilterAndSort.jsx";
 import NoPostForFilter from "./NoPostForFilter.jsx";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
+
 
 function AllBlogs() {
 
@@ -172,28 +174,19 @@ function AllBlogs() {
 	// ============================================================
 
 	async function fetchBlogPostWithPagination() {
-
 		try {
-
 			// Fetch paginated blog posts with user and category information
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo?page=${currentPageNo}&limit=${limit}`
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched blog posts with pagination:", response);
 
 			setTotalPagesCount(response.data.totalPages);
 			setBlogPostDetails(response.data.blogPostData);
-
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching blog posts with pagination:", error);
 		}
-
 	}
 
 	// ============================================================
@@ -207,28 +200,19 @@ function AllBlogs() {
 	// ============================================================
 
 	async function fetchUserBlogPostWithPagination() {
-
 		try {
-
 			// Fetch paginated posts belonging to the selected user
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo/user/${username}?page=${currentPageNo}&limit=${limit}`
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched user blog posts with pagination:", response);
 
 			setTotalPagesCount(response.data.totalPages);
 			setBlogPostDetails(response.data.blogPostData);
-
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching user blog posts with pagination:", error);
 		}
-
 	}
 
 	// ============================================================
@@ -242,28 +226,19 @@ function AllBlogs() {
 	// ============================================================
 
 	async function fetchCategoryBlogPostWithPagination() {
-
 		try {
-
 			// Fetch paginated posts belonging to the selected category
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo/category/${blogCategory}?page=${currentPageNo}&limit=${limit}`
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched category blog posts with pagination:", response);
 
 			setTotalPagesCount(response.data.totalPages);
 			setBlogPostDetails(response.data.blogPostData);
-
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching category blog posts with pagination:", error);
 		}
-
 	}
 
 	// ============================================================
@@ -277,28 +252,19 @@ function AllBlogs() {
 	// ============================================================
 
 	async function fetchBlogPostWithFilterSortingPagination(sortFilterObject) {
-
 		try {
-
 			// Fetch filtered and sorted posts for all blogs
 			const response = await axios.post(
 				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo?page=${filteredCurrentPageNo}&limit=${limit}`,
 				sortFilterObject
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched blog posts with filter and sorting:", response);
 
 			return response.data;
-
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching blog posts with filter and sorting:", error);
 		}
-
 	}
 
 	// ============================================================
@@ -312,28 +278,19 @@ function AllBlogs() {
 	// ============================================================
 
 	async function fetchUserBlogPostWithFilterSortingPagination(sortFilterObject) {
-
 		try {
-
 			 // Fetch filtered and sorted posts for the selected user
 			const response = await axios.post(
 				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo/user/${username}?page=${filteredCurrentPageNo}&limit=${limit}`,
 				sortFilterObject
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched user blog posts with filter and sorting:", response);
 
 			return response.data;
-
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching user blog posts with filter and sorting:", error);
 		}
-
 	}
 
 	// ============================================================
@@ -347,28 +304,19 @@ function AllBlogs() {
 	// ============================================================
 
 	async function fetchCategoryBlogPostWithFilterSortingPagination(sortFilterObject) {
-
 		try {
-
 			// Fetch filtered and sorted posts for the selected category
 			const response = await axios.post(
 				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo/category/${blogCategory}?page=${filteredCurrentPageNo}&limit=${limit}`,
 				sortFilterObject
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched category blog posts with filter and sorting:", response);
 
 			return response.data;
-
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching category blog posts with filter and sorting:", error);
 		}
-
 	}
 
 	// ============================================================

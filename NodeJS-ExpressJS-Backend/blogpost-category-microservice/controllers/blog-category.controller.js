@@ -1,27 +1,9 @@
-const dotenv = require("dotenv");
-
+const ErrorMessage = require("../constants/error-message.constant.js");
+const SuccessMessage = require("../constants/success-message.constant.js");
 const blogCategoryService = require("../services/blog-category.service.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "blog-category.controller.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -29,35 +11,33 @@ dotenv.config({
 // Get all categories - starts
 // ============================================================
 async function getAllBlogCategoryList(req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get all blog categories request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get all blog categories request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog category service to fetch all categories`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog category service to fetch all categories`);
+        const result = await blogCategoryService.getAllBlogCategoryList();
 
-        const result =
-            await blogCategoryService.getAllBlogCategoryList();
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] All blog categories fetched successfully`);
-        }
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Sending all blog categories response to client`);
-        }
-        res.status(200).json(result);
+        devLogger.success(`[${FILE_NAME}] All blog categories fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Sending all blog categories response to client`);
+        
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: SuccessMessage.BLOG_CATEGORY_LIST_FETCHED,
+            errorMessage: "",
+            resultData: result
+        });
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to fetch all blog categories`, error);
-            logger.warn(`[${FILE_NAME}] Get all blog categories request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to fetch all blog categories`, error);
+        devLogger.warn(`[${FILE_NAME}] Get all blog categories request could not be completed`);
 
-        res.status(500).json({
-            message:error.message
+        return res.status(500).json({
+            success: false,
+            error: true,
+            successMessage: "",
+            errorMessage: error.message,
+            resultData: []
         });
     }
 }
@@ -71,37 +51,33 @@ async function getAllBlogCategoryList(req, res) {
 // Get category by id - starts
 // ============================================================
 async function getBlogCategoryById(req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get blog category by ID request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog category by ID request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting category ID from request parameters`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting category ID from request parameters`);
+        const result = await blogCategoryService.getBlogCategoryById(req.params.id);
 
-        const result =
-            await blogCategoryService.getBlogCategoryById(
-                req.params.id
-            );
+        devLogger.success(`[${FILE_NAME}] Blog category fetched successfully by ID`);
+        devLogger.info(`[${FILE_NAME}] Sending category by ID response to client`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog category fetched successfully by ID`);
-        }
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Sending category by ID response to client`);
-        }
-        res.status(200).json(result);
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: SuccessMessage.BLOG_CATEGORY_FETCHED,
+            errorMessage: "",
+            resultData: result
+        });
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to fetch blog category by ID`, error);
-            logger.warn(`[${FILE_NAME}] Category by ID request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog category by ID`, error);
+        devLogger.warn(`[${FILE_NAME}] Category by ID request could not be completed`);
 
-        res.status(404).json({
-            message:error.message
+        return res.status(404).json({
+            success: false,
+            error: true,
+            successMessage: "",
+            errorMessage: error.message,
+            resultData: null
         });
     }
 }
@@ -115,37 +91,33 @@ async function getBlogCategoryById(req, res) {
 // Get category by category name - starts
 // ============================================================
 async function getBlogCategoryByCategoryName(req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get blog category by name request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog category by name request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting category name from request parameters`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting category name from request parameters`);
+        const result = await blogCategoryService.getBlogCategoryByName(req.params.categoryName);
 
-        const result =
-            await blogCategoryService.getBlogCategoryByName(
-                req.params.categoryName
-            );
+        devLogger.success(`[${FILE_NAME}] Blog category fetched successfully by name`);
+        devLogger.info(`[${FILE_NAME}] Sending category by name response to client`);   
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog category fetched successfully by name`);
-        }
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Sending category by name response to client`);
-        }
-        res.status(200).json(result);
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: SuccessMessage.BLOG_CATEGORY_FETCHED,
+            errorMessage: "",
+            resultData: result
+        });
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to fetch blog category by name`, error);
-            logger.warn(`[${FILE_NAME}] Category by name request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog category by name`, error);
+        devLogger.warn(`[${FILE_NAME}] Category by name request could not be completed`);
 
-        res.status(404).json({
-            message:error.message
+        return res.status(404).json({
+            success: false,
+            error: true,
+            successMessage: "",
+            errorMessage: error.message,
+            resultData: null
         });
     }
 }
@@ -159,49 +131,48 @@ async function getBlogCategoryByCategoryName(req, res) {
 // Search blog category - starts
 // ============================================================
 async function searchBlogCategory(req, res, next) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Blog category search request received`);
-    }
 
+    devLogger.info(`[${FILE_NAME}] Blog category search request received`);
     const searchText = req.query.searchText;
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Search text extracted from request`);
-    }
+    devLogger.info(`[${FILE_NAME}] Search text extracted from request`);
 
     if (!searchText || searchText.trim().length < 3) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.warn(`[${FILE_NAME}] Blog category search text is missing or less than 3 characters`);
-        }
+        devLogger.warn(`[${FILE_NAME}] Blog category search text is missing or less than 3 characters`);
 
         return res.status(400).json({
-            error: "Search Text must be at least 3 characters long."
+            success: false,
+            error: true,
+            successMessage: "",
+            errorMessage: ErrorMessage.SEARCH_TEXT_MIN_LENGTH,
+            resultData: []
         });
     }
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog category service for category suggestions`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog category service for category suggestions`);
         const result = await blogCategoryService.getCategorySuggestions(searchText.trim());
+        
+        devLogger.success(`[${FILE_NAME}] Blog category search completed successfully`);
+        devLogger.info(`[${FILE_NAME}] Sending blog category search response to client`);    
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog category search completed successfully`);
-        }
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Sending blog category search response to client`);
-        }
-        return res.status(200).json(result);
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: SuccessMessage.BLOG_CATEGORY_SEARCH_COMPLETED,
+            errorMessage: "",
+            resultData: result
+        });
     } 
     catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Blog category search failed`, error);
-            logger.warn(`[${FILE_NAME}] Blog category search request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Blog category search failed`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog category search request could not be completed`);
 
         return res.status(500).json({
-            message: error.message
+            success: false,
+            error: true,
+            successMessage: "",
+            errorMessage: error.message,
+            resultData: []
         });
     }
 };

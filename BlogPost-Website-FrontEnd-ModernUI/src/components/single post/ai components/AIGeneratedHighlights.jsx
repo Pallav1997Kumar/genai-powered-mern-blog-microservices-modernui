@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../../style/single post/ai components/AIGeneratedHighlights.scss";
 
 import backendBaseURL from "../../../backendBaseURL.js";
+import logger from '../../../utils/logger.js';
 import { getPlainText } from "../../../utils/utility functions.js";
 
 
@@ -54,16 +55,11 @@ function AIGeneratedHighlights(props) {
                 `${backendBaseURL}/api/generativeAI/generateBlogHighlights`,
                 values
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.log(response);
-            }
+            logger.log("AI-generated highlights:", response);
 
             setHighlights(response.data.blogHighlights);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.error(error);
-            }
+            logger.error("Error while generating AI highlights:", error);
             setError("Failed to generate highlights. Please try again");
         } finally {
             setLoading(false);

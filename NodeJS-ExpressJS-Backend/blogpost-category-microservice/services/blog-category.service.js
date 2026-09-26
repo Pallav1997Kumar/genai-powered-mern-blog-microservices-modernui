@@ -1,27 +1,8 @@
-const dotenv = require("dotenv");
-
+const ErrorMessage = require("../constants/error-message.constant.js");
 const blogCategoryRepository = require("../repositories/blog-category.repository.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "blog-category.service.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -29,30 +10,20 @@ dotenv.config({
 // Get All Categories - starts
 // ============================================================
 async function getAllBlogCategoryList() {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get all blog categories request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get all blog categories request started`);
+    
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog category repository`);
-        }
-        const result =
-            await blogCategoryRepository.getAllBlogCategoryList();
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Blog category repository response received`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog category repository`);
+        const result = await blogCategoryRepository.getAllBlogCategoryList();
         
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Get all blog categories completed successfully`);
-        }
+        devLogger.info(`[${FILE_NAME}] Blog category repository response received`);
+        devLogger.success(`[${FILE_NAME}] Get all blog categories completed successfully`);
+        
         return result;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to get all blog categories`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to get all blog categories`, error);
         throw error;
     }
 }
@@ -66,39 +37,23 @@ async function getAllBlogCategoryList() {
 // Get Category By ID - starts
 // ============================================================
 async function getBlogCategoryById(id) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get blog category by ID request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog category by ID request started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog category repository by ID`);
-        }
-        const category =
-            await blogCategoryRepository.getBlogCategoryById(id);
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Blog category repository response received`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog category repository by ID`);
+        const category = await blogCategoryRepository.getBlogCategoryById(id);
+        devLogger.info(`[${FILE_NAME}] Blog category repository response received`);
 
         if(!category) {
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Blog category not found by ID`);
-            }
-            throw new Error(
-                "Blog category not found"
-            );
+            devLogger.warn(`[${FILE_NAME}] Blog category not found by ID`);    
+            throw new Error(ErrorMessage.BLOG_CATEGORY_NOT_FOUND);
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog category fetched by ID successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog category fetched by ID successfully`);
         return category;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to get blog category by ID`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to get blog category by ID`, error);
         throw error;
     }
 }
@@ -112,38 +67,24 @@ async function getBlogCategoryById(id) {
 // Get Category By Name - starts
 // ============================================================
 async function getBlogCategoryByName(categoryName) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get blog category by name request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog category by name request started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog category repository by name`);
-        }
-        const category =
-            await blogCategoryRepository.getBlogCategoryByName(categoryName);
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Blog category repository response received`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog category repository by name`);
+        const category = await blogCategoryRepository.getBlogCategoryByName(categoryName);
+        devLogger.info(`[${FILE_NAME}] Blog category repository response received`);
 
         if (!category) {
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Blog category not found by name`);
-            }
-            throw new Error("Blog category not found");
+            devLogger.warn(`[${FILE_NAME}] Blog category not found by name`);
+            throw new Error(ErrorMessage.BLOG_CATEGORY_NOT_FOUND);
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog category fetched by name successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog category fetched by name successfully`);
         return category;
 
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to get blog category by name`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to get blog category by name`, error);
         throw error;
     }
 }
@@ -157,39 +98,25 @@ async function getBlogCategoryByName(categoryName) {
 // Get Category Suggestions - starts
 // ============================================================
 async function getCategorySuggestions(categoryName) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get category suggestions request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get category suggestions request started`);
 
     try {
         if (!categoryName || categoryName.trim() === "") {
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Empty category name received for suggestions`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Empty category name received for suggestions`);
             return [];
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Searching category suggestions`);
-        }
-        const categories = 
-            await blogCategoryRepository.findCategoriesByNameIgnoreCase(
-                categoryName.trim()
-            );
+        devLogger.info(`[${FILE_NAME}] Searching category suggestions`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Category suggestion repository response received`);
-        }
+        const categories = await blogCategoryRepository.findCategoriesByNameIgnoreCase(categoryName.trim());
+
+        devLogger.info(`[${FILE_NAME}] Category suggestion repository response received`);
+        devLogger.success(`[${FILE_NAME}] Category suggestions fetched successfully`);
         
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Category suggestions fetched successfully`);
-        }
         return categories;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to get category suggestions`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to get category suggestions`, error);
         throw error;
     }
 }

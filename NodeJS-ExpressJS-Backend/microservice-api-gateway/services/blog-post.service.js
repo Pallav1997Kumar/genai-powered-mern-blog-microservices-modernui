@@ -1,7 +1,5 @@
-const dotenv = require("dotenv");
-
 const httpClient = require("../utils/httpClient.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const {
     BLOG_POST_SERVICE
@@ -9,24 +7,6 @@ const {
 
 
 const FILE_NAME = "blog-post.service.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -39,25 +19,22 @@ dotenv.config({
 // Get Four Blog Posts By Category Code Starts
 // ============================================================
 const getFourBlogPostByCategory = async function(categoryID){
-    logger.info(`[${FILE_NAME}] Get four blog posts by category request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get four blog posts by category request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch four posts by category`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch four posts by category`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/category/four-blog-post/${categoryID}`
         );
 
-        logger.info(`[${FILE_NAME}] Four blog posts by category response received successfully`);
-        logger.success(`[${FILE_NAME}] Four blog posts by category fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Four blog posts by category response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Four blog posts by category fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning four blog posts by category response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning four blog posts by category response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch four blog posts by category`, error);
-        logger.warn(`[${FILE_NAME}] Get four blog posts by category request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch four blog posts by category`, error);
+        devLogger.warn(`[${FILE_NAME}] Get four blog posts by category request could not be completed`);
 
         throw {
             message:"Failed to fetch four blog posts by category",
@@ -76,11 +53,9 @@ const getFourBlogPostByCategory = async function(categoryID){
 // Get Category Posts With Pagination Code Starts
 // ============================================================
 const getCategoryPostPagination = async function(categoryID, params = {}){
-    logger.info(`[${FILE_NAME}] Get category posts with pagination request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get category posts with pagination request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service for category post pagination`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service for category post pagination`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/category/pagination/${categoryID}`,
             {
@@ -88,16 +63,15 @@ const getCategoryPostPagination = async function(categoryID, params = {}){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Category post pagination response received successfully`);
-        logger.success(`[${FILE_NAME}] Category posts pagination fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Category post pagination response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Category posts pagination fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning category post pagination response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning category post pagination response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch category posts pagination`, error);
-        logger.warn(`[${FILE_NAME}] Category post pagination request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch category posts pagination`, error);
+        devLogger.warn(`[${FILE_NAME}] Category post pagination request could not be completed`);
 
         throw {
             message:"Failed to fetch category posts pagination",
@@ -116,25 +90,22 @@ const getCategoryPostPagination = async function(categoryID, params = {}){
 // Get Unique Category IDs Code Starts
 // ============================================================
 const getUniqueCategoryIds = async function(){
-    logger.info(`[${FILE_NAME}] Get unique category IDs request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get unique category IDs request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch unique category IDs`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique category IDs`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/category/unique-category-ids`
         );
 
-        logger.info(`[${FILE_NAME}] Unique category IDs response received successfully`);
-        logger.success(`[${FILE_NAME}] Unique category IDs fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Unique category IDs response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Unique category IDs fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning unique category IDs response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning unique category IDs response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch unique category IDs`, error);
-        logger.warn(`[${FILE_NAME}] Get unique category IDs request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique category IDs`, error);
+        devLogger.warn(`[${FILE_NAME}] Get unique category IDs request could not be completed`);
 
         throw {
             message:"Failed to fetch unique category IDs",
@@ -153,25 +124,22 @@ const getUniqueCategoryIds = async function(){
 // Get Unique Users By Category Code Starts
 // ============================================================
 const getUniqueUsersByCategory = async function(categoryID){
-    logger.info(`[${FILE_NAME}] Get unique users by category request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get unique users by category request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch unique users by category`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique users by category`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/category/unique-users/${categoryID}`
         );
 
-        logger.info(`[${FILE_NAME}] Unique users by category response received successfully`);
-        logger.success(`[${FILE_NAME}] Unique users by category fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Unique users by category response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Unique users by category fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning unique users by category response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning unique users by category response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch unique users by category`, error);
-        logger.warn(`[${FILE_NAME}] Get unique users by category request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique users by category`, error);
+        devLogger.warn(`[${FILE_NAME}] Get unique users by category request could not be completed`);
 
         throw {
             message:"Failed to fetch unique users by category",
@@ -195,26 +163,23 @@ const getUniqueUsersByCategory = async function(categoryID){
 // Filter Sort Pagination Code Starts
 // ============================================================
 const filterSortPagination = async function(data){
-    logger.info(`[${FILE_NAME}] Filter and sort pagination request started`);
-
+    devLogger.info(`[${FILE_NAME}] Filter and sort pagination request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service for filter and sort pagination`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service for filter and sort pagination`);
         const response = await httpClient.post(
             `${BLOG_POST_SERVICE}/api/blog-post/filter-sort/filter-sort-pagination`,
             data
         );
 
-        logger.info(`[${FILE_NAME}] Filter and sort pagination response received successfully`);
-        logger.success(`[${FILE_NAME}] Blog post filter and sort pagination completed successfully`);
+        devLogger.info(`[${FILE_NAME}] Filter and sort pagination response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post filter and sort pagination completed successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning filter and sort pagination response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning filter and sort pagination response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to filter and sort blog posts`, error);
-        logger.warn(`[${FILE_NAME}] Filter and sort blog posts request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to filter and sort blog posts`, error);
+        devLogger.warn(`[${FILE_NAME}] Filter and sort blog posts request could not be completed`);
 
         throw {
             message:"Failed to filter and sort blog posts",
@@ -233,26 +198,23 @@ const filterSortPagination = async function(data){
 // Filter Sort Pagination By User Code Starts
 // ============================================================
 const filterSortPaginationByUser = async function(userID, data){
-    logger.info(`[${FILE_NAME}] Filter and sort pagination by user request started`);
-
+    devLogger.info(`[${FILE_NAME}] Filter and sort pagination by user request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service for user filter and sort pagination`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service for user filter and sort pagination`);
         const response = await httpClient.post(
             `${BLOG_POST_SERVICE}/api/blog-post/filter-sort/filter-sort-pagination/user/${userID}`,
             data
         );
 
-        logger.info(`[${FILE_NAME}] User filter and sort pagination response received successfully`);
-        logger.success(`[${FILE_NAME}] User blog post filter and sort pagination completed successfully`);
+        devLogger.info(`[${FILE_NAME}] User filter and sort pagination response received successfully`);
+        devLogger.success(`[${FILE_NAME}] User blog post filter and sort pagination completed successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning user filter and sort pagination response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning user filter and sort pagination response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to filter user blog posts`, error);
-        logger.warn(`[${FILE_NAME}] User blog post filter and sort request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to filter user blog posts`, error);
+        devLogger.warn(`[${FILE_NAME}] User blog post filter and sort request could not be completed`);
 
         throw {
             message:"Failed to filter user blog posts",
@@ -271,26 +233,23 @@ const filterSortPaginationByUser = async function(userID, data){
 // Filter Sort Pagination By Category Code Starts
 // ============================================================
 const filterSortPaginationByCategory = async function(categoryID, data){
-    logger.info(`[${FILE_NAME}] Filter and sort pagination by category request started`);
-
+    devLogger.info(`[${FILE_NAME}] Filter and sort pagination by category request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service for category filter and sort pagination`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service for category filter and sort pagination`);
         const response = await httpClient.post(
             `${BLOG_POST_SERVICE}/api/blog-post/filter-sort/filter-sort-pagination/category/${categoryID}`,
             data
         );
 
-        logger.info(`[${FILE_NAME}] Category filter and sort pagination response received successfully`);
-        logger.success(`[${FILE_NAME}] Category blog post filter and sort pagination completed successfully`);
+        devLogger.info(`[${FILE_NAME}] Category filter and sort pagination response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Category blog post filter and sort pagination completed successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning category filter and sort pagination response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning category filter and sort pagination response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to filter category blog posts`, error);
-        logger.warn(`[${FILE_NAME}] Category blog post filter and sort request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to filter category blog posts`, error);
+        devLogger.warn(`[${FILE_NAME}] Category blog post filter and sort request could not be completed`);
 
         throw {
             message:"Failed to filter category blog posts",
@@ -314,25 +273,22 @@ const filterSortPaginationByCategory = async function(categoryID, data){
 // Get All Blog Posts Code Starts
 // ============================================================
 const getAllBlogPosts = async function(){
-    logger.info(`[${FILE_NAME}] Get all blog posts request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get all blog posts request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog posts`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog posts`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/read/all-blog-post`
         );
 
-        logger.info(`[${FILE_NAME}] All blog posts response received successfully`);
-        logger.success(`[${FILE_NAME}] All blog posts fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] All blog posts response received successfully`);
+        devLogger.success(`[${FILE_NAME}] All blog posts fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning all blog posts response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning all blog posts response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch blog posts`, error);
-        logger.warn(`[${FILE_NAME}] Get all blog posts request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts`, error);
+        devLogger.warn(`[${FILE_NAME}] Get all blog posts request could not be completed`);
 
         throw {
             message:"Failed to fetch blog posts",
@@ -351,25 +307,22 @@ const getAllBlogPosts = async function(){
 // Get Four Blog Posts Code Starts
 // ============================================================
 const getFourBlogPosts = async function(){
-    logger.info(`[${FILE_NAME}] Get four blog posts request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get four blog posts request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch four blog posts`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch four blog posts`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/read/four-blog-post`
         );
 
-        logger.info(`[${FILE_NAME}] Four blog posts response received successfully`);
-        logger.success(`[${FILE_NAME}] Four blog posts fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Four blog posts response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Four blog posts fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning four blog posts response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning four blog posts response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch blog posts`, error);
-        logger.warn(`[${FILE_NAME}] Get four blog posts request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts`, error);
+        devLogger.warn(`[${FILE_NAME}] Get four blog posts request could not be completed`);
 
         throw {
             message:"Failed to fetch blog posts",
@@ -388,25 +341,22 @@ const getFourBlogPosts = async function(){
 // Get Blog Post By ID Code Starts
 // ============================================================
 const getBlogPostById = async function(postID){
-    logger.info(`[${FILE_NAME}] Get blog post by ID request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get blog post by ID request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch blog post by ID`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch blog post by ID`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/read/post/${postID}`
         );
 
-        logger.info(`[${FILE_NAME}] Blog post by ID response received successfully`);
-        logger.success(`[${FILE_NAME}] Blog post fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post by ID response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning blog post by ID response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning blog post by ID response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch blog post`, error);
-        logger.warn(`[${FILE_NAME}] Get blog post by ID request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Get blog post by ID request could not be completed`);
 
         throw {
             message:"Failed to fetch blog post",
@@ -425,11 +375,9 @@ const getBlogPostById = async function(postID){
 // Get Blog Post Pagination Code Starts
 // ============================================================
 const getBlogPostPagination = async function(params = {}){
-    logger.info(`[${FILE_NAME}] Get blog post pagination request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get blog post pagination request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service for blog post pagination`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service for blog post pagination`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/read/pagination`,
             {
@@ -437,16 +385,15 @@ const getBlogPostPagination = async function(params = {}){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog post pagination response received successfully`);
-        logger.success(`[${FILE_NAME}] Blog post pagination fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post pagination response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post pagination fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning blog post pagination response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning blog post pagination response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch blog post pagination`, error);
-        logger.warn(`[${FILE_NAME}] Blog post pagination request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog post pagination`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog post pagination request could not be completed`);
 
         throw {
             message:"Failed to fetch blog post pagination",
@@ -465,25 +412,22 @@ const getBlogPostPagination = async function(params = {}){
 // Search Blog Posts By Title Code Starts
 // ============================================================
 const searchBlogPostByTitle = async function(searchText) {
-    logger.info(`[${FILE_NAME}] Search blog posts by title request started`);
-
+    devLogger.info(`[${FILE_NAME}] Search blog posts by title request started`);
     try {
-        logger.info(`[${FILE_NAME}] Calling blog post service to search blog posts by title`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to search blog posts by title`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/read/search-by-title?searchText=${searchText}`
         );
 
-        logger.info(`[${FILE_NAME}] Blog post title search response received successfully`);
-        logger.success(`[${FILE_NAME}] Blog post title search completed successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post title search response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post title search completed successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning blog post title search response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning blog post title search response`);
         return response.data;
     } 
     catch (error) {
-        logger.error(`[${FILE_NAME}] Failed to search blog posts by title`, error);
-        logger.warn(`[${FILE_NAME}] Blog post title search request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to search blog posts by title`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog post title search request could not be completed`);
 
         throw {
             message: "Failed to search blog posts by title",
@@ -507,25 +451,22 @@ const searchBlogPostByTitle = async function(searchText) {
 // Get All Blog Post IDs By User ID Code Starts
 // ============================================================
 const getAllBlogPostIdsByUserId = async function(userID){
-    logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog post IDs for user: ${userID}`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog post IDs for user: ${userID}`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/user/userId/${userID}`
         );
 
-        logger.info(`[${FILE_NAME}] All blog post IDs by user ID response received successfully`);
-        logger.success(`[${FILE_NAME}] All blog post IDs fetched successfully for user: ${userID}`);
+        devLogger.info(`[${FILE_NAME}] All blog post IDs by user ID response received successfully`);
+        devLogger.success(`[${FILE_NAME}] All blog post IDs fetched successfully for user: ${userID}`);
 
-        logger.info(`[${FILE_NAME}] Returning all blog post IDs response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning all blog post IDs response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user: ${userID}`, error);
-        logger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user: ${userID}`, error);
+        devLogger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
 
         throw {
             message: "Failed to fetch all blog post IDs",
@@ -544,11 +485,9 @@ const getAllBlogPostIdsByUserId = async function(userID){
 // Get User Posts Pagination Code Starts
 // ============================================================
 const getUserPostPagination = async function(userID, params = {}){
-    logger.info(`[${FILE_NAME}] Get user posts pagination request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get user posts pagination request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service for user posts pagination`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service for user posts pagination`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/user/pagination/userId/${userID}`,
             {
@@ -556,16 +495,15 @@ const getUserPostPagination = async function(userID, params = {}){
             }
         );
 
-        logger.info(`[${FILE_NAME}] User posts pagination response received successfully`);
-        logger.success(`[${FILE_NAME}] User posts pagination fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] User posts pagination response received successfully`);
+        devLogger.success(`[${FILE_NAME}] User posts pagination fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning user posts pagination response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning user posts pagination response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch user posts`, error);
-        logger.warn(`[${FILE_NAME}] User posts pagination request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch user posts`, error);
+        devLogger.warn(`[${FILE_NAME}] User posts pagination request could not be completed`);
 
         throw {
             message:"Failed to fetch user posts",
@@ -584,25 +522,22 @@ const getUserPostPagination = async function(userID, params = {}){
 // Get Unique User IDs Code Starts
 // ============================================================
 const getUniqueUserIds = async function(){
-    logger.info(`[${FILE_NAME}] Get unique user IDs request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get unique user IDs request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch unique user IDs`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique user IDs`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/user/unique-user-ids`
         );
 
-        logger.info(`[${FILE_NAME}] Unique user IDs response received successfully`);
-        logger.success(`[${FILE_NAME}] Unique user IDs fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Unique user IDs response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Unique user IDs fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning unique user IDs response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning unique user IDs response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch unique user IDs`, error);
-        logger.warn(`[${FILE_NAME}] Get unique user IDs request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique user IDs`, error);
+        devLogger.warn(`[${FILE_NAME}] Get unique user IDs request could not be completed`);
 
         throw {
             message:"Failed to fetch unique user IDs",
@@ -621,25 +556,22 @@ const getUniqueUserIds = async function(){
 // Get Unique Categories By User Code Starts
 // ============================================================
 const getUniqueCategoriesByUser = async function(userID){
-    logger.info(`[${FILE_NAME}] Get unique categories by user request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get unique categories by user request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to fetch unique user categories`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique user categories`);
         const response = await httpClient.get(
             `${BLOG_POST_SERVICE}/api/blog-post/user/unique-categories/userId/${userID}`
         );
 
-        logger.info(`[${FILE_NAME}] Unique categories by user response received successfully`);
-        logger.success(`[${FILE_NAME}] Unique categories by user fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Unique categories by user response received successfully`);
+        devLogger.success(`[${FILE_NAME}] Unique categories by user fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning unique categories by user response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning unique categories by user response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch user categories`, error);
-        logger.warn(`[${FILE_NAME}] Get unique categories by user request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch user categories`, error);
+        devLogger.warn(`[${FILE_NAME}] Get unique categories by user request could not be completed`);
 
         throw {
             message:"Failed to fetch user categories",
@@ -663,11 +595,9 @@ const getUniqueCategoriesByUser = async function(userID){
 // Add Blog Post Code Starts
 // ============================================================
 const addBlogPost = async function(data, token){
-    logger.info(`[${FILE_NAME}] Add blog post request started`);
-
+    devLogger.info(`[${FILE_NAME}] Add blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to create blog post`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to create blog post`);
         const response = await httpClient.post(
             `${BLOG_POST_SERVICE}/api/blog-post/write/add`,
             data,
@@ -678,16 +608,15 @@ const addBlogPost = async function(data, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog post service returned add post response successfully`);
-        logger.success(`[${FILE_NAME}] Blog post created successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post service returned add post response successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post created successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning add blog post response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning add blog post response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to create blog post`, error);
-        logger.warn(`[${FILE_NAME}] Add blog post request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to create blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Add blog post request could not be completed`);
 
         throw {
             message:"Failed to create blog post",
@@ -706,11 +635,9 @@ const addBlogPost = async function(data, token){
 // Delete Blog Post Code Starts
 // ============================================================
 const deleteBlogPost = async function(postID, token){
-    logger.warn(`[${FILE_NAME}] Delete blog post request started`);
-
+    devLogger.warn(`[${FILE_NAME}] Delete blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to delete blog post`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to delete blog post`);
         const response = await httpClient.delete(
             `${BLOG_POST_SERVICE}/api/blog-post/write/delete/postId/${postID}`,
             {
@@ -720,16 +647,15 @@ const deleteBlogPost = async function(postID, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog post service returned delete post response successfully`);
-        logger.success(`[${FILE_NAME}] Blog post deleted successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post service returned delete post response successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post deleted successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning delete blog post response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning delete blog post response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to delete blog post`, error);
-        logger.warn(`[${FILE_NAME}] Delete blog post request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to delete blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Delete blog post request could not be completed`);
 
         throw {
             message:"Failed to delete blog post",
@@ -748,11 +674,9 @@ const deleteBlogPost = async function(postID, token){
 // Delete Posts By User Code Starts
 // ============================================================
 const deleteBlogPostsByUser = async function(userID, token){
-    logger.warn(`[${FILE_NAME}] Delete blog posts by user request started`);
-
+    devLogger.warn(`[${FILE_NAME}] Delete blog posts by user request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to delete user blog posts`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to delete user blog posts`);
         const response = await httpClient.delete(
             `${BLOG_POST_SERVICE}/api/blog-post/write/delete-by-user/userId/${userID}`,
             {
@@ -762,16 +686,15 @@ const deleteBlogPostsByUser = async function(userID, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog post service returned delete user posts response successfully`);
-        logger.success(`[${FILE_NAME}] User blog posts deleted successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post service returned delete user posts response successfully`);
+        devLogger.success(`[${FILE_NAME}] User blog posts deleted successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning delete user blog posts response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning delete user blog posts response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to delete user blog posts`, error);
-        logger.warn(`[${FILE_NAME}] Delete user blog posts request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to delete user blog posts`, error);
+        devLogger.warn(`[${FILE_NAME}] Delete user blog posts request could not be completed`);
 
         throw {
             message:"Failed to delete user blog posts",
@@ -790,11 +713,9 @@ const deleteBlogPostsByUser = async function(userID, token){
 // Update Blog Post Code Starts
 // ============================================================
 const updateBlogPost = async function(postID, data, token){
-    logger.info(`[${FILE_NAME}] Update blog post request started`);
-
+    devLogger.info(`[${FILE_NAME}] Update blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog post service to update blog post`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post service to update blog post`);
         const response = await httpClient.put(
             `${BLOG_POST_SERVICE}/api/blog-post/write/update/postId/${postID}`,
             data,
@@ -805,16 +726,15 @@ const updateBlogPost = async function(postID, data, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog post service returned update post response successfully`);
-        logger.success(`[${FILE_NAME}] Blog post updated successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog post service returned update post response successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post updated successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning update blog post response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning update blog post response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to update blog post`, error);
-        logger.warn(`[${FILE_NAME}] Update blog post request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to update blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Update blog post request could not be completed`);
 
         throw {
             message:"Failed to update blog post",

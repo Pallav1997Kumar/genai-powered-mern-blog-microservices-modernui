@@ -18,6 +18,7 @@ import "../../style/authorization/LoginBox.scss";
 import Button from "react-bootstrap/Button";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 
 
 function LoginBox() {
@@ -134,19 +135,13 @@ function LoginBox() {
             };
 
             try {
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.log(inputs);
-                }
-
                 // Send login request to the backend
+                logger.log("Login inputs:", inputs)
                 const response = await axios.post(
                     `${backendBaseURL}/api/authorization/login`,
                     inputs
                 );
-
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.log(response);
-                }
+                logger.log("Login response:", response);
 
                 // Extract user details and JWT token from response
                 const {
@@ -163,7 +158,6 @@ function LoginBox() {
                     profilePhoto,
                 } = response.data;
 
-
                 // Prepare user details for local storage
                 const storage = {
                     firstName,
@@ -178,7 +172,6 @@ function LoginBox() {
                     profilePhoto,
                 };
                 
-
                 // Store authenticated user details locally
                 localStorage.setItem("user", JSON.stringify(storage));
 
@@ -194,10 +187,7 @@ function LoginBox() {
                 // Redirect user after successful login
                 navigate("/");
             } catch (error) {
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.error(error);
-                }
-
+                logger.error("Login error:", error);
                 setErrorMessage(error.response.data);
             }
         }

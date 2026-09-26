@@ -19,6 +19,7 @@ import {
 import { FiEye } from "react-icons/fi";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 
 
 function RegisterBox() {
@@ -322,19 +323,13 @@ function RegisterBox() {
 
 
 			try {
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.log(inputs);
-                }
-
                 // Send registration request to the backend
+                logger.log("Registration inputs:", inputs);
 				const response = await axios.post(
 					`${backendBaseURL}/api/authorization/register`,
 					inputs
 				);
-
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.log(response);
-                }
+                logger.log("Registration response:", response);
 
                 // Display successful registration message
 				setSuccessMessage(response.data);
@@ -355,9 +350,7 @@ function RegisterBox() {
 				setIsErrorWhileRegistration(false);
 			} 
             catch (error) {
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				    console.error(error);
-			    }
+                logger.error("Registration error:", error);
 
                 // Display the appropriate backend error message
 				if (error.message === "Request failed with status code 401") {

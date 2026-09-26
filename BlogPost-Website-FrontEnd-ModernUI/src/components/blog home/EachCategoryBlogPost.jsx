@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-import backendBaseURL from "../../backendBaseURL";
+import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 
 import CategoryCard from "./CategoryCard.jsx";
 
@@ -63,16 +64,12 @@ function EachCategoryBlogPost(props) {
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/fourPostWithUserAndCategoryInfo/${categoryID}`
 			);
+            logger.log("Fetched four blog posts for category:", response);
 
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.log(response);
-            }
 			setDefaultBlogPosts(response.data);
 		}
 		catch(error){
-                if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.log(error.message);
-                }
+            logger.error("Error while fetching four blog posts for category:", error);
 		}
     }
 

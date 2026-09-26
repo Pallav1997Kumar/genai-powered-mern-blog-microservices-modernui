@@ -1,27 +1,8 @@
-const dotenv = require("dotenv");
-
+const SuccessMessage = require("../constants/success-message.constant.js");
 const authService = require("../services/auth.service.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "auth.controller.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -29,34 +10,33 @@ dotenv.config({
 // Register User - starts
 // ============================================================
 async function registerUser(req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Register user request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Register user request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling auth service for user registration`);
-        }
-        const result =
-            await authService.registerUser(
-                req.body
-            );
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] User registered successfully`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling auth service for user registration`);
+        const result = await authService.registerUser(req.body);
+        devLogger.success(`[${FILE_NAME}] User registered successfully`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Sending registration response to client`);
-        }
-        res.status(201).json(result);
+        devLogger.info(`[${FILE_NAME}] Sending registration response to client`);
+
+        return res.status(201).json({
+            success:true,
+            error:false,
+            successMessage:result,
+            errorMessage:"",
+            resultData:[]
+        });
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to register user`, error);
-            logger.warn(`[${FILE_NAME}] Register user request could not be completed`);
-        }
-        res.status(400).json({
-            message:error.message
+        devLogger.error(`[${FILE_NAME}] Failed to register user`, error);
+        devLogger.warn(`[${FILE_NAME}] Register user request could not be completed`);
+
+        return res.status(400).json({
+            success:false,
+            error:true,
+            successMessage:"",
+            errorMessage:error.message,
+            resultData:[]
         });
     }
 }
@@ -70,47 +50,42 @@ async function registerUser(req, res) {
 // Login User - starts
 // ============================================================
 async function loginUser(req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Login user request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Login user request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling auth service for user login`);
-        }
-        const result =
-            await authService.loginUser(
-                req.body.email,
-                req.body.password
-            );
+        devLogger.info(`[${FILE_NAME}] Calling auth service for user login`);
+        const result =await authService.loginUser(req.body.email, req.body.password);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Setting authentication cookie`);
-        }
+        devLogger.info(`[${FILE_NAME}] Setting authentication cookie`);
         res.cookie(
             "jwt_access_token",
-            result.token,
+            result.jwtToken,
             {
                 httpOnly:true
             }
         );
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] User logged in successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] User logged in successfully`);
+        devLogger.info(`[${FILE_NAME}] Sending login response to client`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Sending login response to client`);
-        }
-        res.status(200).json(result);
+        return res.status(200).json({
+            success:true,
+            error:false,
+            successMessage:SuccessMessage.USER_LOGGED_IN,
+            errorMessage:"",
+            resultData:result
+        });
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to login user`, error);
-            logger.warn(`[${FILE_NAME}] Login user request could not be completed`);
-        }
-        res.status(401).json({
-            message:error.message
+        devLogger.error(`[${FILE_NAME}] Failed to login user`, error);
+        devLogger.warn(`[${FILE_NAME}] Login user request could not be completed`);
+
+        return res.status(401).json({
+            success:false,
+            error:true,
+            successMessage:"",
+            errorMessage:error.message,
+            resultData:[]
         });
     }
 }
@@ -124,27 +99,35 @@ async function loginUser(req, res) {
 // Logout User - starts
 // ============================================================
 async function logoutUser(req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Logout user request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Logout user request received`);
 
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Clearing authentication cookie`);
-    }
-    res.clearCookie(
-        "jwt_access_token"
-    );
+    try {
+        devLogger.info(`[${FILE_NAME}] Clearing authentication cookie`);
+        res.clearCookie("jwt_access_token");
 
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.success(`[${FILE_NAME}] User logged out successfully`);
-    }
+        devLogger.success(`[${FILE_NAME}] User logged out successfully`);
+        devLogger.info(`[${FILE_NAME}] Sending logout response to client`);
 
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Sending logout response to client`);
+        return res.status(200).json({
+            success:true,
+            error:false,
+            successMessage:SuccessMessage.LOGOUT_SUCCESSFUL,
+            errorMessage:"",
+            resultData:[]
+        });
     }
-    res.json({
-        message:"Logout successful"
-    });
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to logout user`, error);
+        devLogger.warn(`[${FILE_NAME}] Logout user request could not be completed`);
+
+        return res.status(500).json({
+            success:false,
+            error:true,
+            successMessage:"",
+            errorMessage:error.message,
+            resultData:[]
+        });
+    }
 }
 // ============================================================
 // Logout User - ends

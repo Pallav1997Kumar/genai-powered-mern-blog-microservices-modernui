@@ -18,7 +18,7 @@ const blogPostCommentRoute = require("./routes/blog-post-comment.route.js");
 const blogPostLikeRoute = require("./routes/blog-post-like.route.js");
 const blogCategoryListRoute = require("./routes/blog-category-list.route.js");
 const searchUserCategoryBlogRoute = require("./routes/search-user-category-blog.route.js");
-const generativeAIRoute = require("./routes/generative-AI.route.js");
+const generativeAIRoute = require("./routes/generative-ai.route.js");
 const imageUploadRoute = require("./routes/image-upload.route.js");
 // ============================================================
 // Import Routes - ends
@@ -29,6 +29,7 @@ const imageUploadRoute = require("./routes/image-upload.route.js");
 // ============================================================
 // Import Logger - starts
 // ============================================================
+const devLogger = require("./utils/dev-logger.js");
 const logger = require("./utils/logger.js");
 // ============================================================
 // Import Logger - ends
@@ -53,9 +54,7 @@ dotenv.config({
     path: configPath
 });
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Environment configuration loaded`);
-}
+devLogger.info(`[${FILE_NAME}] Environment configuration loaded`);
 // ============================================================
 // Environment Configuration - ends
 // ============================================================
@@ -67,9 +66,7 @@ if(process.env.environment == "DEVELOPMENT"){
 // ============================================================
 const app = express();
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Backend application initialized`);
-}
+devLogger.info(`[${FILE_NAME}] Backend application initialized`);
 // ============================================================
 // Express Application Initialization - ends
 // ============================================================
@@ -104,9 +101,7 @@ else if (process.env.environment === "PRODUCTION") {
 
 app.use(cors(corsOption));
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] CORS configuration applied successfully`);
-}
+devLogger.info(`[${FILE_NAME}] CORS configuration applied successfully`);
 // ============================================================
 // CORS Configuration - ends
 // ============================================================
@@ -123,9 +118,7 @@ app.use(
     })
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Application middleware configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Application middleware configured successfully`);
 // ============================================================
 // Middleware Configuration - ends
 // ============================================================
@@ -140,9 +133,7 @@ app.use(
     healthRouter
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Health routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Health routes registered successfully`);
 // ============================================================
 // Health Routes - ends
 // ============================================================
@@ -157,9 +148,7 @@ app.use(
     authorizationRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Authorization routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Authorization routes registered successfully`);
 // ============================================================
 // Authorization Routes - ends
 // ============================================================
@@ -174,9 +163,7 @@ app.use(
     blogUserRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog user routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog user routes registered successfully`);
 // ============================================================
 // Blog User Routes - ends
 // ============================================================
@@ -191,9 +178,7 @@ app.use(
     blogPostRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post routes registered successfully`);
 // ============================================================
 // Blog Post Routes - ends
 // ============================================================
@@ -208,9 +193,7 @@ app.use(
     blogPostCommentRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post comment routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post comment routes registered successfully`);
 // ============================================================
 // Blog Post Comment Routes - ends
 // ============================================================
@@ -225,9 +208,7 @@ app.use(
     blogPostLikeRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post like routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post like routes registered successfully`);
 // ============================================================
 // Blog Post Like Routes - ends
 // ============================================================
@@ -242,9 +223,7 @@ app.use(
     blogCategoryListRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog category routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog category routes registered successfully`);
 // ============================================================
 // Blog Category Routes - ends
 // ============================================================
@@ -259,9 +238,7 @@ app.use(
     searchUserCategoryBlogRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Search routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Search routes registered successfully`);
 // ============================================================
 // Search Routes - ends
 // ============================================================
@@ -276,9 +253,7 @@ app.use(
     generativeAIRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Generative AI routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Generative AI routes registered successfully`);
 // ============================================================
 // Generative AI Routes - ends
 // ============================================================
@@ -293,9 +268,7 @@ app.use(
     imageUploadRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Image upload route registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Image upload route registered successfully`);
 // ============================================================
 // Image Upload Route - ends
 // ============================================================
@@ -308,29 +281,22 @@ const port = process.env.PORT || 8080;
 // Start Server - starts
 // ============================================================
 async function startServer() {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Server startup request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Server startup request received`);
 
     try {
         app.listen(
             port,
             function() {
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.success(`[${FILE_NAME}] Backend server started successfully`);
-                    logger.info(`[${FILE_NAME}] Server running on port ${port}`);
-                    logger.info(`[${FILE_NAME}] Health endpoint available at /health`);
-                }
+                logger.success(`[${FILE_NAME}] Backend server started successfully`);
+                devLogger.info(`[${FILE_NAME}] Server running on port ${port}`);
+                devLogger.info(`[${FILE_NAME}] Health endpoint available at /health`);
             }
         );
 
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Unable to start Backend server`);
-            logger.error(error);
-        }
-
+        logger.error(`[${FILE_NAME}] Unable to start Backend server`);
+        devLogger.error(error);
         process.exit(1);
     }
 }
@@ -344,24 +310,16 @@ async function startServer() {
 // Shutdown Server - starts
 // ============================================================
 async function shutdownServer(signal) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] ${signal} signal received`);
-        logger.info(`[${FILE_NAME}] Server shutdown request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] ${signal} signal received`);
+    devLogger.info(`[${FILE_NAME}] Server shutdown request started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
-        }
-
+        logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
         process.exit(0);
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Server shutdown failed`);
-            logger.error(error);
-        }
-
+        logger.error(`[${FILE_NAME}] Server shutdown failed`);
+        devLogger.error(error);
         process.exit(1);
     }
 }

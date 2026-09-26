@@ -15,6 +15,7 @@ import LikedBy from "./LikedBy.jsx";
 import AIGeneratedContent from "./ai components/AIGeneratedContent.jsx";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from '../../utils/logger.js';
 
 
 function SingleOnlyPostSection(props) {
@@ -130,15 +131,11 @@ function SingleOnlyPostSection(props) {
 				`${backendBaseURL}/api/blogPost/blogPostLike/like/newLike/${blogPostID}`,
 				values
 			);
+			logger.log("Blog post liked:", response);
 
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
 			setUserLikedThisPost(true);
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while liking blog post:", error);
 		}
 		finally{
 			// Refresh the list of users who liked the post
@@ -173,15 +170,11 @@ function SingleOnlyPostSection(props) {
 				}
 			);
 			const data = await response.json();
+			logger.log("Blog post like removed:", data);
 
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(data);
-			}
 			setUserLikedThisPost(false);
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while removing blog post like:", error);
 		}
 		finally{
 			// Refresh the list of users who liked the post
@@ -205,15 +198,11 @@ function SingleOnlyPostSection(props) {
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/blogPostLike/${blogPostID}`
 			);
+			logger.log("Blog post like user list fetched:", response);
 
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
 			setBlogPostLikedList(response.data);
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching blog post like user list:", error);
 		}
 	}
 
@@ -244,10 +233,7 @@ function SingleOnlyPostSection(props) {
 				}
 			);
 			const data = await response.json();
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(data);
-			}
+			logger.log("Blog post deleted:", data);
 
 			setPostDeleteSuccessMessage(data);
 			setPostDeleteErrorMessage(null);
@@ -255,10 +241,8 @@ function SingleOnlyPostSection(props) {
 			// Navigate to the home page after deleting the post
 			navigate("/");
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(error);
-				console.log(error.response.data);
-			}
+			logger.error("Error while deleting blog post:", error);
+			logger.error("Error response data:", error.response.data);
 		}
 	}
 

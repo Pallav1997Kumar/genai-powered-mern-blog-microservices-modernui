@@ -1,8 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
 
 const {
     connectDatabase,
@@ -15,27 +13,9 @@ const userRoute = require("./routes/user.route.js");
 const updateUserInfoRoute = require("./routes/update-user-info.route.js");
 
 const logger = require("./utils/logger.js");
-
+const devLogger = require("./utils/dev-logger.js");
 
 const FILE_NAME = "server.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -44,9 +24,7 @@ dotenv.config({
 // ============================================================
 const app = express();
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] User Service application initialized`);
-}
+devLogger.info(`[${FILE_NAME}] User Service application initialized`);
 // ============================================================
 // Express Application Initialization - ends
 // ============================================================
@@ -66,9 +44,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Application middleware configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Application middleware configured successfully`);
 // ============================================================
 // Middleware Configuration - ends
 // ============================================================
@@ -83,9 +59,7 @@ app.use(
     healthRouter
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Health routes configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Health routes configured successfully`);
 // ============================================================
 // Health Routes Configuration - ends
 // ============================================================
@@ -100,9 +74,7 @@ app.use(
     authorizationRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Authorization routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Authorization routes registered successfully`);
 // ============================================================
 // Authorization Routes - ends
 // ============================================================
@@ -117,9 +89,7 @@ app.use(
     userRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] User routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] User routes registered successfully`);
 // ============================================================
 // User Routes - ends
 // ============================================================
@@ -134,9 +104,7 @@ app.use(
     updateUserInfoRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Update user information routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Update user information routes registered successfully`);
 // ============================================================
 // Update User Information Routes - ends
 // ============================================================
@@ -149,10 +117,7 @@ const port = 4001;
 // Start Server - starts
 // ============================================================
 async function startServer() {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Server startup request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Server startup request received`);
 
     try {
         await connectDatabase();
@@ -160,21 +125,16 @@ async function startServer() {
         app.listen(
             port,
             function() {
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.info(`[${FILE_NAME}] User Microservice started successfully`);
-                    logger.info(`[${FILE_NAME}] Server running on port ${port}`);
-                    logger.info(`[${FILE_NAME}] Health endpoint available at /health`);
-                }
+                logger.info(`[${FILE_NAME}] User Microservice started successfully`);
+                devLogger.info(`[${FILE_NAME}] Server running on port ${port}`);
+                devLogger.info(`[${FILE_NAME}] Health endpoint available at /health`);
             }
         );
 
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Unable to start User Microservice`);
-            logger.error(error);
-        }
-
+        logger.error(`[${FILE_NAME}] Unable to start User Microservice`);
+        devLogger.error(error);
         process.exit(1);
     }
 }
@@ -188,27 +148,17 @@ async function startServer() {
 // Shutdown Server - starts
 // ============================================================
 async function shutdownServer(signal) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] ${signal} signal received`);
-        logger.info(`[${FILE_NAME}] Server shutdown request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] ${signal} signal received`);
+    devLogger.info(`[${FILE_NAME}] Server shutdown request started`);
 
     try {
         await disconnectDatabase();
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
         process.exit(0);
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Server shutdown failed`);
-            logger.error(error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Server shutdown failed`);
+        devLogger.error(error);
         process.exit(1);
     }
 }

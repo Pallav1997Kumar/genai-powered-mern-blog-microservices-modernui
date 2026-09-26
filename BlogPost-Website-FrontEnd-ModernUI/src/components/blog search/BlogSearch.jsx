@@ -13,6 +13,8 @@ import {
 import "../../style/blog search/BlogSearch.scss";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
+
 
 function BlogSearch() {
 
@@ -76,15 +78,11 @@ function BlogSearch() {
             const response = await axios.get(
                 `${backendBaseURL}/api/searchBlogOrUserOrCategory?searchText=${searchQuery}`
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.log(response);
-            }
+            logger.log("Fetched search results:", response);
+            
             setSearchedResult(response.data);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.error(error);
-            }
+            logger.error("Error while fetching search results:", error);
         }
     }
 

@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-
+const ErrorMessage = require("../constants/error-message.constant.js");
+const SuccessMessage = require("../constants/success-message.constant.js");
 const {
     generateGeminiContent
 } = require("../services/gemini.service.js");
@@ -8,64 +8,41 @@ const {
     blogTitleSuggestionPrompt,
     blogDescriptionGenerationPrompt,
     blogDescriptionEnhancementPrompt
-} = require("../utils/gemini-prompts/index.js");;
+} = require("../utils/gemini-prompts/index.js");
 
-const logger = require("../utils/loggers/logger.js");
+const devLogger = require("../utils/loggers/dev-logger.js");
 
 const FILE_NAME = "blog-generation.controller.js";
 
 
 
 // ============================================================
-// Environment Configuration - starts
+// Suggest Blog Titles From Blog Description - starts
 // ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
-
-
-
-// ============================================================
-// Suggest blog titles from blog description - starts
-// ============================================================
-async function suggestBlogTitlesFromBlogDescription(req, res) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Blog title suggestion request received`);
-    }
-
-    const blogText = req.body.blogText;
-
-    if (!blogText) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.warn(`[${FILE_NAME}] Blog description is missing for title suggestion`);
-        }
-
-        return res.status(400).json({
-            errorMessage: "Blog description is required"
-        });
-    }
-
-    const genConfig = {
-        temperature: 0.4,
-        maxOutputTokens: 250
-    };
+async function suggestBlogTitlesFromBlogDescription(req, res, next) {
+    devLogger.info(`[${FILE_NAME}] Blog title suggestion request received`);
 
     try {
+        devLogger.info(`[${FILE_NAME}] Extracting blog description from request body`);
+        const blogText = req.body.blogText;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling Gemini service for blog title suggestions`);
+        if(!blogText){
+            devLogger.warn(`[${FILE_NAME}] Blog description is missing for title suggestion`);
+            return res.status(400).json({
+                success:false,
+                error:true,
+                successMessage:"",
+                errorMessage:ErrorMessage.BLOG_DESCRIPTION_REQUIRED,
+                resultData:null
+            });
         }
+
+        const genConfig = {
+            temperature:0.4,
+            maxOutputTokens:250
+        };
+
+        devLogger.info(`[${FILE_NAME}] Calling Gemini service for blog title suggestions`);
 
         const generatedText =
             await generateGeminiContent(
@@ -73,67 +50,66 @@ async function suggestBlogTitlesFromBlogDescription(req, res) {
                 genConfig
             );
 
-        const geminiGeneratedBlogTitles =
-            JSON.parse(generatedText);
+        devLogger.info(`[${FILE_NAME}] Parsing generated blog title suggestions`);
+        const geminiGeneratedBlogTitles = JSON.parse(generatedText);
+        devLogger.success(`[${FILE_NAME}] Blog title suggestions generated successfully`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog title suggestions generated successfully`);
-        }
+        devLogger.info(`[${FILE_NAME}] Sending blog title suggestions response to client`);
 
         return res.status(200).json({
-            geminiGeneratedBlogTitles: geminiGeneratedBlogTitles
+            success:true,
+            error:false,
+            successMessage:SuccessMessage.BLOG_TITLE_SUGGESTIONS_GENERATED,
+            errorMessage:"",
+            resultData:geminiGeneratedBlogTitles
         });
     }
     catch(error) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to generate blog title suggestions`, error);
-            logger.warn(`[${FILE_NAME}] Blog title suggestion request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to generate blog title suggestions`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog title suggestion request could not be completed`);
 
         return res.status(500).json({
-            errorMessage: "Internal Server Error"
+            success:false,
+            error:true,
+            successMessage:"",
+            errorMessage:ErrorMessage.FAILED_TO_GENERATE_BLOG_TITLE_SUGGESTIONS,
+            resultData:null
         });
     }
 }
 // ============================================================
-// Suggest blog titles from blog description - ends
+// Suggest Blog Titles From Blog Description - ends
 // ============================================================
 
 
 
 // ============================================================
-// Suggest blog description from blog title - starts
+// Suggest Blog Descriptions From Blog Title - starts
 // ============================================================
-async function suggestBlogDescriptionsFromBlogTitle(req, res) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Blog description generation request received`);
-    }
-
-    const blogTitle = req.body.blogTitle;
-
-    if (!blogTitle) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.warn(`[${FILE_NAME}] Blog title is missing for description generation`);
-        }
-
-        return res.status(400).json({
-            errorMessage: "Blog title is required"
-        });
-    }
-
-    const genConfig = {
-        temperature: 0.7,
-        maxOutputTokens: 15000
-    };
+async function suggestBlogDescriptionsFromBlogTitle(req, res, next) {
+    devLogger.info(`[${FILE_NAME}] Blog description generation request received`);
 
     try {
+        devLogger.info(`[${FILE_NAME}] Extracting blog title from request body`);
+        const blogTitle = req.body.blogTitle;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling Gemini service for blog description generation`);
+        if(!blogTitle){
+            devLogger.warn(`[${FILE_NAME}] Blog title is missing for description generation`);
+            return res.status(400).json({
+                success:false,
+                error:true,
+                successMessage:"",
+                errorMessage:ErrorMessage.BLOG_TITLE_REQUIRED,
+                resultData:null
+            });
         }
+
+        const genConfig = {
+            temperature:0.7,
+            maxOutputTokens:15000
+        };
+
+        devLogger.info(`[${FILE_NAME}] Calling Gemini service for blog description generation`);
 
         const generatedText =
             await generateGeminiContent(
@@ -142,65 +118,63 @@ async function suggestBlogDescriptionsFromBlogTitle(req, res) {
             );
 
         const geminiGeneratedBlogDescription = generatedText;
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog description generated successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog description generated successfully`);
+        devLogger.info(`[${FILE_NAME}] Sending blog description response to client`);
 
         return res.status(200).json({
-            geminiGeneratedBlogDescription: geminiGeneratedBlogDescription
+            success:true,
+            error:false,
+            successMessage:SuccessMessage.BLOG_DESCRIPTION_GENERATED,
+            errorMessage:"",
+            resultData:geminiGeneratedBlogDescription
         });
     }
     catch(error) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to generate blog description`, error);
-            logger.warn(`[${FILE_NAME}] Blog description generation request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to generate blog description`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog description generation request could not be completed`);
 
         return res.status(500).json({
-            errorMessage: "Internal Server Error"
+            success:false,
+            error:true,
+            successMessage:"",
+            errorMessage:ErrorMessage.FAILED_TO_GENERATE_BLOG_DESCRIPTION,
+            resultData:null
         });
     }
 }
 // ============================================================
-// Suggest blog description from blog title - ends
+// Suggest Blog Descriptions From Blog Title - ends
 // ============================================================
 
 
 
 // ============================================================
-// Enhance blog description - starts
+// Enhance Blog Description - starts
 // ============================================================
-async function enhanceBlogDescription(req, res) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Blog description enhancement request received`);
-    }
-
-    const blogText = req.body.blogText;
-
-    if (!blogText) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.warn(`[${FILE_NAME}] Blog description is missing for enhancement`);
-        }
-
-        return res.status(400).json({
-            errorMessage: "Blog description is required"
-        });
-    }
-
-    const genConfig = {
-        temperature: 0.7,
-        maxOutputTokens: 15000
-    };
+async function enhanceBlogDescription(req, res, next) {
+    devLogger.info(`[${FILE_NAME}] Blog description enhancement request received`);
 
     try {
+        devLogger.info(`[${FILE_NAME}] Extracting blog description from request body`);
+        const blogText = req.body.blogText;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling Gemini service for blog description enhancement`);
+        if(!blogText){
+            devLogger.warn(`[${FILE_NAME}] Blog description is missing for enhancement`);
+            return res.status(400).json({
+                success:false,
+                error:true,
+                successMessage:"",
+                errorMessage:ErrorMessage.BLOG_DESCRIPTION_REQUIRED,
+                resultData:null
+            });
         }
+
+        const genConfig = {
+            temperature:0.7,
+            maxOutputTokens:15000
+        };
+
+        devLogger.info(`[${FILE_NAME}] Calling Gemini service for blog description enhancement`);
 
         const generatedText =
             await generateGeminiContent(
@@ -209,29 +183,32 @@ async function enhanceBlogDescription(req, res) {
             );
 
         const enhancedBlogDescription = generatedText;
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Blog description enhanced successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog description enhanced successfully`);
+        devLogger.info(`[${FILE_NAME}] Sending enhanced blog description response to client`);
 
         return res.status(200).json({
-            enhancedBlogDescription: enhancedBlogDescription
+            success:true,
+            error:false,
+            successMessage:SuccessMessage.BLOG_DESCRIPTION_ENHANCED,
+            errorMessage:"",
+            resultData:enhancedBlogDescription
         });
     }
     catch(error) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to enhance blog description`, error);
-            logger.warn(`[${FILE_NAME}] Blog description enhancement request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to enhance blog description`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog description enhancement request could not be completed`);
 
         return res.status(500).json({
-            errorMessage: "Internal Server Error"
+            success:false,
+            error:true,
+            successMessage:"",
+            errorMessage:ErrorMessage.FAILED_TO_ENHANCE_BLOG_DESCRIPTION,
+            resultData:null
         });
     }
 }
 // ============================================================
-// Enhance blog description - ends
+// Enhance Blog Description - ends
 // ============================================================
 
 

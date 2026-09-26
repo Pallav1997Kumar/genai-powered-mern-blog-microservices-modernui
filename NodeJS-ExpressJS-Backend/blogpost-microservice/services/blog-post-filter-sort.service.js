@@ -1,29 +1,9 @@
-const dotenv = require("dotenv");
-
 const mongoose = require("mongoose");
 
 const blogPostRepository = require("../repositories/blog-post.repository.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "blog-post-filter-sort.service.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -31,9 +11,7 @@ dotenv.config({
 // Get Time Map - starts
 // ============================================================
 function getTimeMap() {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Creating blog post date filter time map`);
-    }
+    devLogger.info(`[${FILE_NAME}] Creating blog post date filter time map`);
 
     return {
         "1hour": 60 * 60 * 1000,
@@ -55,14 +33,10 @@ function getTimeMap() {
 // Apply Date Filter - starts
 // ============================================================
 function applyDateFilter(matchStage, checkedDate) {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Applying blog post date filter`);
-    }
+    devLogger.info(`[${FILE_NAME}] Applying blog post date filter`);
 
     if (checkedDate && checkedDate !== "everyTime") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calculating date filter range`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calculating date filter range`);
 
         const now = new Date();
         const timeAgo = new Date(
@@ -73,14 +47,10 @@ function applyDateFilter(matchStage, checkedDate) {
             $gte: timeAgo
         };
 
-        if (process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog post date filter applied successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog post date filter applied successfully`);
     }
     else {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] No specific date filter applied`);
-        }
+        devLogger.info(`[${FILE_NAME}] No specific date filter applied`);
     }
 }
 // ============================================================
@@ -93,74 +63,51 @@ function applyDateFilter(matchStage, checkedDate) {
 // Get Sort Stage - starts
 // ============================================================
 function getSortStage(sortSelection) {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Preparing blog post sort stage`);
-    }
+    devLogger.info(`[${FILE_NAME}] Preparing blog post sort stage`);
 
     if (sortSelection === "postTitleAscending") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Applying post title ascending sort`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Applying post title ascending sort`);
         return {
             postTitle: 1
         };
     }
 
     if (sortSelection === "postTitleDescending") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Applying post title descending sort`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Applying post title descending sort`);
         return {
             postTitle: -1
         };
     }
 
     if (sortSelection === "postDateAscending") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Applying post date ascending sort`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Applying post date ascending sort`);
         return {
             postDateTime: 1
         };
     }
 
     if (sortSelection === "postDateDescending") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Applying post date descending sort`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Applying post date descending sort`);
         return {
             postDateTime: -1
         };
     }
 
     if (sortSelection === "postLengthAscending") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Applying post length ascending sort`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Applying post length ascending sort`);
         return {
             postDescriptionLength: 1
         };
     }
 
     if (sortSelection === "postLengthDescending") {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Applying post length descending sort`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Applying post length descending sort`);
         return {
             postDescriptionLength: -1
         };
     }
 
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Applying default post date descending sort`);
-    }
-
+    devLogger.info(`[${FILE_NAME}] Applying default post date descending sort`);
     return {
         postDateTime: -1
     };
@@ -175,40 +122,23 @@ function getSortStage(sortSelection) {
 // Get Filtered Blog Posts - starts
 // ============================================================
 async function getFilteredBlogPosts(data, type) {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get filtered blog posts request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get filtered blog posts request started`);
 
     try {
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Extracting pagination page`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Extracting pagination page`);
         const page = parseInt(data.body.page);
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Extracting pagination limit`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Extracting pagination limit`);
         const limit = parseInt(data.body.limit);
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calculating pagination skip value`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calculating pagination skip value`);
         const skip = (page - 1) * limit;
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Preparing blog post match stage`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Preparing blog post match stage`);
         const matchStage = {};
 
         if (type === "user") {
-            if (process.env.environment === "development") {
-                logger.info(`[${FILE_NAME}] Applying particular user filter`);
-            }
-
+            devLogger.info(`[${FILE_NAME}] Applying particular user filter`);
             matchStage.userID =
                 new mongoose.Types.ObjectId(
                     data.userID
@@ -216,45 +146,30 @@ async function getFilteredBlogPosts(data, type) {
         }
 
         if (type === "category") {
-            if (process.env.environment === "development") {
-                logger.info(`[${FILE_NAME}] Applying particular category filter`);
-            }
-
+            devLogger.info(`[${FILE_NAME}] Applying particular category filter`);
             matchStage.categoryID =
                 new mongoose.Types.ObjectId(
                     data.categoryID
                 );
         }
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Extracting sort selection`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Extracting sort selection`);
         const sortSelection = data.body.sortSelection;
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Extracting checked date filter`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Extracting checked date filter`);
         const checkedDate = data.body.checkedDate;
 
         applyDateFilter(matchStage, checkedDate);
 
         if (type !== "category") {
-            if (process.env.environment === "development") {
-                logger.info(`[${FILE_NAME}] Checking selected category filters`);
-            }
-
+            devLogger.info(`[${FILE_NAME}] Checking selected category filters`);
             const allCheckedCategory = data.body.allCheckedCategory;
 
             if (
                 Array.isArray(allCheckedCategory) &&
                 allCheckedCategory.length > 0
             ) {
-                if (process.env.environment === "development") {
-                    logger.info(`[${FILE_NAME}] Applying selected category filters`);
-                }
-
+                devLogger.info(`[${FILE_NAME}] Applying selected category filters`);
                 matchStage.categoryID = {
                     $in: allCheckedCategory.map(function(id) {
                         return new mongoose.Types.ObjectId(id);
@@ -264,20 +179,14 @@ async function getFilteredBlogPosts(data, type) {
         }
 
         if (type !== "user") {
-            if (process.env.environment === "development") {
-                logger.info(`[${FILE_NAME}] Checking selected author filters`);
-            }
-
+            devLogger.info(`[${FILE_NAME}] Checking selected author filters`);
             const allCheckedAuthor = data.body.allCheckedAuthor;
 
             if (
                 Array.isArray(allCheckedAuthor) &&
                 allCheckedAuthor.length > 0
             ) {
-                if (process.env.environment === "development") {
-                    logger.info(`[${FILE_NAME}] Applying selected author filters`);
-                }
-
+                devLogger.info(`[${FILE_NAME}] Applying selected author filters`);
                 matchStage.userID = {
                     $in: allCheckedAuthor.map(function(id) {
                         return new mongoose.Types.ObjectId(id);
@@ -286,47 +195,21 @@ async function getFilteredBlogPosts(data, type) {
             }
         }
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Preparing blog post sort stage`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Preparing blog post sort stage`);
         const sortStage = getSortStage(sortSelection);
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calling blog post repository for filtered blog posts`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository for filtered blog posts`);
+        const blogPostData = await blogPostRepository.findBlogPostsWithFilterSortPagination(matchStage, sortStage, skip, limit);
+        devLogger.info(`[${FILE_NAME}] Filtered blog post repository response received`);
 
-        const blogPostData =
-            await blogPostRepository.findBlogPostsWithFilterSortPagination(
-                matchStage,
-                sortStage,
-                skip,
-                limit
-            );
-
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Filtered blog post repository response received`);
-        }
-
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calling blog post repository to count filtered blog posts`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository to count filtered blog posts`);
         const totalCount = await blogPostRepository.countBlogPostsWithFilter(matchStage);
+        devLogger.info(`[${FILE_NAME}] Filtered blog post count response received`);
 
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Filtered blog post count response received`);
-        }
-
-        if (process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calculating total pages`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calculating total pages`);
         const totalPages = Math.ceil(totalCount / limit);
 
-        if (process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Filtered, sorted and paginated blog posts fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Filtered, sorted and paginated blog posts fetched successfully`);
 
         return {
             currentPage: page,
@@ -336,7 +219,7 @@ async function getFilteredBlogPosts(data, type) {
         };
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get filtered blog posts`, error);
+        devLogger.error(`[${FILE_NAME}] Failed to get filtered blog posts`, error);
         throw error;
     }
 }
@@ -350,21 +233,16 @@ async function getFilteredBlogPosts(data, type) {
 // Get Blog Posts With Filter Sort Pagination - starts
 // ============================================================
 const getBlogPostDetailsWithFilterSortWithPagination = async function(data) {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts with filter sort pagination request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts with filter sort pagination request started`);
 
     try {
         const result = await getFilteredBlogPosts(data, "all");
-
-        if (process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts with filter sort pagination fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog posts with filter sort pagination fetched successfully`);
 
         return result;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get blog posts with filter sort pagination`, error);
+        devLogger.error(`[${FILE_NAME}] Failed to get blog posts with filter sort pagination`, error);
         throw error;
     }
 };
@@ -378,21 +256,16 @@ const getBlogPostDetailsWithFilterSortWithPagination = async function(data) {
 // Get Blog Posts With Filter Sort Pagination For Particular User - starts
 // ============================================================
 const getBlogPostDetailsWithFilterSortWithPaginationForParticularUser = async function(data) {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts with filter sort pagination for particular user request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts with filter sort pagination for particular user request started`);
 
     try {
         const result = await getFilteredBlogPosts(data, "user");
-
-        if (process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts for particular user with filter sort pagination fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog posts for particular user with filter sort pagination fetched successfully`);
 
         return result;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get blog posts for particular user with filter sort pagination`, error);
+        devLogger.error(`[${FILE_NAME}] Failed to get blog posts for particular user with filter sort pagination`, error);
         throw error;
     }
 };
@@ -406,21 +279,16 @@ const getBlogPostDetailsWithFilterSortWithPaginationForParticularUser = async fu
 // Get Blog Posts With Filter Sort Pagination For Particular Category - starts
 // ============================================================
 const getBlogPostDetailsWithFilterSortWithPaginationForParticularCategory = async function(data) {
-    if (process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts with filter sort pagination for particular category request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts with filter sort pagination for particular category request started`);
 
     try {
         const result = await getFilteredBlogPosts(data, "category");
-
-        if (process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts for particular category with filter sort pagination fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog posts for particular category with filter sort pagination fetched successfully`);
 
         return result;
     }
     catch(error) {
-        logger.error(`[${FILE_NAME}] Failed to get blog posts for particular category with filter sort pagination`, error);
+        devLogger.error(`[${FILE_NAME}] Failed to get blog posts for particular category with filter sort pagination`, error);
         throw error;
     }
 };

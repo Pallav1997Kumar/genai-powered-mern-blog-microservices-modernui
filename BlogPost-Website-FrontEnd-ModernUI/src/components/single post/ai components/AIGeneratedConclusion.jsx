@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../../style/single post/ai components/AIGeneratedConclusion.scss";
 
 import backendBaseURL from "../../../backendBaseURL.js";
+import logger from '../../../utils/logger.js';
 import { getPlainText } from "../../../utils/utility functions.js";
 
 
@@ -53,16 +54,11 @@ function AIGeneratedConclusion(props) {
                 `${backendBaseURL}/api/generativeAI/generateBlogConclusion`,
                 values
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+            logger.log("AI-generated conclusion:", response);
 
             setConclusion(response.data.blogConclusion);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+            logger.error("Error while generating AI conclusion:", error);
             setError("Failed to generate conclusion. Please try again");
         } finally {
             setLoading(false);

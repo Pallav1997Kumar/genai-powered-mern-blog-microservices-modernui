@@ -12,6 +12,7 @@ import CategoryCard from "./CategoryCard.jsx";
 import EachCategoryBlogPost from "./EachCategoryBlogPost.jsx";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 
 
 function AllBlogsHomePageComponent() {
@@ -115,16 +116,12 @@ function AllBlogsHomePageComponent() {
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/fourPostWithUserAndCategoryInfo`
 			);
+			logger.log("Fetched four blog posts:", response);
 
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
 			setDefaultBlogPosts(response.data);
 		}
 		catch(error){
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching four blog posts:", error);
 		}
 	}
 

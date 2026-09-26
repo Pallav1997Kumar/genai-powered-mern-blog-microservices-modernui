@@ -14,6 +14,7 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 
 
 function EditProfile() {
@@ -397,27 +398,19 @@ function EditProfile() {
 			};
 
 			try {
-
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                    console.log(inputs);
-                }
-
 				// Call Update Basic Information API
+				logger.log("Updating basic information:", inputs);
 				const response = await axios.put(
 					`${backendBaseURL}/api/blogUser/update/basicInfo/${user.userID}`,
 					inputs
 				);
-
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.log(response);
-				}
+				logger.log("Basic information updated:", response);
 
 				setBasicInfoSuccessMessage(response.data);
 				setBasicInfoErrorMessage("");
 
 				// Generate Updated User Full Name
 				let fullName;
-
 				if (middleName.trim() === "") {
 					fullName = firstName + " " + lastName;
 				} else {
@@ -442,9 +435,7 @@ function EditProfile() {
 				setIsError(false);
 				setInfoUpdated(true);
 			} catch (error) {
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.error(error);
-				}
+				logger.error("Error while updating basic information:", error);
 				
 				// Handle Basic Information Update Error
 				if (error.message === "Request failed with status code 403") {
@@ -513,18 +504,13 @@ function EditProfile() {
 			};
 
 			try {
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.log(inputs);
-				}
 				// Call Update Username and Email API
+				logger.log("Updating username and email:", inputs);
 				const response = await axios.put(
 					`${backendBaseURL}/api/blogUser/update/usernameEmail/${user.userID}`,
 					inputs
 				);
-
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.log(response);
-				}
+				logger.log("Username and email updated:", response);
 
 				setUsernameEmailSuccessMessage(response.data);
 				setUsernameEmailErrorMessage("");
@@ -543,9 +529,7 @@ function EditProfile() {
 				setIsError(false);
 				setInfoUpdated(true);
 			} catch (error) {
-				if (process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT") {
-					console.error(error);
-				}
+				logger.error("Error while updating username and email:", error);
 
 				// Handle Username and Email Update Error
 				if (error.message === "Request failed with status code 409") {
@@ -627,27 +611,20 @@ function EditProfile() {
 			};
 
 			try {
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.log(inputs);
-				}
 				// Call Update Password API
+				logger.log("Updating password:", inputs);
 				const response = await axios.put(
 					`${backendBaseURL}/api/blogUser/update/password/${user.userID}`,
 					inputs
 				);
-
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.log(response);
-				}
+				logger.log("Password updated:", response);
 
 				setPasswordSuccessMessage(response.data);
 				setPasswordErrorMessage("");
 				setIsError(false);
 				setInfoUpdated(true);
 			} catch (error) {
-				if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-					console.error(error);
-				}
+				logger.error("Error while updating password:", error);
 
 				// Handle Password Update Error
 				if (error.message === "Request failed with status code 401") {
@@ -688,17 +665,11 @@ function EditProfile() {
 				`${backendBaseURL}/api/imageUpload/profilePhoto?userID=${userID}`,
 				formData
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Profile photo uploaded:", response);
 
 			return response.data;
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
-			console.log(error);
+			logger.error("Error while uploading profile photo:", error);
 		}
 	}
 	// ============================================================
@@ -715,10 +686,7 @@ function EditProfile() {
 
 		// Upload Profile Photo
 		const imageDetail = await handleProfilePhotoUpload();
-
-		if (process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT") {
-			console.log(imageDetail);
-		}
+		logger.log("Profile photo details:", imageDetail);
 
 		// Get Authentication Token
 		const token = Cookies.get("jwt_access_token");
@@ -727,19 +695,13 @@ function EditProfile() {
 		const inputs = { imageDetail, token };
 
 		try {
-			if (process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT") {
-				console.log(inputs);
-			}
-
 			// Call Update Profile Photo API
+			logger.log("Updating profile photo:", inputs);
 			const response = await axios.put(
 				`${backendBaseURL}/api/blogUser/update/profilePhoto/${user.userID}`,
 				inputs
 			);
-
-			if (process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT") {
-				console.log(response);
-			}
+			logger.log("Profile photo updated:", response);
 
 			// Update Profile Photo Success Message
 			setProfilePhotoSuccessMessage(response.data);
@@ -754,9 +716,7 @@ function EditProfile() {
 			setInfoUpdated(true);
 		} catch (error) {
 			// Handle Profile Photo Update Error
-			if (process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT") {
-				console.error(error);
-			}
+			logger.error("Error while updating profile photo:", error);
 
 			setProfilePhotoErrorMessage(error.message);
 			setProfilePhotoSuccessMessage("");

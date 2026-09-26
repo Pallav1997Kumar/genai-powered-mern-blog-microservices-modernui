@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 
 const {
@@ -16,27 +15,9 @@ const blogPostUserRoute = require("./routes/blog-post-user.route.js");
 const blogPostWriteRoute = require("./routes/blog-post-write.route.js");
 
 const logger = require("./utils/logger.js");
-
+const devLogger = require("./utils/dev-logger.js");
 
 const FILE_NAME = "server.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -45,9 +26,7 @@ dotenv.config({
 // ============================================================
 const app = express();
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blogpost Service application initialized`);
-}
+devLogger.info(`[${FILE_NAME}] Blogpost Service application initialized`);
 // ============================================================
 // Express Application Initialization - ends
 // ============================================================
@@ -67,9 +46,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Application middleware configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Application middleware configured successfully`);
 // ============================================================
 // Middleware Configuration - ends
 // ============================================================
@@ -84,9 +61,7 @@ app.use(
     healthRouter
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Health routes configured successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Health routes configured successfully`);
 // ============================================================
 // Health Routes Configuration - ends
 // ============================================================
@@ -101,9 +76,7 @@ app.use(
     blogPostCategoryRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post category routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post category routes registered successfully`);
 // ============================================================
 // Blog Post Category Routes - ends
 // ============================================================
@@ -118,9 +91,7 @@ app.use(
     blogPostFilterSortRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post filter-sort routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post filter-sort routes registered successfully`);
 // ============================================================
 // Blog Post Filter Sort Routes - ends
 // ============================================================
@@ -135,9 +106,7 @@ app.use(
     blogPostReadRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post read routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post read routes registered successfully`);
 // ============================================================
 // Blog Post Read Routes - ends
 // ============================================================
@@ -152,9 +121,7 @@ app.use(
     blogPostUserRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post user routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post user routes registered successfully`);
 // ============================================================
 // Blog Post User Routes - ends
 // ============================================================
@@ -169,9 +136,7 @@ app.use(
     blogPostWriteRoute
 );
 
-if(process.env.environment == "DEVELOPMENT"){
-    logger.info(`[${FILE_NAME}] Blog post write routes registered successfully`);
-}
+devLogger.info(`[${FILE_NAME}] Blog post write routes registered successfully`);
 // ============================================================
 // Blog Post Write Routes - ends
 // ============================================================
@@ -184,10 +149,7 @@ const port = 4002;
 // Start Server - starts
 // ============================================================
 async function startServer() {
-
-     if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Server startup request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Server startup request received`);
 
     try {
         await connectDatabase();
@@ -195,21 +157,16 @@ async function startServer() {
         app.listen(
             port,
             function() {
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.info(`[${FILE_NAME}] Blogpost Microservice started successfully`);
-                    logger.info(`[${FILE_NAME}] Server running on port ${port}`);
-                    logger.info(`[${FILE_NAME}] Health endpoint available at /health`);
-                }
+                logger.info(`[${FILE_NAME}] Blogpost Microservice started successfully`);
+                devLogger.info(`[${FILE_NAME}] Server running on port ${port}`);
+                devLogger.info(`[${FILE_NAME}] Health endpoint available at /health`);
             }
         );
 
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Unable to start Blogpost Microservice`);
-            logger.error(error);
-        }
-
+        logger.error(`[${FILE_NAME}] Unable to start Blogpost Microservice`);
+        devLogger.error(error);
         process.exit(1);
     }
 }
@@ -223,28 +180,17 @@ async function startServer() {
 // Shutdown Server - starts
 // ============================================================
 async function shutdownServer(signal) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] ${signal} signal received`);
-
-        logger.info(`[${FILE_NAME}] Server shutdown request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] ${signal} signal received`);
+    devLogger.info(`[${FILE_NAME}] Server shutdown request started`);
 
     try {
         await disconnectDatabase();
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Server shutdown completed successfully`);
         process.exit(0);
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Server shutdown failed`);
-            logger.error(error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Server shutdown failed`);
+        devLogger.error(error);
         process.exit(1);
     }
 }

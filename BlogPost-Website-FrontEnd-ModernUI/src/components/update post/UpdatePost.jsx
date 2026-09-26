@@ -13,6 +13,7 @@ import Button from "react-bootstrap/Button";
 import "../../style/update post/UpdatePost.scss";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from "../../utils/logger.js";
 import { getPlainText } from "../../utils/utility functions.js"
 import writeBlogPostImage from "../../images/blog-writing.jpg";
 
@@ -177,15 +178,11 @@ function UpdatePost() {
 				`${backendBaseURL}/api/imageUpload/blogImage?userID=${userID}`,
 				formData
 			);
+			logger.info("Blog image uploaded successfully:", response);
 
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
 			return response.data;
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while uploading blog image:", error);
 		}
 	}
 
@@ -221,19 +218,13 @@ function UpdatePost() {
 		};
 
 		try {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(values);
-			}
-
 			// Update the selected blog post
+			logger.log("Updating blog post with values:", values);
 			const response = await axios.put(
 				`${backendBaseURL}/api/blogPost/updatePost/${postID}`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Blog post updated successfully:", response);
 
 			setSuccessMessage(response.data);
 			setTitle("");
@@ -244,9 +235,7 @@ function UpdatePost() {
 			setErrorMessage(null);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while updating blog post:", error);
 
 			// Handle unauthorized user error
 			if (error.message === "Request failed with status code 401") {
@@ -292,18 +281,13 @@ function UpdatePost() {
 				`${backendBaseURL}/api/generativeAI/suggestBlogTitlesFromBlogDescription`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("AI generated blog title suggestions:", response);
 
 			const aiSuggestedTitlesArray = response.data.geminiGeneratedBlogTitles;
 			setTitleSuggestionsByAI(aiSuggestedTitlesArray);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while generating AI title suggestions:", error);
 			setTitleSuggestionsByAI([]);
 		}
 		finally {
@@ -343,18 +327,13 @@ function UpdatePost() {
 				`${backendBaseURL}/api/generativeAI/suggestBlogDescriptionsFromTitle`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("AI generated blog description from title:", response);
 
 			const aiSuggestedDescription = response.data.geminiGeneratedBlogDescription;
 			setDescriptionSuggestedByAI(aiSuggestedDescription);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while generating blog description from title:", error);
 			setDescriptionSuggestedByAI(null);
 		}
 		finally {
@@ -394,18 +373,13 @@ function UpdatePost() {
 				`${backendBaseURL}/api/generativeAI/enhanceBlogDescription`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("AI enhanced blog description:", response);
 
 			const aiEnhancedBlogDescription = response.data.enhancedBlogDescription;
 			setEnhancementSuggestedByAI(aiEnhancedBlogDescription);
 		} 
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while enhancing blog description with AI:", error);
 			setEnhancementSuggestedByAI(null);
 		}
 		finally {

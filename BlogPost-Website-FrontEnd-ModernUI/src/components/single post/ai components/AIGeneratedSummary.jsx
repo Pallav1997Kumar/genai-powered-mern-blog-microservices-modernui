@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../../style/single post/ai components/AIGeneratedSummary.scss";
 
 import backendBaseURL from "../../../backendBaseURL.js";
+import logger from '../../../utils/logger.js';
 import { getPlainText } from "../../../utils/utility functions.js";
 
 
@@ -54,16 +55,11 @@ function AIGeneratedSummary(props) {
                 `${backendBaseURL}/api/generativeAI/generateBlogSummary`,
                 values
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.log(response);
-            }
+            logger.log("AI-generated summary:", response);
 
             setSummary(response.data.blogSummary);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.error(error);
-            }
+            logger.error("Error while generating AI summary:", error);
             setError("Failed to generate summary. Please try again");
         } finally {
             setLoading(false);

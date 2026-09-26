@@ -1,37 +1,17 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const dotenv = require("dotenv");
 
 const { CLOUDINARY_SERVICE } = require("../config/services.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "image-service.proxy.js";
 
 
 
 // ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
-
-
-// ============================================================
 // Handle Proxy Request Starts
 // ============================================================
 function handleProxyReq(proxyReq, req) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] ${req.method} ${req.originalUrl} -> IMAGE SERVICE`);
-    }
+    devLogger.info(`[${FILE_NAME}] ${req.method} ${req.originalUrl} -> IMAGE SERVICE`);
 }
 // ============================================================
 // Handle Proxy Request Ends
@@ -43,14 +23,10 @@ function handleProxyReq(proxyReq, req) {
 // ============================================================
 function handleProxyRes(proxyRes, req) {
     if(proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Image service response ${proxyRes.statusCode} ${req.originalUrl}`);
-        }
+        devLogger.success(`[${FILE_NAME}] Image service response ${proxyRes.statusCode} ${req.originalUrl}`);
     }
     else {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.warn(`[${FILE_NAME}] Image service response ${proxyRes.statusCode} ${req.originalUrl}`);
-        }
+        devLogger.warn(`[${FILE_NAME}] Image service response ${proxyRes.statusCode} ${req.originalUrl}`);
     }
 }
 // ============================================================
@@ -62,13 +38,8 @@ function handleProxyRes(proxyRes, req) {
 // Handle Proxy Error Starts
 // ============================================================
 function handleProxyError(error, req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.error(`[${FILE_NAME}] Image service proxy failed: `, error);
-    }
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.warn(`[${FILE_NAME}] Image service request could not be completed`);
-    }
+    devLogger.error(`[${FILE_NAME}] Image service proxy failed: `, error);
+    devLogger.warn(`[${FILE_NAME}] Image service request could not be completed`);
 
     if(!res.headersSent) {
         res.status(502).json({

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../../style/single post/ai components/AIGeneratedFAQ.scss";
 
 import backendBaseURL from "../../../backendBaseURL.js";
+import logger from '../../../utils/logger.js';
 import { getPlainText } from "../../../utils/utility functions.js";
 
 
@@ -54,16 +55,11 @@ function AIGeneratedFAQ(props) {
                 `${backendBaseURL}/api/generativeAI/generateBlogFAQ`,
                 values
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+            logger.log("AI-generated FAQ:", response);
 
             setFaq(response.data.blogFAQ);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+            logger.error("Error while generating AI FAQ:", error);
             setError("Failed to generate FAQ. Please try again");
         } finally {
             setLoading(false);

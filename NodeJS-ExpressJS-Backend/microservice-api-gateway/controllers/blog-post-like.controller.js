@@ -1,10 +1,8 @@
-const dotenv = require("dotenv");
-
 const userService = require("../services/blog-user.service.js");
 const blogPostLikeService = require("../services/blog-post-like.service.js");
 
 const handleError = require("../utils/errorHandler.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 
 const FILE_NAME = "blog-post-like.controller.js";
@@ -12,62 +10,30 @@ const FILE_NAME = "blog-post-like.controller.js";
 
 
 // ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
-
-
-
-// ============================================================
 // Blog Post Like Starts
 // ============================================================
 async function blogPostLike (req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Blog post like request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Blog post like request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
         const postID = req.params.postID;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting authentication token`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting authentication token`);
         const token = req.body.token || req.cookies?.jwt_access_token || req.headers.authorization?.split(" ")[1];
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog post like service`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog post like service`);
         const result = await blogPostLikeService.blogPostLike(postID, token);
+        devLogger.info(`[${FILE_NAME}] Blog post like service execution completed`);
+        devLogger.success(`[${FILE_NAME}] Blog post liked successfully`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Blog post like service execution completed`);
-            logger.success(`[${FILE_NAME}] Blog post liked successfully`);
-
-            logger.info(`[${FILE_NAME}] Preparing like response`);
-            logger.info(`[${FILE_NAME}] Sending like response to client`);
-        }
+        devLogger.info(`[${FILE_NAME}] Sending like response to client`);
 
         return res.status(200).json(result);
     } 
     catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to like blog post`, error);
-            logger.warn(`[${FILE_NAME}] Blog post like request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to like blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog post like request could not be completed`);
         return handleError(res, error);
     }
 };
@@ -81,41 +47,27 @@ async function blogPostLike (req, res) {
 // Blog Post Unlike Starts
 // ============================================================
 async function blogPostUnlike (req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Blog post unlike request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Blog post unlike request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
         const postID = req.params.postID;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting authentication token`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting authentication token`);
         const token = req.body.token || req.cookies?.jwt_access_token || req.headers.authorization?.split(" ")[1];
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog post unlike service`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog post unlike service`);
         const result = await blogPostLikeService.blogPostUnlike(postID, token);
+        devLogger.info(`[${FILE_NAME}] Blog post unlike service execution completed`);
+        devLogger.success(`[${FILE_NAME}] Blog post unliked successfully`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Blog post unlike service execution completed`);
-            logger.success(`[${FILE_NAME}] Blog post unliked successfully`);
-
-            logger.info(`[${FILE_NAME}] Preparing unlike response`);
-            logger.info(`[${FILE_NAME}] Sending unlike response to client`);
-        }
+        devLogger.info(`[${FILE_NAME}] Sending unlike response to client`);
 
         return res.status(200).json(result);
     } 
     catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to unlike blog post`, error);
-            logger.warn(`[${FILE_NAME}] Blog post unlike request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to unlike blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Blog post unlike request could not be completed`);
         return handleError(res, error);
     }
 };
@@ -129,37 +81,23 @@ async function blogPostUnlike (req, res) {
 // Get All Likes For Particular Blog Starts
 // ============================================================
 async function getAllLikesForParticularBlog (req, res) {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Get all blog post likes request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get all blog post likes request received`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
-        }
+        devLogger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
         const postID = req.params.postID;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Calling blog post like service to get all likes`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog post like service to get all likes`);
         const likes = await blogPostLikeService.getAllLikesForParticularBlog(postID);
+        devLogger.info(`[${FILE_NAME}] Blog post likes fetched successfully`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Blog post likes fetched successfully`);
-            logger.info(`[${FILE_NAME}] Preparing likes with user details`);
-        }
+        devLogger.info(`[${FILE_NAME}] Preparing likes with user details`);
 
         const likesWithUserDetails = await Promise.all(
             likes.map(async function (like) {
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.info(`[${FILE_NAME}] Fetching user details for like`);
-                }
-
+                devLogger.info(`[${FILE_NAME}] Fetching user details for like`);
                 const userDetails = await userService.getUserByID(like.userID);
-
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.info(`[${FILE_NAME}] User details fetched successfully`);
-                }
+                devLogger.info(`[${FILE_NAME}] User details fetched successfully`);
 
                 return {
                     _id: like._id,
@@ -174,26 +112,17 @@ async function getAllLikesForParticularBlog (req, res) {
             })
         );
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Likes with user details prepared successfully`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Likes with user details prepared successfully`);
         const result = likesWithUserDetails;
+        devLogger.success(`[${FILE_NAME}] All blog post likes fetched successfully`);
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] All blog post likes fetched successfully`);
-
-            logger.info(`[${FILE_NAME}] Preparing likes response`);
-            logger.info(`[${FILE_NAME}] Sending likes response to client`);
-        }
+        devLogger.info(`[${FILE_NAME}] Sending likes response to client`);
 
         return res.status(200).json(result);
     } 
     catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to fetch blog post likes`, error);
-            logger.warn(`[${FILE_NAME}] Get blog post likes request could not be completed`);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog post likes`, error);
+        devLogger.warn(`[${FILE_NAME}] Get blog post likes request could not be completed`);
         return handleError(res, error);
     }
 };

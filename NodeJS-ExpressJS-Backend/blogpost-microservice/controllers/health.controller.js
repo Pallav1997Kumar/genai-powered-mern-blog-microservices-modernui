@@ -1,4 +1,4 @@
-const dotenv = require("dotenv");
+const devLogger = require("../utils/dev-logger.js");
 
 const {
     getDatabaseHealth
@@ -10,38 +10,15 @@ const FILE_NAME = "health.controller.js";
 
 
 // ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
-
-
-// ============================================================
 // Health Check - starts
 // ============================================================
 function getHealth(req, res) {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Health check request received`);
-    }
+    devLogger.info(`[${FILE_NAME}] Health check request received`);
 
     const databaseHealth = getDatabaseHealth();
 
     if (databaseHealth.connected) {
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Health check successful`);
-        }
+        devLogger.success(`[${FILE_NAME}] Health check successful`);
 
         return res.status(200).json({
             service: "blogpost-microservice",
@@ -55,9 +32,7 @@ function getHealth(req, res) {
         });
     }
 
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.error(`[${FILE_NAME}] Health check failed`);
-    }
+    devLogger.error(`[${FILE_NAME}] Health check failed`);
 
     return res.status(503).json({
         service: "blogpost-microservice",
@@ -77,11 +52,11 @@ function getHealth(req, res) {
 
 
 // ============================================================
-// Module Exports - starts
+// Controller Export - starts
 // ============================================================
 module.exports = {
     getHealth
 };
 // ============================================================
-// Module Exports - ends
+// Controller Export - ends
 // ============================================================

@@ -11,6 +11,7 @@ import Modal from "react-bootstrap/Modal";
 import "../../style/single post/SingleComment.scss";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from '../../utils/logger.js';
 
 
 function SingleComment(props) {
@@ -121,19 +122,13 @@ function SingleComment(props) {
 		const commentID = comment.commentID || comment._id;
 
 		try {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(values);
-			}
-
 			// Send the updated comment to the backend
+			logger.log("Updating comment:", values);
 			const response = await axios.put(
 				`${backendBaseURL}/api/blogPost/comment/updateComment/${commentID}`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Comment updated:", response);
 
 			setCommentUpdateSuccessMessage(response.data);
 			setCommentUpdateErrorMessage(null);
@@ -149,11 +144,7 @@ function SingleComment(props) {
 			}, 2000);
 		} 
 		catch (error) {
-			
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
-
+			logger.error("Error while updating comment:", error);
 
 			if (error.message === "Request failed with status code 401") {
 				// Handle unauthorized user error
@@ -205,10 +196,7 @@ function SingleComment(props) {
 				}
 			);
 			const data = await response.json();
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(data);
-			}
+			logger.log("Comment deleted:", data);
 
 			// Close the delete confirmation modal
 			setShowDeleteComment(false);
@@ -218,10 +206,8 @@ function SingleComment(props) {
 				props.refetchComments();
 			}
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(error);
-				console.log(error.response.data);
-			}
+			logger.error("Error while deleting comment:", error);
+			logger.error("Error response data:", error.response.data);
 		}
 	}
 

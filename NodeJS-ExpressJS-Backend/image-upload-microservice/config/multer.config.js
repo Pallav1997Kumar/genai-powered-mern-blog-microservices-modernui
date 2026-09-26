@@ -1,30 +1,12 @@
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 const path = require("path");
-const dotenv = require("dotenv");
 
 const cloudinary = require("./cloudinary.config.js");
-const logger = require("../utils/logger.js");
+const ErrorMessage = require("../constants/error-message.constant.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "multer.config.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -44,11 +26,7 @@ const uploadLimits = {
 // Image File Filter Starts
 // ============================================================
 function imageFileFilter(req, file, callback) {
-    if (process.env.environment === "development") {
-        logger.info(
-            `[${FILE_NAME}] Validating uploaded image: ${file.originalname}`
-        );
-    }
+    devLogger.info(`[${FILE_NAME}] Validating uploaded image: ${file.originalname}`);
 
     const allowedMimeTypes = [
         "image/jpeg",
@@ -58,27 +36,14 @@ function imageFileFilter(req, file, callback) {
     ];
 
     if (!allowedMimeTypes.includes(file.mimetype)) {
-        if (process.env.environment === "development") {
-            logger.warn(
-                `[${FILE_NAME}] Rejected image with unsupported MIME type: ${file.mimetype}`
-            );
-        }
-
-        const error = new Error(
-            "Only JPG, JPEG, PNG, and WebP images are allowed"
-        );
-
+        devLogger.warn(`[${FILE_NAME}] Rejected image with unsupported MIME type: ${file.mimetype}`);
+        
+        const error = new Error(ErrorMessage.UNSUPPORTED_IMAGE_FORMATS);
         error.statusCode = 400;
-
         return callback(error);
     }
 
-    if (process.env.environment === "development") {
-        logger.success(
-            `[${FILE_NAME}] Image file type validated successfully: ${file.mimetype}`
-        );
-    }
-
+    devLogger.success(`[${FILE_NAME}] Image file type validated successfully: ${file.mimetype}`);
     callback(null, true);
 }
 // ============================================================
@@ -95,12 +60,7 @@ function generateBlogImagePublicId(req, file) {
     const baseName = path.parse(file.originalname).name;
     const publicID = Date.now() + "-" + userID + "-" + baseName;
 
-    if (process.env.environment === "development") {
-        logger.info(
-            `[${FILE_NAME}] Generating Cloudinary public ID for blog image: ${publicID}`
-        );
-    }
-
+    devLogger.info(`[${FILE_NAME}] Generating Cloudinary public ID for blog image: ${publicID}`);
     return publicID;
 }
 // ============================================================
@@ -117,12 +77,7 @@ function generateProfilePhotoPublicId(req, file) {
     const baseName = path.parse(file.originalname).name;
     const publicID = Date.now() + "-" + userID + "-" + baseName;
 
-    if (process.env.environment === "development") {
-        logger.info(
-            `[${FILE_NAME}] Generating Cloudinary public ID for profile photo: ${publicID}`
-        );
-    }
-
+    devLogger.info(`[${FILE_NAME}] Generating Cloudinary public ID for profile photo: ${publicID}`);
     return publicID;
 }
 // ============================================================
@@ -183,11 +138,7 @@ const uploadBlogImage = multer({
     fileFilter: imageFileFilter
 });
 
-if (process.env.environment === "development") {
-    logger.success(
-        `[${FILE_NAME}] Blog image uploader configured successfully`
-    );
-}
+devLogger.success(`[${FILE_NAME}] Blog image uploader configured successfully`);
 // ============================================================
 // Blog Image Uploader Ends
 // ============================================================
@@ -203,11 +154,7 @@ const uploadProfilePhoto = multer({
     fileFilter: imageFileFilter
 });
 
-if (process.env.environment === "development") {
-    logger.success(
-        `[${FILE_NAME}] Profile photo uploader configured successfully`
-    );
-}
+devLogger.success(`[${FILE_NAME}] Profile photo uploader configured successfully`);
 // ============================================================
 // Profile Photo Uploader Ends
 // ============================================================

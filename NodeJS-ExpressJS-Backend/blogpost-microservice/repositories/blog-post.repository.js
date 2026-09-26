@@ -1,7 +1,5 @@
-const dotenv = require("dotenv");
-
 const BlogPost = require("../database-models/blog-post.model.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const mongoose = require("mongoose");
 
@@ -10,49 +8,20 @@ const FILE_NAME = "blog-post.repository.js";
 
 
 // ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
-
-
-
-// ============================================================
 // Create New Blog Post - starts
 // ============================================================
 async function createBlogPost(data) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Create new blog post request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Create new blog post request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Creating new blog post in database`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Creating new blog post in database`);
         const result = await BlogPost.create(data);
-
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog post created successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog post created successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to create blog post`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to create blog post`, error);
         throw error;
     }
 }
@@ -66,35 +35,23 @@ async function createBlogPost(data) {
 // Delete Blog Post By ID - starts
 // ============================================================
 async function deleteBlogPostById(postID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Delete blog post by ID request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Delete blog post by ID request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Searching and deleting blog post by ID`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Searching and deleting blog post by ID`);
         const result = await BlogPost.findByIdAndDelete(postID);
 
         if (!result) {
-            if(process.env.environment === "development") {
-                logger.warn(`[${FILE_NAME}] Blog post not found for provided ID`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Blog post not found for provided ID`);
         }
         else {
-            if(process.env.environment === "development") {
-                logger.success(`[${FILE_NAME}] Blog post deleted successfully`);
-            }
+            devLogger.success(`[${FILE_NAME}] Blog post deleted successfully`);
         }
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to delete blog post by ID`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to delete blog post by ID`, error);
         throw error;
     }
 }
@@ -108,14 +65,10 @@ async function deleteBlogPostById(postID) {
 // Update Blog Post By ID - starts
 // ============================================================
 async function updateBlogPostById(postID, data) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Update blog post by ID request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Update blog post by ID request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Updating blog post by ID`);
-        }
+        devLogger.info(`[${FILE_NAME}] Updating blog post by ID`);
 
         const result = await BlogPost.findByIdAndUpdate(
             postID,
@@ -128,23 +81,16 @@ async function updateBlogPostById(postID, data) {
         );
 
         if (!result) {
-            if(process.env.environment === "development") {
-                logger.warn(`[${FILE_NAME}] Blog post not found for provided ID`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Blog post not found for provided ID`);
         }
         else {
-            if(process.env.environment === "development") {
-                logger.success(`[${FILE_NAME}] Blog post updated successfully`);
-            }
+            devLogger.success(`[${FILE_NAME}] Blog post updated successfully`);
         }
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to update blog post by ID`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to update blog post by ID`, error);
         throw error;
     }
 }
@@ -158,30 +104,20 @@ async function updateBlogPostById(postID, data) {
 // Delete Blog Posts By User ID - starts
 // ============================================================
 async function deleteBlogPostByUserId(userID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Delete blog posts by user ID request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Delete blog posts by user ID request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Deleting blog posts belonging to user`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Deleting blog posts belonging to user`);
+        
         const result = await BlogPost.deleteMany({
             userID: userID
         });
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts deleted by user ID successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog posts deleted by user ID successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to delete blog posts by user ID`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to delete blog posts by user ID`, error);
         throw error;
     }
 }
@@ -195,14 +131,10 @@ async function deleteBlogPostByUserId(userID) {
 // Get All Blog Post IDs By User ID - starts
 // ============================================================
 async function findAllBlogPostIdsByUserId(userID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching blog post IDs belonging to user`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching blog post IDs belonging to user`);
 
         const result = await BlogPost.find(
             {
@@ -213,17 +145,11 @@ async function findAllBlogPostIdsByUserId(userID) {
             }
         );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog post IDs fetched by user ID successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog post IDs fetched by user ID successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch blog post IDs by user ID`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog post IDs by user ID`, error);
         throw error;
     }
 }
@@ -237,14 +163,10 @@ async function findAllBlogPostIdsByUserId(userID) {
 // Find Unique Categories By User - starts
 // ============================================================
 async function findUniqueCategoriesByUser(userID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get unique categories by user request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get unique categories by user request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching unique category IDs for user`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching unique category IDs for user`);
 
         const result = await BlogPost.distinct(
             "categoryID",
@@ -253,17 +175,11 @@ async function findUniqueCategoriesByUser(userID) {
             }
         );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Unique categories by user fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Unique categories by user fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch unique categories by user`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique categories by user`, error);
         throw error;
     }
 }
@@ -277,28 +193,17 @@ async function findUniqueCategoriesByUser(userID) {
 // Find Unique Blog Post User IDs - starts
 // ============================================================
 async function findUniqueBlogPostUserIds() {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get unique blog post user IDs request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get unique blog post user IDs request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching unique user IDs from blog posts`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Fetching unique user IDs from blog posts`);
         const result = await BlogPost.distinct("userID");
-
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Unique blog post user IDs fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Unique blog post user IDs fetched successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch unique blog post user IDs`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique blog post user IDs`, error);
         throw error;
     }
 }
@@ -312,30 +217,20 @@ async function findUniqueBlogPostUserIds() {
 // Count Blog Posts By User - starts
 // ============================================================
 async function countBlogPostByUser(userID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Count blog posts by user request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Count blog posts by user request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Counting blog posts belonging to user`);
-        }
+        devLogger.info(`[${FILE_NAME}] Counting blog posts belonging to user`);
 
         const result = await BlogPost.countDocuments({
             userID: userID
         });
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts by user counted successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog posts by user counted successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to count blog posts by user`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to count blog posts by user`, error);
         throw error;
     }
 }
@@ -349,14 +244,10 @@ async function countBlogPostByUser(userID) {
 // Find Blog Posts By User With Pagination - starts
 // ============================================================
 async function findBlogPostByUserWithPagination(userID, skip, limit) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts by user with pagination request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts by user with pagination request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching blog posts by user with pagination`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching blog posts by user with pagination`);
 
         const result = await BlogPost.find({
             userID: userID
@@ -367,17 +258,11 @@ async function findBlogPostByUserWithPagination(userID, skip, limit) {
             "_id postTitle postDescription postImage postDateTime userID categoryID"
         );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts by user fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog posts by user fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch blog posts by user`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts by user`, error);
         throw error;
     }
 }
@@ -391,31 +276,21 @@ async function findBlogPostByUserWithPagination(userID, skip, limit) {
 // Find All Blog Posts - starts
 // ============================================================
 async function findAllBlogPosts() {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get all blog posts request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get all blog posts request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching all blog posts from database`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching all blog posts from database`);
 
         const result = await BlogPost.find()
             .select(
                 "_id postTitle postDescription postImage userID categoryID"
             );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] All blog posts fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] All blog posts fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch all blog posts`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch all blog posts`, error);
         throw error;
     }
 }
@@ -429,14 +304,10 @@ async function findAllBlogPosts() {
 // Find Four Blog Posts - starts
 // ============================================================
 async function findFourBlogPosts() {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get four latest blog posts request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get four latest blog posts request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching four blog posts from database`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching four blog posts from database`);
 
         const result = await BlogPost.find()
             .limit(4)
@@ -444,17 +315,11 @@ async function findFourBlogPosts() {
                 "_id postTitle postDescription postImage userID categoryID"
             );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Four blog posts fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Four blog posts fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch four blog posts`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch four blog posts`, error);
         throw error;
     }
 }
@@ -468,28 +333,17 @@ async function findFourBlogPosts() {
 // Count Blog Posts - starts
 // ============================================================
 async function countBlogPosts() {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Count total blog posts request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Count total blog posts request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Counting total blog posts`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Counting total blog posts`);
         const result = await BlogPost.countDocuments();
-
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Total blog posts counted successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Total blog posts counted successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to count total blog posts`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to count total blog posts`, error);
         throw error;
     }
 }
@@ -503,14 +357,10 @@ async function countBlogPosts() {
 // Find Blog Posts With Pagination - starts
 // ============================================================
 async function findBlogPostsWithPagination(skip, limit) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts with pagination request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts with pagination request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching blog posts with pagination`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching blog posts with pagination`);
 
         const result = await BlogPost.find()
             .skip(skip)
@@ -519,17 +369,11 @@ async function findBlogPostsWithPagination(skip, limit) {
                 "_id postTitle postDescription postImage postDateTime userID categoryID"
             );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts with pagination fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog posts with pagination fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch blog posts with pagination`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts with pagination`, error);
         throw error;
     }
 }
@@ -543,14 +387,10 @@ async function findBlogPostsWithPagination(skip, limit) {
 // Find Blog Post By ID - starts
 // ============================================================
 async function findBlogPostById(postID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog post by ID request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog post by ID request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Searching blog post by ID`);
-        }
+        devLogger.info(`[${FILE_NAME}] Searching blog post by ID`);
 
         const result = await BlogPost.aggregate([
             {
@@ -572,23 +412,16 @@ async function findBlogPostById(postID) {
         ]);
 
         if (!result.length) {
-            if(process.env.environment === "development") {
-                logger.warn(`[${FILE_NAME}] Blog post not found for provided ID`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Blog post not found for provided ID`);
         }
         else {
-            if(process.env.environment === "development") {
-                logger.success(`[${FILE_NAME}] Blog post fetched by ID successfully`);
-            }
+            devLogger.success(`[${FILE_NAME}] Blog post fetched by ID successfully`);
         }
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch blog post by ID`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog post by ID`, error);
         throw error;
     }
 }
@@ -602,14 +435,10 @@ async function findBlogPostById(postID) {
 // Find Four Blog Posts By Category - starts
 // ============================================================
 async function findFourBlogPostsByCategory(categoryID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get four blog posts by category request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get four blog posts by category request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching four blog posts by category`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching four blog posts by category`);
 
         const result = await BlogPost.find({
             categoryID: categoryID
@@ -619,17 +448,11 @@ async function findFourBlogPostsByCategory(categoryID) {
             "_id postTitle postDescription postImage userID categoryID"
         );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Four blog posts by category fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Four blog posts by category fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch four blog posts by category`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch four blog posts by category`, error);
         throw error;
     }
 }
@@ -643,14 +466,10 @@ async function findFourBlogPostsByCategory(categoryID) {
 // Find Blog Posts By Category With Pagination - starts
 // ============================================================
 async function findBlogPostsByCategoryWithPagination(categoryID, skip, limit) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts by category with pagination request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts by category with pagination request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching blog posts by category with pagination`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching blog posts by category with pagination`);
 
         const result = await BlogPost.find({
             categoryID: categoryID
@@ -661,17 +480,11 @@ async function findBlogPostsByCategoryWithPagination(categoryID, skip, limit) {
             "_id postTitle postDescription postImage postDateTime userID categoryID"
         );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts by category fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog posts by category fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch blog posts by category`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts by category`, error);
         throw error;
     }
 }
@@ -685,30 +498,20 @@ async function findBlogPostsByCategoryWithPagination(categoryID, skip, limit) {
 // Count Blog Posts By Category - starts
 // ============================================================
 async function countBlogPostsByCategory(categoryID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Count blog posts by category request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Count blog posts by category request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Counting blog posts by category`);
-        }
+        devLogger.info(`[${FILE_NAME}] Counting blog posts by category`);
 
         const result = await BlogPost.countDocuments({
             categoryID: categoryID
         });
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts by category counted successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog posts by category counted successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to count blog posts by category`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to count blog posts by category`, error);
         throw error;
     }
 }
@@ -722,28 +525,17 @@ async function countBlogPostsByCategory(categoryID) {
 // Find Unique Category IDs - starts
 // ============================================================
 async function findUniqueCategoryIds() {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get unique category IDs request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get unique category IDs request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching unique category IDs`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Fetching unique category IDs`);
         const result = await BlogPost.distinct("categoryID");
-
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Unique category IDs fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Unique category IDs fetched successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch unique category IDs`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique category IDs`, error);
         throw error;
     }
 }
@@ -757,14 +549,10 @@ async function findUniqueCategoryIds() {
 // Find Unique Users By Category - starts
 // ============================================================
 async function findUniqueUsersByCategory(categoryID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get unique users by category request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get unique users by category request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching unique users by category`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching unique users by category`);
 
         const result = await BlogPost.distinct(
             "userID",
@@ -773,17 +561,11 @@ async function findUniqueUsersByCategory(categoryID) {
             }
         );
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Unique users by category fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Unique users by category fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch unique users by category`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch unique users by category`, error);
         throw error;
     }
 }
@@ -802,14 +584,10 @@ async function findBlogPostsWithFilterSortPagination(
     skip,
     limit
 ) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Filter sort pagination request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Filter sort pagination request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Fetching filtered and sorted blog posts`);
-        }
+        devLogger.info(`[${FILE_NAME}] Fetching filtered and sorted blog posts`);
 
         const result = await BlogPost.aggregate([
             {
@@ -845,17 +623,11 @@ async function findBlogPostsWithFilterSortPagination(
             }
         ]);
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Filtered and sorted blog posts fetched successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Filtered and sorted blog posts fetched successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to fetch filtered blog posts`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to fetch filtered blog posts`, error);
         throw error;
     }
 }
@@ -869,14 +641,10 @@ async function findBlogPostsWithFilterSortPagination(
 // Count Blog Posts With Filter - starts
 // ============================================================
 async function countBlogPostsWithFilter(matchStage) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Count filtered blog posts request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Count filtered blog posts request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Counting filtered blog posts`);
-        }
+        devLogger.info(`[${FILE_NAME}] Counting filtered blog posts`);
 
         const result = await BlogPost.aggregate([
             {
@@ -888,18 +656,12 @@ async function countBlogPostsWithFilter(matchStage) {
         ]);
 
         const totalCount = result[0] ? result[0].totalCount : 0;
-
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Filtered blog posts counted successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Filtered blog posts counted successfully`);
 
         return totalCount;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to count filtered blog posts`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to count filtered blog posts`, error);
         throw error;
     }
 }
@@ -913,14 +675,10 @@ async function countBlogPostsWithFilter(matchStage) {
 // Search Blog Posts By Title Ignore Case - starts
 // ============================================================
 async function searchBlogPostsByTitleIgnoreCase(postTitle) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Blog post title search request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Blog post title search request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Searching blog posts by title`);
-        }
+        devLogger.info(`[${FILE_NAME}] Searching blog posts by title`);
 
         const result = await BlogPost.find({
             postTitle: {
@@ -931,17 +689,11 @@ async function searchBlogPostsByTitleIgnoreCase(postTitle) {
         .limit(5)
         .select("_id postTitle");
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog post title search completed successfully`);
-        }
-
+        devLogger.success(`[${FILE_NAME}] Blog post title search completed successfully`);
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to search blog posts by title`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to search blog posts by title`, error);
         throw error;
     }
 }

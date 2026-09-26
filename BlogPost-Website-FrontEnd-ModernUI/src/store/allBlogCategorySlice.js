@@ -11,7 +11,9 @@ const initialState = {
 export const getAllBlogCategory = createAsyncThunk("blogCategorySliceName", async function(args,{rejectWithValue}){
     try {
         const response = await axios.get(`${backendBaseURL}/api/blog/categoryList`);
-        return response.data;
+        const data = response.data;
+        const blogCategoryList = data.blogCategoryList;
+        return blogCategoryList;
     } catch (error) {
         rejectWithValue(error);
     }

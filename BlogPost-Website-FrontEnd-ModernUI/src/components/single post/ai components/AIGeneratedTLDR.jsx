@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../../style/single post/ai components/AIGeneratedTLDR.scss";
 
 import backendBaseURL from "../../../backendBaseURL.js";
+import logger from '../../../utils/logger.js';
 import { getPlainText } from "../../../utils/utility functions.js";
 
 
@@ -53,16 +54,11 @@ function AIGeneratedTLDR(props) {
                 `${backendBaseURL}/api/generativeAI/generateBlogTldr`,
                 values
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.log(response);
-            }
+            logger.log("AI-generated TLDR:", response);
 
             setTldr(response.data.blogTLDR);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.error(error);
-            }
+            logger.error("Error while generating AI TLDR:", error);
             setError("Failed to generate TLDR. Please try again");
         } finally {
             setLoading(false);

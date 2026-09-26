@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../../../style/single post/ai components/AIGeneratedKeyTakeaways.scss";
 
 import backendBaseURL from "../../../backendBaseURL.js";
+import logger from '../../../utils/logger.js';
 import { getPlainText } from "../../../utils/utility functions.js";
 
 
@@ -54,19 +55,12 @@ function AIGeneratedKeyTakeaways(props) {
                 `${backendBaseURL}/api/generativeAI/generateBlogKeyTakeaways`,
                 values
             );
-
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.log(response);
-            }
+            logger.log("AI-generated key takeaways:", response);
 
             setKeyTakeaways(response.data.blogKeyTakeaways);
         } catch (error) {
-            if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-                console.error(error);
-            }
-            setError(
-                "Failed to generate key takeaways. Please try again"
-            );
+            logger.error("Error while generating AI key takeaways:", error);
+            setError("Failed to generate key takeaways. Please try again");
         } finally {
             setLoading(false);
         }

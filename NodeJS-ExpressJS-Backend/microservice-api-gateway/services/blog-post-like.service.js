@@ -1,7 +1,5 @@
-const dotenv = require("dotenv");
-
 const httpClient = require("../utils/httpClient.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const { 
     BLOG_LIKE_SERVICE 
@@ -13,32 +11,12 @@ const FILE_NAME = "blog-post-like.service.js";
 
 
 // ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
-
-
-
-// ============================================================
 // Like Blog Post Code Starts
 // ============================================================
 const blogPostLike = async function(postID, token){
-    logger.info(`[${FILE_NAME}] Like blog post request started`);
-
+    devLogger.info(`[${FILE_NAME}] Like blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog like service to like blog post`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog like service to like blog post`);
         const response = await httpClient.post(
             `${BLOG_LIKE_SERVICE}/api/blog-like/post/${postID}`,
             {},
@@ -49,16 +27,15 @@ const blogPostLike = async function(postID, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog like service returned like response successfully`);
-        logger.success(`[${FILE_NAME}] Blog post liked successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog like service returned like response successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post liked successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning like blog post response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning like blog post response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to like blog post`, error);
-        logger.warn(`[${FILE_NAME}] Like blog post request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to like blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Like blog post request could not be completed`);
 
         throw {
             message:"Failed to like blog post",
@@ -77,11 +54,9 @@ const blogPostLike = async function(postID, token){
 // Unlike Blog Post Code Starts
 // ============================================================
 const blogPostUnlike = async function(postID, token){
-    logger.warn(`[${FILE_NAME}] Unlike blog post request started`);
-
+    devLogger.warn(`[${FILE_NAME}] Unlike blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog like service to unlike blog post`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog like service to unlike blog post`);
         const response = await httpClient.delete(
             `${BLOG_LIKE_SERVICE}/api/blog-like/post/${postID}`,
             {
@@ -91,16 +66,15 @@ const blogPostUnlike = async function(postID, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog like service returned unlike response successfully`);
-        logger.success(`[${FILE_NAME}] Blog post unliked successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog like service returned unlike response successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post unliked successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning unlike blog post response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning unlike blog post response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to unlike blog post`, error);
-        logger.warn(`[${FILE_NAME}] Unlike blog post request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to unlike blog post`, error);
+        devLogger.warn(`[${FILE_NAME}] Unlike blog post request could not be completed`);
 
         throw {
             message:"Failed to unlike blog post",
@@ -119,25 +93,22 @@ const blogPostUnlike = async function(postID, token){
 // Get All Likes For Blog Post Code Starts
 // ============================================================
 const getAllLikesForParticularBlog = async function(postID){
-    logger.info(`[${FILE_NAME}] Get all likes for blog post request started`);
-
+    devLogger.info(`[${FILE_NAME}] Get all likes for blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog like service to fetch blog post likes`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog like service to fetch blog post likes`);
         const response = await httpClient.get(
             `${BLOG_LIKE_SERVICE}/api/blog-like/post/${postID}`
         );
 
-        logger.info(`[${FILE_NAME}] Blog like service returned blog post likes successfully`);
-        logger.success(`[${FILE_NAME}] Blog post likes fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog like service returned blog post likes successfully`);
+        devLogger.success(`[${FILE_NAME}] Blog post likes fetched successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning blog post likes response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning blog post likes response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to fetch blog post likes`, error);
-        logger.warn(`[${FILE_NAME}] Get blog post likes request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog post likes`, error);
+        devLogger.warn(`[${FILE_NAME}] Get blog post likes request could not be completed`);
 
         throw {
             message:"Failed to fetch blog post likes",
@@ -156,11 +127,9 @@ const getAllLikesForParticularBlog = async function(postID){
 // Delete All Likes By User ID Code Starts
 // ============================================================
 const deleteLikesByUserId = async function(userID, token){
-    logger.warn(`[${FILE_NAME}] Delete all likes by user ID request started`);
-
+    devLogger.warn(`[${FILE_NAME}] Delete all likes by user ID request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog like service to delete user likes`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog like service to delete user likes`);
         const response = await httpClient.delete(
             `${BLOG_LIKE_SERVICE}/api/blog-like/user/${userID}`,
             {
@@ -170,16 +139,15 @@ const deleteLikesByUserId = async function(userID, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog like service returned delete user likes response successfully`);
-        logger.success(`[${FILE_NAME}] User likes deleted successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog like service returned delete user likes response successfully`);
+        devLogger.success(`[${FILE_NAME}] User likes deleted successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning delete user likes response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning delete user likes response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to delete user likes`, error);
-        logger.warn(`[${FILE_NAME}] Delete user likes request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to delete user likes`, error);
+        devLogger.warn(`[${FILE_NAME}] Delete user likes request could not be completed`);
 
         throw {
             message:"Failed to delete user likes",
@@ -198,11 +166,9 @@ const deleteLikesByUserId = async function(userID, token){
 // Delete All Likes For Blog Post Code Starts
 // ============================================================
 const deleteAllLikesForPost = async function(postID, token){
-    logger.warn(`[${FILE_NAME}] Delete all likes for blog post request started`);
-
+    devLogger.warn(`[${FILE_NAME}] Delete all likes for blog post request started`);
     try{
-        logger.info(`[${FILE_NAME}] Calling blog like service to delete all post likes`);
-
+        devLogger.info(`[${FILE_NAME}] Calling blog like service to delete all post likes`);
         const response = await httpClient.delete(
             `${BLOG_LIKE_SERVICE}/api/blog-like/post/${postID}/all`,
             {
@@ -212,16 +178,15 @@ const deleteAllLikesForPost = async function(postID, token){
             }
         );
 
-        logger.info(`[${FILE_NAME}] Blog like service returned delete all post likes response successfully`);
-        logger.success(`[${FILE_NAME}] All blog post likes deleted successfully`);
+        devLogger.info(`[${FILE_NAME}] Blog like service returned delete all post likes response successfully`);
+        devLogger.success(`[${FILE_NAME}] All blog post likes deleted successfully`);
 
-        logger.info(`[${FILE_NAME}] Returning delete all post likes response`);
-
+        devLogger.info(`[${FILE_NAME}] Returning delete all post likes response`);
         return response.data;
     }
     catch(error){
-        logger.error(`[${FILE_NAME}] Failed to delete all likes for post`, error);
-        logger.warn(`[${FILE_NAME}] Delete all post likes request could not be completed`);
+        devLogger.error(`[${FILE_NAME}] Failed to delete all likes for post`, error);
+        devLogger.warn(`[${FILE_NAME}] Delete all post likes request could not be completed`);
 
         throw {
             message:"Failed to delete all likes for post",

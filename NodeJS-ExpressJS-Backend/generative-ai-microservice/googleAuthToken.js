@@ -1,8 +1,13 @@
 const dotenv = require("dotenv");
 const { GoogleAuth } = require('google-auth-library');
 
-const logger = require("./utils/loggers/logger.js");
+const devLogger = require("./utils/loggers/dev-logger.js");
 
+
+
+// ============================================================
+// Environment Configuration - starts
+// ============================================================
 const configPath =
     process.env.DEPLOYMENT_STRUCTURE ===
     "ALL_MICROSERVICES_ONE_DEPLOYMENT"
@@ -12,6 +17,9 @@ const configPath =
 dotenv.config({
     path: configPath
 });
+// ============================================================
+// Environment Configuration - ends
+// ============================================================
 
 
 
@@ -31,9 +39,7 @@ async function generateAccessToken() {
         return tokenResponse.token;
     } 
     catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error('Error generating access token:', error);
-        }
+        devLogger.error('Error generating access token:', error);
         throw error;
     }
 }

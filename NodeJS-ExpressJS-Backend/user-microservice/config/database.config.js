@@ -1,9 +1,7 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
-
-const logger = require("../utils/logger.js");
-
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "database.config.js";
 
@@ -33,27 +31,16 @@ const databaseURL = process.env.databaseURL;
 // Database Connection - starts
 // ============================================================
 async function connectDatabase() {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Database connection request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Database connection request started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Connecting to MongoDB database`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Connecting to MongoDB database`);
         await mongoose.connect(databaseURL);
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] Connected to MongoDB database successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Connected to MongoDB database successfully`);
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Unable to connect to MongoDB database`);
-            logger.error(error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Unable to connect to MongoDB database`);
+        devLogger.error(error);
         process.exit(1);
     }
 };
@@ -67,28 +54,17 @@ async function connectDatabase() {
 // Database Disconnection - starts
 // ============================================================
 async function disconnectDatabase() {
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Database disconnection request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Database disconnection request started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Disconnecting from MongoDB database`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Disconnecting from MongoDB database`);
         await mongoose.connection.close();
-
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] MongoDB Atlas disconnected successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] MongoDB Atlas disconnected successfully`);
 
     } 
     catch (error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] MongoDB Atlas disconnection failed`);
-            logger.error(error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] MongoDB Atlas disconnection failed`);
+        devLogger.error(error);
         throw error;
     }
 }
@@ -102,12 +78,9 @@ async function disconnectDatabase() {
 // Database Health Check - starts
 // ============================================================
 function getDatabaseHealth() {
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Database health check request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Database health check request started`);
+    
     const state = mongoose.connection.readyState;
-
     const states = {
         0: "disconnected",
         1: "connected",
@@ -118,13 +91,8 @@ function getDatabaseHealth() {
     const databaseStatus = states[state] || "unknown";
     const connected = state === 1;
 
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.success(`[${FILE_NAME}] Database health status: ${databaseStatus}`);
-    }
-
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.success(`[${FILE_NAME}] Database connected: ${connected}`);
-    }
+    devLogger.success(`[${FILE_NAME}] Database health status: ${databaseStatus}`);
+    devLogger.success(`[${FILE_NAME}] Database connected: ${connected}`);
 
     return {
         status: databaseStatus,

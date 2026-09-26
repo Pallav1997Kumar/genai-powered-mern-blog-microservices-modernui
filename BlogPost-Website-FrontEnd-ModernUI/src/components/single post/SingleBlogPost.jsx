@@ -5,9 +5,12 @@ import axios from "axios";
 
 import "../../style/single post/SinglePost.scss";
 
-import SingleOnlyPostSection from "./SingleOnlyPostSection";
-import CommentSection from "./CommentSection";
-import backendBaseURL from "../../backendBaseURL";
+import SingleOnlyPostSection from "./SingleOnlyPostSection.jsx";
+import CommentSection from "./CommentSection.jsx";
+
+import backendBaseURL from "../../backendBaseURL.js";
+import logger from '../../utils/logger.js';
+
 
 function SingleBlogPost() {
 
@@ -76,16 +79,12 @@ function SingleBlogPost() {
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/postId/${blogPostID}`
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("Fetched blog post details:", response);
+			
 			setBlogPostDetails(response.data);
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching blog post details:", error);
 		}
 	}
 

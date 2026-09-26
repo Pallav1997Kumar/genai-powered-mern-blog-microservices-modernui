@@ -11,7 +11,9 @@ import Button from "react-bootstrap/Button";
 
 import SingleComment from "./SingleComment";
 
-import backendBaseURL from "../../backendBaseURL";
+import backendBaseURL from "../../backendBaseURL.js";
+import logger from '../../utils/logger.js';
+
 
 function CommentSection(props) {
 
@@ -98,17 +100,13 @@ function CommentSection(props) {
 			const response = await axios.get(
 				`${backendBaseURL}/api/blogPost/comment/${blogPostID}`
 			);
+			logger.log("Fetched blog post comments:", response);
 
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
 			setBlogPostAllComments(response.data);
 
 		}
 		catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while fetching blog post comments:", error);
 		}
 	}
 
@@ -134,19 +132,13 @@ function CommentSection(props) {
 		};
 
 		try {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(values);
-			}
-
 			// Send the new comment to the backend
+			logger.log("Adding new comment:", values);
 			const response = await axios.post(
 				`${backendBaseURL}/api/blogPost/comment/newComment/${blogPostID}`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("New comment added:", response);
 
 			// Refresh the comments after successfully adding a comment
 			await fetchBlogPostComment();
@@ -160,10 +152,7 @@ function CommentSection(props) {
 			setCommentAddedErrorMessage(null);
 		}
 		catch (error) {
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while adding new comment:", error);
 
 			if (error.message === "Request failed with status code 401") {
 				// Handle unauthorized user error

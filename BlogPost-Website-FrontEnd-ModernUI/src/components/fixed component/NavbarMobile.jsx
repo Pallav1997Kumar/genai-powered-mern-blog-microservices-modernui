@@ -31,6 +31,7 @@ import {
 } from "react-icons/hi";
 
 import backendBaseURL from "../../backendBaseURL.js";
+import logger from '../../utils/logger.js';
 
 
 function NavbarMobile() {
@@ -128,10 +129,7 @@ function NavbarMobile() {
 				`${backendBaseURL}/api/authorization/logout`,
 				values
 			);
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(response);
-			}
+			logger.log("User logged out:", response);
 
 			// Remove user authentication data
 			localStorage.removeItem("user");
@@ -146,9 +144,7 @@ function NavbarMobile() {
 			// Close logout modal
 			setShowLogoutModal(false);
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while logging out user:", error);
 		}
 	}
 	
@@ -178,10 +174,7 @@ function NavbarMobile() {
 				}
 			);
 			const data = await response.json();
-
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.log(data);
-			}
+			logger.log("Account deleted:", data);
 			
 			// Navigate to account deleted confirmation page
 			navigate("/accountDeleted");
@@ -195,9 +188,7 @@ function NavbarMobile() {
 			// Clear logged in user details from Redux
 			dispatch(logout());
 		} catch (error) {
-			if(process.env.REACT_APP_ENVIRONMENT === "DEVELOPMENT"){
-				console.error(error);
-			}
+			logger.error("Error while deleting account:", error);
 		}
 	}
 

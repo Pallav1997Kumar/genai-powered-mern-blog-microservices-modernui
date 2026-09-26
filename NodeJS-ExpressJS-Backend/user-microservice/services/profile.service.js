@@ -1,28 +1,8 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-
 const blogUserRepository = require("../repositories/blog-user.repository.js");
-const logger = require("../utils/logger.js");
+const ErrorMessage = require("../constants/error-message.constant.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "profile.service.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -30,29 +10,22 @@ dotenv.config({
 // Update Profile Photo - starts
 // ============================================================
 async function updateUserProfilePhoto(userID, imageDetail){
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Update user profile photo service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Update user profile photo service started`);
 
     try {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Finding user by ID`);
-        }
+        devLogger.info(`[${FILE_NAME}] Finding user by ID`);
         const user = await blogUserRepository.findUserById(userID);
 
         if (!user) {
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] User not found for profile photo update`);
-            }
+            devLogger.warn(`[${FILE_NAME}] User not found for profile photo update`);
             throw {
-                status: 404,
-                message: "User not found"
+                status:404,
+                message:ErrorMessage.USER_NOT_FOUND
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Updating user profile photo through repository`);
-        }
+        devLogger.info(`[${FILE_NAME}] Updating user profile photo through repository`);
+
         await blogUserRepository.updateUserById(
             userID,
             {
@@ -60,15 +33,11 @@ async function updateUserProfilePhoto(userID, imageDetail){
             }
         );
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] User profile photo updated successfully`);
-        }
-        return "Your Profile Photo is updated successfully";
+        devLogger.success(`[${FILE_NAME}] User profile photo updated successfully`);
+        return true;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to update user profile photo`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to update user profile photo`, error);
         throw error;
     }
 };
@@ -82,9 +51,7 @@ async function updateUserProfilePhoto(userID, imageDetail){
 // Update Basic Information - starts
 // ============================================================
 async function updateUserBasicInformation(userID,data){
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Update user basic information service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Update user basic information service started`);
 
     try {
         const firstName = data.firstName;
@@ -106,11 +73,9 @@ async function updateUserBasicInformation(userID,data){
             fullName = firstName + " " + middleName + " " + lastName;
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Checking whether basic information has changed`);
-        }
+        devLogger.info(`[${FILE_NAME}] Checking whether basic information has changed`);
 
-        const user = 
+        const user =
             await blogUserRepository.findUserWithBasicInformation(
                 userID,
                 firstName,
@@ -122,18 +87,14 @@ async function updateUserBasicInformation(userID,data){
             );
 
         if(user){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] User basic information has not changed`);
-            }
+            devLogger.warn(`[${FILE_NAME}] User basic information has not changed`);
             throw {
                 status:417,
-                message:"You have not updated any information"
+                message:ErrorMessage.NO_INFORMATION_UPDATED
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Updating user basic information through repository`);
-        }
+        devLogger.info(`[${FILE_NAME}] Updating user basic information through repository`);
 
         await blogUserRepository.updateUserById(
             userID,
@@ -143,19 +104,15 @@ async function updateUserBasicInformation(userID,data){
                 lastName,
                 fullName,
                 gender,
-                dateOfBirth: dob
+                dateOfBirth:dob
             }
         );
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] User basic information updated successfully`);
-        }
-        return "Your Basic Information is updated successfully";
+        devLogger.success(`[${FILE_NAME}] User basic information updated successfully`);
+        return true;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to update user basic information`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to update user basic information`, error);
         throw error;
     }
 };
@@ -169,94 +126,75 @@ async function updateUserBasicInformation(userID,data){
 // Update Email Username - starts
 // ============================================================
 async function updateUserEmailUsername(userID,data){
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Update user email and username service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Update user email and username service started`);
 
     try {
         const username = data.username;
         const email = data.email;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Finding user by ID`);
-        }
+        devLogger.info(`[${FILE_NAME}] Finding user by ID`);
 
         const user = await blogUserRepository.findUserById(userID);
 
         if (!user) {
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] User not found for email and username update`);
-            }
+            devLogger.warn(`[${FILE_NAME}] User not found for email and username update`);
             throw {
-                status: 404,
-                message: "User not found"
+                status:404,
+                message:ErrorMessage.USER_NOT_FOUND
             };
         }
 
         if(user.username === username && user.emailAddress === email){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] User email and username have not changed`);
-            }
+            devLogger.warn(`[${FILE_NAME}] User email and username have not changed`);
             throw {
                 status:417,
-                message:"You have not updated any information"
+                message:ErrorMessage.NO_INFORMATION_UPDATED
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Checking whether username or email is already in use`);
-        }
+        devLogger.info(`[${FILE_NAME}] Checking whether username or email is already in use`);
 
-        const existingUser = 
-            await blogUserRepository.findExistingUserByUsernameOrEmail(userID, username, email);
+        const existingUser =
+            await blogUserRepository.findExistingUserByUsernameOrEmail(
+                userID,
+                username,
+                email
+            );
 
         if(existingUser){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Username or email already exists`);
-            }
-
+            devLogger.warn(`[${FILE_NAME}] Username or email already exists`);
             if(existingUser.username === username){
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.warn(`[${FILE_NAME}] Username exists`);
-                }
+                devLogger.warn(`[${FILE_NAME}] Username exists`);
                 throw {
                     status:409,
-                    message:"Username already used. Please choose another username"
+                    message:ErrorMessage.USERNAME_ALREADY_USED
                 };
             }
 
-            if (existingUser.emailAddress === email){
-                if(process.env.environment == "DEVELOPMENT"){
-                    logger.warn(`[${FILE_NAME}] Email already exists`);
-                }
+            if(existingUser.emailAddress === email){
+                devLogger.warn(`[${FILE_NAME}] Email already exists`);
                 throw {
                     status:409,
-                    message:"Email address already exists!"
+                    message:ErrorMessage.EMAIL_ALREADY_EXISTS
                 };
             }
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Updating user email and username through repository`);
-        }
+        devLogger.info(`[${FILE_NAME}] Updating user email and username through repository`);
 
         await blogUserRepository.updateUserById(
             userID,
             {
                 username,
-                emailAddress: email
+                emailAddress:email
             }
         );
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] User email and username updated successfully`);
-        }
-        return "Your Email Address and Username is updated successfully";
+        devLogger.success(`[${FILE_NAME}] User email and username updated successfully`);
+        return true;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to update user email and username`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to update user email and username`, error);
         throw error;
     }
 };
@@ -270,63 +208,50 @@ async function updateUserEmailUsername(userID,data){
 // Update Password - starts
 // ============================================================
 async function updateUserPassword(userID,data){
-    if(process.env.environment == "DEVELOPMENT"){
-        logger.info(`[${FILE_NAME}] Update user password service started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Update user password service started`);
 
     try {
         const oldPassword = data.oldPassword;
         const newPassword = data.newPassword;
         const confirmNewPassword = data.confirmNewPassword;
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Finding user by ID`);
-        }
+        devLogger.info(`[${FILE_NAME}] Finding user by ID`);
+
         const user = await blogUserRepository.findUserById(userID);
-        
+
         if (!user) {
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] User not found for password update`);
-            }
+            devLogger.warn(`[${FILE_NAME}] User not found for password update`);
             throw {
-                status: 404,
-                message: "User not found"
+                status:404,
+                message:ErrorMessage.USER_NOT_FOUND
             };
         }
 
         if(user.password !== oldPassword){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Password update failed because old password is incorrect`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Password update failed because old password is incorrect`);
             throw {
                 status:401,
-                message:"You have entered wrong old password"
+                message:ErrorMessage.INCORRECT_OLD_PASSWORD
             };
         }
 
         if(newPassword !== confirmNewPassword){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Password update failed because new password and confirm new password do not match`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Password update failed because new password and confirm new password do not match`);
             throw {
                 status:401,
-                message:"New Password and Confirm New Password does not match!"
+                message:ErrorMessage.NEW_PASSWORD_CONFIRMATION_MISMATCH
             };
         }
 
         if(newPassword === user.password){
-            if(process.env.environment == "DEVELOPMENT"){
-                logger.warn(`[${FILE_NAME}] Password update failed because new password is same as old password`);
-            }
+            devLogger.warn(`[${FILE_NAME}] Password update failed because new password is same as old password`);
             throw {
                 status:401,
-                message:"New Password cannot be same as Old Password"
+                message:ErrorMessage.NEW_PASSWORD_MATCHES_OLD_PASSWORD
             };
         }
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.info(`[${FILE_NAME}] Updating user password through repository`);
-        }
+        devLogger.info(`[${FILE_NAME}] Updating user password through repository`);
 
         await blogUserRepository.updateUserById(
             userID,
@@ -335,15 +260,11 @@ async function updateUserPassword(userID,data){
             }
         );
 
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.success(`[${FILE_NAME}] User password updated successfully`);
-        }
-        return "Password has been updated successfully";
+        devLogger.success(`[${FILE_NAME}] User password updated successfully`);
+        return true;
     }
     catch(error) {
-        if(process.env.environment == "DEVELOPMENT"){
-            logger.error(`[${FILE_NAME}] Failed to update user password`, error);
-        }
+        devLogger.error(`[${FILE_NAME}] Failed to update user password`, error);
         throw error;
     }
 };
@@ -357,7 +278,7 @@ async function updateUserPassword(userID,data){
 // Service Exports - starts
 // ============================================================
 module.exports = {
-    updateUserProfilePhoto: updateUserProfilePhoto,
+    updateUserProfilePhoto:updateUserProfilePhoto,
     updateUserBasicInformation:updateUserBasicInformation,
     updateUserEmailUsername:updateUserEmailUsername,
     updateUserPassword:updateUserPassword

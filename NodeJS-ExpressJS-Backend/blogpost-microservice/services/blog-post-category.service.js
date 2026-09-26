@@ -1,27 +1,7 @@
-const dotenv = require("dotenv");
-
 const blogPostRepository = require("../repositories/blog-post.repository.js");
-const logger = require("../utils/logger.js");
+const devLogger = require("../utils/dev-logger.js");
 
 const FILE_NAME = "blog-post-category.service.js";
-
-
-
-// ============================================================
-// Environment Configuration - starts
-// ============================================================
-const configPath =
-    process.env.DEPLOYMENT_STRUCTURE ===
-    "ALL_MICROSERVICES_ONE_DEPLOYMENT"
-        ? "../config.env"
-        : "./config.env";
-
-dotenv.config({
-    path: configPath
-});
-// ============================================================
-// Environment Configuration - ends
-// ============================================================
 
 
 
@@ -29,29 +9,19 @@ dotenv.config({
 // Get Four Blog Posts For Particular Category - starts
 // ============================================================
 async function getFourBlogPostForParticularCategory(categoryID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get four blog posts for particular category request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get four blog posts for particular category request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch four blog posts by category`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository to fetch four blog posts by category`);
         const result = await blogPostRepository.findFourBlogPostsByCategory(categoryID);
 
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Blog post repository response received`);
-            logger.success(`[${FILE_NAME}] Four blog posts for particular category fetched successfully`);
-        }
+        devLogger.info(`[${FILE_NAME}] Blog post repository response received`);
+        devLogger.success(`[${FILE_NAME}] Four blog posts for particular category fetched successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to get four blog posts for particular category`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to get four blog posts for particular category`, error);
         throw error;
     }
 }
@@ -65,46 +35,24 @@ async function getFourBlogPostForParticularCategory(categoryID) {
 // Get Blog Posts For Particular Category With Pagination - starts
 // ============================================================
 async function getBlogPostForParticularCategoryWithPagination(categoryID, page, limit) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get blog posts for particular category with pagination request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get blog posts for particular category with pagination request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calculating pagination skip value`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calculating pagination skip value`);
         const skip = (page - 1) * limit;
 
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch category blog posts with pagination`);
-        }
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository to fetch category blog posts with pagination`);
+        const blogPostData = await blogPostRepository.findBlogPostsByCategoryWithPagination(categoryID, skip, limit);
+        devLogger.info(`[${FILE_NAME}] Blog post repository pagination response received`);
 
-        const blogPostData =
-            await blogPostRepository.findBlogPostsByCategoryWithPagination(
-                categoryID,
-                skip,
-                limit
-            );
-
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Blog post repository pagination response received`);
-            logger.info(`[${FILE_NAME}] Calling blog post repository to count category blog posts`);
-        }
-
-        const totalCount =
-            await blogPostRepository.countBlogPostsByCategory(categoryID);
-
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Blog post category count response received`);
-            logger.info(`[${FILE_NAME}] Calculating total pages`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository to count category blog posts`);
+        const totalCount = await blogPostRepository.countBlogPostsByCategory(categoryID);
+        devLogger.info(`[${FILE_NAME}] Blog post category count response received`);
+        
+        devLogger.info(`[${FILE_NAME}] Calculating total pages`);
         const totalPages = Math.ceil(totalCount / limit);
 
-        if(process.env.environment === "development") {
-            logger.success(`[${FILE_NAME}] Blog posts for particular category with pagination fetched successfully`);
-        }
+        devLogger.success(`[${FILE_NAME}] Blog posts for particular category with pagination fetched successfully`);
 
         return {
             currentPage: page,
@@ -114,10 +62,7 @@ async function getBlogPostForParticularCategoryWithPagination(categoryID, page, 
         };
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to get blog posts for particular category with pagination`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to get blog posts for particular category with pagination`, error);
         throw error;
     }
 }
@@ -131,29 +76,19 @@ async function getBlogPostForParticularCategoryWithPagination(categoryID, page, 
 // Get Blog Posted Unique Category IDs - starts
 // ============================================================
 async function getBlogPostedUniqueCategoryIds() {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get unique blog posted category IDs request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get unique blog posted category IDs request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique category IDs`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique category IDs`);
         const result = await blogPostRepository.findUniqueCategoryIds();
 
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Unique category IDs repository response received`);
-            logger.success(`[${FILE_NAME}] Unique blog posted category IDs fetched successfully`);
-        }
+        devLogger.info(`[${FILE_NAME}] Unique category IDs repository response received`);
+        devLogger.success(`[${FILE_NAME}] Unique blog posted category IDs fetched successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to get unique blog posted category IDs`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to get unique blog posted category IDs`, error);
         throw error;
     }
 }
@@ -167,29 +102,19 @@ async function getBlogPostedUniqueCategoryIds() {
 // Get Blog Posted Unique Users For Particular Category - starts
 // ============================================================
 async function getBlogPostedUniqueUsersForParticularCategory(categoryID) {
-    if(process.env.environment === "development") {
-        logger.info(`[${FILE_NAME}] Get unique blog posted users for particular category request started`);
-    }
+    devLogger.info(`[${FILE_NAME}] Get unique blog posted users for particular category request started`);
 
     try {
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique users by category`);
-        }
-
+        devLogger.info(`[${FILE_NAME}] Calling blog post repository to fetch unique users by category`);
         const result = await blogPostRepository.findUniqueUsersByCategory(categoryID);
 
-        if(process.env.environment === "development") {
-            logger.info(`[${FILE_NAME}] Unique users repository response received`);
-            logger.success(`[${FILE_NAME}] Unique blog posted users for particular category fetched successfully`);
-        }
+        devLogger.info(`[${FILE_NAME}] Unique users repository response received`);
+        devLogger.success(`[${FILE_NAME}] Unique blog posted users for particular category fetched successfully`);
 
         return result;
     }
     catch(error) {
-        if(process.env.environment === "development") {
-            logger.error(`[${FILE_NAME}] Failed to get unique blog posted users for particular category`, error);
-        }
-
+        devLogger.error(`[${FILE_NAME}] Failed to get unique blog posted users for particular category`, error);
         throw error;
     }
 }
