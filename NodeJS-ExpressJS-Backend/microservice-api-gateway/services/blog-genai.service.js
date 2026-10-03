@@ -1,9 +1,9 @@
-const httpClient = require("../utils/httpClient.js");
+const httpClient = require("../utils/http-client.js");
 const devLogger = require("../utils/dev-logger.js");
 
-const {
-    GENAI_SERVICE
-} = require("../config/services.js");
+const { GENAI_SERVICE } = require("../config/services.js");
+const createServiceError = require("../utils/service-error.js");
+const { BlogGenAIServiceErrorMessage } = require("../constants/error-message.constant.js");
 
 
 const FILE_NAME = "blog-genai.service.js";
@@ -13,7 +13,7 @@ const FILE_NAME = "blog-genai.service.js";
 // ============================================================
 // Generate Blog Summary Code Starts
 // ============================================================
-const generateBlogSummary = async function(blogText) {
+async function generateBlogSummary(blogText) {
     devLogger.info(`[${FILE_NAME}] Generate blog summary request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog summary`);
@@ -33,12 +33,7 @@ const generateBlogSummary = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog summary`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog summary request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog summary",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_SUMMARY_FAILED, error);
     }
 };
 // ============================================================
@@ -50,7 +45,7 @@ const generateBlogSummary = async function(blogText) {
 // ============================================================
 // Generate Blog TLDR Code Starts
 // ============================================================
-const generateBlogTLDR = async function(blogText) {
+async function generateBlogTLDR(blogText) {
     devLogger.info(`[${FILE_NAME}] Generate blog TLDR request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog TLDR`);
@@ -70,12 +65,7 @@ const generateBlogTLDR = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog TLDR`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog TLDR request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog TLDR",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_TLDR_FAILED, error);
     }
 };
 // ============================================================
@@ -87,7 +77,7 @@ const generateBlogTLDR = async function(blogText) {
 // ============================================================
 // Generate Blog Key Takeaways Code Starts
 // ============================================================
-const generateBlogKeyTakeaways = async function(blogText) {
+async function generateBlogKeyTakeaways(blogText) {
     devLogger.info(`[${FILE_NAME}] Generate blog key takeaways request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog key takeaways`);
@@ -107,12 +97,7 @@ const generateBlogKeyTakeaways = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog key takeaways`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog key takeaways request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog key takeaways",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_KEY_TAKEAWAYS_FAILED, error);
     }
 };
 // ============================================================
@@ -124,7 +109,7 @@ const generateBlogKeyTakeaways = async function(blogText) {
 // ============================================================
 // Generate Blog Conclusion Code Starts
 // ============================================================
-const generateBlogConclusion = async function(blogText) {
+async function generateBlogConclusion(blogText) {
     devLogger.info(`[${FILE_NAME}] Generate blog conclusion request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog conclusion`);
@@ -144,12 +129,7 @@ const generateBlogConclusion = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog conclusion`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog conclusion request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog conclusion",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_CONCLUSION_FAILED, error);
     }
 };
 // ============================================================
@@ -161,7 +141,7 @@ const generateBlogConclusion = async function(blogText) {
 // ============================================================
 // Generate Blog FAQ Code Starts
 // ============================================================
-const generateBlogFAQ = async function(blogText) {
+async function generateBlogFAQ(blogText) {
     devLogger.info(`[${FILE_NAME}] Generate blog FAQ request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog FAQ`);
@@ -181,12 +161,7 @@ const generateBlogFAQ = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog FAQ`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog FAQ request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog FAQ",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_FAQ_FAILED, error);
     }
 };
 // ============================================================
@@ -198,7 +173,7 @@ const generateBlogFAQ = async function(blogText) {
 // ============================================================
 // Generate Blog Highlights Code Starts
 // ============================================================
-const generateBlogHighlights = async function(blogText) {
+async function generateBlogHighlights(blogText) {
     devLogger.info(`[${FILE_NAME}] Generate blog highlights request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog highlights`);
@@ -218,12 +193,7 @@ const generateBlogHighlights = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog highlights`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog highlights request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog highlights",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_HIGHLIGHTS_FAILED, error);
     }
 };
 // ============================================================
@@ -235,7 +205,7 @@ const generateBlogHighlights = async function(blogText) {
 // ============================================================
 // Suggest Blog Titles Code Starts
 // ============================================================
-const suggestBlogTitles = async function(blogText) {
+async function suggestBlogTitles(blogText) {
     devLogger.info(`[${FILE_NAME}] Suggest blog titles request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to suggest blog titles`);
@@ -255,12 +225,7 @@ const suggestBlogTitles = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to suggest blog titles`, error);
         devLogger.warn(`[${FILE_NAME}] Suggest blog titles request could not be completed`);
-
-        throw {
-            message: "Failed to suggest blog titles",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.SUGGEST_BLOG_TITLES_FAILED, error);
     }
 };
 // ============================================================
@@ -272,7 +237,7 @@ const suggestBlogTitles = async function(blogText) {
 // ============================================================
 // Generate Blog Description Code Starts
 // ============================================================
-const generateBlogDescription = async function(blogTitle) {
+async function generateBlogDescription(blogTitle) {
     devLogger.info(`[${FILE_NAME}] Generate blog description request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to generate blog description`);
@@ -292,12 +257,7 @@ const generateBlogDescription = async function(blogTitle) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to generate blog description`, error);
         devLogger.warn(`[${FILE_NAME}] Generate blog description request could not be completed`);
-
-        throw {
-            message: "Failed to generate blog description",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.GENERATE_BLOG_DESCRIPTION_FAILED, error);
     }
 };
 // ============================================================
@@ -309,7 +269,7 @@ const generateBlogDescription = async function(blogTitle) {
 // ============================================================
 // Enhance Blog Description Code Starts
 // ============================================================
-const enhanceBlogDescription = async function(blogText) {
+async function enhanceBlogDescription(blogText) {
     devLogger.info(`[${FILE_NAME}] Enhance blog description request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling gen-ai service to enhance blog description`);
@@ -329,12 +289,7 @@ const enhanceBlogDescription = async function(blogText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to enhance blog description`, error);
         devLogger.warn(`[${FILE_NAME}] Enhance blog description request could not be completed`);
-
-        throw {
-            message: "Failed to enhance blog description",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogGenAIServiceErrorMessage.ENHANCE_BLOG_DESCRIPTION_FAILED, error);
     }
 };
 // ============================================================

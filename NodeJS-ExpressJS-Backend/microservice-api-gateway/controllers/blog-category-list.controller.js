@@ -1,6 +1,6 @@
 const blogCategoryService = require("../services/blog-category.service.js");
 
-const handleError = require("../utils/errorHandler.js");
+const handleError = require("../utils/error-handler.js");
 const devLogger = require("../utils/dev-logger.js");
 
 
@@ -25,8 +25,11 @@ async function getAllBlogCategoryList(req, res){
 
         return res.status(200).json({
             success: true,
-            message: blogCategoriesResponse.successMessage,
+            error: false,
+            successMessage: blogCategoriesResponse.successMessage,
+            errorMessage: "",
             blogCategoryList: blogCategoriesResponse.resultData,
+            errorData: null
         });
 
     }

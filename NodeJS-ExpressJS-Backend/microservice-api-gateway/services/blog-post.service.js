@@ -1,9 +1,9 @@
-const httpClient = require("../utils/httpClient.js");
+const httpClient = require("../utils/http-client.js");
 const devLogger = require("../utils/dev-logger.js");
 
-const {
-    BLOG_POST_SERVICE
-} = require("../config/services.js");
+const { BLOG_POST_SERVICE } = require("../config/services.js");
+const createServiceError = require("../utils/service-error.js");
+const { BlogPostServiceErrorMessage } = require("../constants/error-message.constant.js");
 
 
 const FILE_NAME = "blog-post.service.js";
@@ -18,7 +18,7 @@ const FILE_NAME = "blog-post.service.js";
 // ============================================================
 // Get Four Blog Posts By Category Code Starts
 // ============================================================
-const getFourBlogPostByCategory = async function(categoryID){
+async function getFourBlogPostByCategory(categoryID){
     devLogger.info(`[${FILE_NAME}] Get four blog posts by category request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch four posts by category`);
@@ -35,12 +35,7 @@ const getFourBlogPostByCategory = async function(categoryID){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch four blog posts by category`, error);
         devLogger.warn(`[${FILE_NAME}] Get four blog posts by category request could not be completed`);
-
-        throw {
-            message:"Failed to fetch four blog posts by category",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_FOUR_BLOG_POST_BY_CATEGORY_FAILED, error);
     }
 };
 // ============================================================
@@ -52,7 +47,7 @@ const getFourBlogPostByCategory = async function(categoryID){
 // ============================================================
 // Get Category Posts With Pagination Code Starts
 // ============================================================
-const getCategoryPostPagination = async function(categoryID, params = {}){
+async function getCategoryPostPagination(categoryID, params = {}){
     devLogger.info(`[${FILE_NAME}] Get category posts with pagination request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service for category post pagination`);
@@ -72,12 +67,7 @@ const getCategoryPostPagination = async function(categoryID, params = {}){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch category posts pagination`, error);
         devLogger.warn(`[${FILE_NAME}] Category post pagination request could not be completed`);
-
-        throw {
-            message:"Failed to fetch category posts pagination",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_CATEGORY_POST_PAGINATION_FAILED, error);
     }
 };
 // ============================================================
@@ -89,7 +79,7 @@ const getCategoryPostPagination = async function(categoryID, params = {}){
 // ============================================================
 // Get Unique Category IDs Code Starts
 // ============================================================
-const getUniqueCategoryIds = async function(){
+async function getUniqueCategoryIds(){
     devLogger.info(`[${FILE_NAME}] Get unique category IDs request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique category IDs`);
@@ -106,12 +96,7 @@ const getUniqueCategoryIds = async function(){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch unique category IDs`, error);
         devLogger.warn(`[${FILE_NAME}] Get unique category IDs request could not be completed`);
-
-        throw {
-            message:"Failed to fetch unique category IDs",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_UNIQUE_CATEGORY_IDS_FAILED, error);
     }
 };
 // ============================================================
@@ -123,7 +108,7 @@ const getUniqueCategoryIds = async function(){
 // ============================================================
 // Get Unique Users By Category Code Starts
 // ============================================================
-const getUniqueUsersByCategory = async function(categoryID){
+async function getUniqueUsersByCategory(categoryID){
     devLogger.info(`[${FILE_NAME}] Get unique users by category request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique users by category`);
@@ -140,12 +125,7 @@ const getUniqueUsersByCategory = async function(categoryID){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch unique users by category`, error);
         devLogger.warn(`[${FILE_NAME}] Get unique users by category request could not be completed`);
-
-        throw {
-            message:"Failed to fetch unique users by category",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_UNIQUE_USERS_BY_CATEGORY_FAILED, error);
     }
 };
 // ============================================================
@@ -162,7 +142,7 @@ const getUniqueUsersByCategory = async function(categoryID){
 // ============================================================
 // Filter Sort Pagination Code Starts
 // ============================================================
-const filterSortPagination = async function(data){
+async function filterSortPagination(data){
     devLogger.info(`[${FILE_NAME}] Filter and sort pagination request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service for filter and sort pagination`);
@@ -180,12 +160,7 @@ const filterSortPagination = async function(data){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to filter and sort blog posts`, error);
         devLogger.warn(`[${FILE_NAME}] Filter and sort blog posts request could not be completed`);
-
-        throw {
-            message:"Failed to filter and sort blog posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.FILTER_SORT_PAGINATION_FAILED, error);
     }
 };
 // ============================================================
@@ -197,7 +172,7 @@ const filterSortPagination = async function(data){
 // ============================================================
 // Filter Sort Pagination By User Code Starts
 // ============================================================
-const filterSortPaginationByUser = async function(userID, data){
+async function filterSortPaginationByUser(userID, data){
     devLogger.info(`[${FILE_NAME}] Filter and sort pagination by user request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service for user filter and sort pagination`);
@@ -215,12 +190,7 @@ const filterSortPaginationByUser = async function(userID, data){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to filter user blog posts`, error);
         devLogger.warn(`[${FILE_NAME}] User blog post filter and sort request could not be completed`);
-
-        throw {
-            message:"Failed to filter user blog posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.FILTER_SORT_PAGINATION_BY_USER_FAILED, error);
     }
 };
 // ============================================================
@@ -232,7 +202,7 @@ const filterSortPaginationByUser = async function(userID, data){
 // ============================================================
 // Filter Sort Pagination By Category Code Starts
 // ============================================================
-const filterSortPaginationByCategory = async function(categoryID, data){
+async function filterSortPaginationByCategory(categoryID, data){
     devLogger.info(`[${FILE_NAME}] Filter and sort pagination by category request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service for category filter and sort pagination`);
@@ -250,12 +220,7 @@ const filterSortPaginationByCategory = async function(categoryID, data){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to filter category blog posts`, error);
         devLogger.warn(`[${FILE_NAME}] Category blog post filter and sort request could not be completed`);
-
-        throw {
-            message:"Failed to filter category blog posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.FILTER_SORT_PAGINATION_BY_CATEGORY_FAILED, error);
     }
 };
 // ============================================================
@@ -272,7 +237,7 @@ const filterSortPaginationByCategory = async function(categoryID, data){
 // ============================================================
 // Get All Blog Posts Code Starts
 // ============================================================
-const getAllBlogPosts = async function(){
+async function getAllBlogPosts(){
     devLogger.info(`[${FILE_NAME}] Get all blog posts request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog posts`);
@@ -289,12 +254,7 @@ const getAllBlogPosts = async function(){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts`, error);
         devLogger.warn(`[${FILE_NAME}] Get all blog posts request could not be completed`);
-
-        throw {
-            message:"Failed to fetch blog posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_ALL_BLOG_POSTS_FAILED, error);
     }
 };
 // ============================================================
@@ -306,7 +266,7 @@ const getAllBlogPosts = async function(){
 // ============================================================
 // Get Four Blog Posts Code Starts
 // ============================================================
-const getFourBlogPosts = async function(){
+async function getFourBlogPosts(){
     devLogger.info(`[${FILE_NAME}] Get four blog posts request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch four blog posts`);
@@ -323,12 +283,7 @@ const getFourBlogPosts = async function(){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch blog posts`, error);
         devLogger.warn(`[${FILE_NAME}] Get four blog posts request could not be completed`);
-
-        throw {
-            message:"Failed to fetch blog posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_FOUR_BLOG_POSTS_FAILED, error);
     }
 };
 // ============================================================
@@ -340,7 +295,7 @@ const getFourBlogPosts = async function(){
 // ============================================================
 // Get Blog Post By ID Code Starts
 // ============================================================
-const getBlogPostById = async function(postID){
+async function getBlogPostById(postID){
     devLogger.info(`[${FILE_NAME}] Get blog post by ID request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch blog post by ID`);
@@ -357,12 +312,7 @@ const getBlogPostById = async function(postID){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch blog post`, error);
         devLogger.warn(`[${FILE_NAME}] Get blog post by ID request could not be completed`);
-
-        throw {
-            message:"Failed to fetch blog post",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_BLOG_POST_BY_ID_FAILED, error);
     }
 };
 // ============================================================
@@ -374,7 +324,7 @@ const getBlogPostById = async function(postID){
 // ============================================================
 // Get Blog Post Pagination Code Starts
 // ============================================================
-const getBlogPostPagination = async function(params = {}){
+async function getBlogPostPagination(params = {}){
     devLogger.info(`[${FILE_NAME}] Get blog post pagination request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service for blog post pagination`);
@@ -394,12 +344,7 @@ const getBlogPostPagination = async function(params = {}){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch blog post pagination`, error);
         devLogger.warn(`[${FILE_NAME}] Blog post pagination request could not be completed`);
-
-        throw {
-            message:"Failed to fetch blog post pagination",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_BLOG_POST_PAGINATION_FAILED, error);
     }
 };
 // ============================================================
@@ -411,7 +356,7 @@ const getBlogPostPagination = async function(params = {}){
 // ============================================================
 // Search Blog Posts By Title Code Starts
 // ============================================================
-const searchBlogPostByTitle = async function(searchText) {
+async function searchBlogPostByTitle(searchText) {
     devLogger.info(`[${FILE_NAME}] Search blog posts by title request started`);
     try {
         devLogger.info(`[${FILE_NAME}] Calling blog post service to search blog posts by title`);
@@ -428,12 +373,7 @@ const searchBlogPostByTitle = async function(searchText) {
     catch (error) {
         devLogger.error(`[${FILE_NAME}] Failed to search blog posts by title`, error);
         devLogger.warn(`[${FILE_NAME}] Blog post title search request could not be completed`);
-
-        throw {
-            message: "Failed to search blog posts by title",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.SEARCH_BLOG_POST_BY_TITLE_FAILED, error);
     }
 };
 // ============================================================
@@ -450,7 +390,7 @@ const searchBlogPostByTitle = async function(searchText) {
 // ============================================================
 // Get All Blog Post IDs By User ID Code Starts
 // ============================================================
-const getAllBlogPostIdsByUserId = async function(userID){
+async function getAllBlogPostIdsByUserId(userID){
     devLogger.info(`[${FILE_NAME}] Get all blog post IDs by user ID request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch all blog post IDs for user: ${userID}`);
@@ -467,12 +407,7 @@ const getAllBlogPostIdsByUserId = async function(userID){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch all blog post IDs for user: ${userID}`, error);
         devLogger.warn(`[${FILE_NAME}] Get all blog post IDs by user ID request could not be completed`);
-
-        throw {
-            message: "Failed to fetch all blog post IDs",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_ALL_BLOG_POST_IDS_BY_USER_ID_FAILED, error);
     }
 };
 // ============================================================
@@ -484,7 +419,7 @@ const getAllBlogPostIdsByUserId = async function(userID){
 // ============================================================
 // Get User Posts Pagination Code Starts
 // ============================================================
-const getUserPostPagination = async function(userID, params = {}){
+async function getUserPostPagination(userID, params = {}){
     devLogger.info(`[${FILE_NAME}] Get user posts pagination request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service for user posts pagination`);
@@ -504,12 +439,7 @@ const getUserPostPagination = async function(userID, params = {}){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch user posts`, error);
         devLogger.warn(`[${FILE_NAME}] User posts pagination request could not be completed`);
-
-        throw {
-            message:"Failed to fetch user posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_USER_POST_PAGINATION_FAILED, error);
     }
 };
 // ============================================================
@@ -521,7 +451,7 @@ const getUserPostPagination = async function(userID, params = {}){
 // ============================================================
 // Get Unique User IDs Code Starts
 // ============================================================
-const getUniqueUserIds = async function(){
+async function getUniqueUserIds(){
     devLogger.info(`[${FILE_NAME}] Get unique user IDs request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique user IDs`);
@@ -538,12 +468,7 @@ const getUniqueUserIds = async function(){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch unique user IDs`, error);
         devLogger.warn(`[${FILE_NAME}] Get unique user IDs request could not be completed`);
-
-        throw {
-            message:"Failed to fetch unique user IDs",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_UNIQUE_USER_IDS_FAILED, error);
     }
 };
 // ============================================================
@@ -555,7 +480,7 @@ const getUniqueUserIds = async function(){
 // ============================================================
 // Get Unique Categories By User Code Starts
 // ============================================================
-const getUniqueCategoriesByUser = async function(userID){
+async function getUniqueCategoriesByUser(userID){
     devLogger.info(`[${FILE_NAME}] Get unique categories by user request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to fetch unique user categories`);
@@ -572,12 +497,7 @@ const getUniqueCategoriesByUser = async function(userID){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to fetch user categories`, error);
         devLogger.warn(`[${FILE_NAME}] Get unique categories by user request could not be completed`);
-
-        throw {
-            message:"Failed to fetch user categories",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.GET_UNIQUE_CATEGORIES_BY_USER_FAILED, error);
     }
 };
 // ============================================================
@@ -594,7 +514,7 @@ const getUniqueCategoriesByUser = async function(userID){
 // ============================================================
 // Add Blog Post Code Starts
 // ============================================================
-const addBlogPost = async function(data, token){
+async function addBlogPost(data, token){
     devLogger.info(`[${FILE_NAME}] Add blog post request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to create blog post`);
@@ -617,12 +537,7 @@ const addBlogPost = async function(data, token){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to create blog post`, error);
         devLogger.warn(`[${FILE_NAME}] Add blog post request could not be completed`);
-
-        throw {
-            message:"Failed to create blog post",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.ADD_BLOG_POST_FAILED, error);
     }
 };
 // ============================================================
@@ -634,7 +549,7 @@ const addBlogPost = async function(data, token){
 // ============================================================
 // Delete Blog Post Code Starts
 // ============================================================
-const deleteBlogPost = async function(postID, token){
+async function deleteBlogPost(postID, token){
     devLogger.warn(`[${FILE_NAME}] Delete blog post request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to delete blog post`);
@@ -656,12 +571,7 @@ const deleteBlogPost = async function(postID, token){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to delete blog post`, error);
         devLogger.warn(`[${FILE_NAME}] Delete blog post request could not be completed`);
-
-        throw {
-            message:"Failed to delete blog post",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.DELETE_BLOG_POST_FAILED, error);
     }
 };
 // ============================================================
@@ -673,7 +583,7 @@ const deleteBlogPost = async function(postID, token){
 // ============================================================
 // Delete Posts By User Code Starts
 // ============================================================
-const deleteBlogPostsByUser = async function(userID, token){
+async function deleteBlogPostsByUser(userID, token){
     devLogger.warn(`[${FILE_NAME}] Delete blog posts by user request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to delete user blog posts`);
@@ -695,12 +605,7 @@ const deleteBlogPostsByUser = async function(userID, token){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to delete user blog posts`, error);
         devLogger.warn(`[${FILE_NAME}] Delete user blog posts request could not be completed`);
-
-        throw {
-            message:"Failed to delete user blog posts",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.DELETE_BLOG_POSTS_BY_USER_FAILED, error);
     }
 };
 // ============================================================
@@ -712,7 +617,7 @@ const deleteBlogPostsByUser = async function(userID, token){
 // ============================================================
 // Update Blog Post Code Starts
 // ============================================================
-const updateBlogPost = async function(postID, data, token){
+async function updateBlogPost(postID, data, token){
     devLogger.info(`[${FILE_NAME}] Update blog post request started`);
     try{
         devLogger.info(`[${FILE_NAME}] Calling blog post service to update blog post`);
@@ -735,12 +640,7 @@ const updateBlogPost = async function(postID, data, token){
     catch(error){
         devLogger.error(`[${FILE_NAME}] Failed to update blog post`, error);
         devLogger.warn(`[${FILE_NAME}] Update blog post request could not be completed`);
-
-        throw {
-            message:"Failed to update blog post",
-            status:error.response?.status || 500,
-            data:error.response?.data || error.message
-        };
+        throw createServiceError(BlogPostServiceErrorMessage.UPDATE_BLOG_POST_FAILED, error);
     }
 };
 // ============================================================

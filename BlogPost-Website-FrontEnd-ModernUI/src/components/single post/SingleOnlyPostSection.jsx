@@ -200,7 +200,12 @@ function SingleOnlyPostSection(props) {
 			);
 			logger.log("Blog post like user list fetched:", response);
 
-			setBlogPostLikedList(response.data);
+			const blogPostLikeResponse = response.data;
+
+			if(blogPostLikeResponse.success){
+				const blogPostLikeList = blogPostLikeResponse.resultData;
+				setBlogPostLikedList(blogPostLikeList);
+			}
 		} catch (error) {
 			logger.error("Error while fetching blog post like user list:", error);
 		}

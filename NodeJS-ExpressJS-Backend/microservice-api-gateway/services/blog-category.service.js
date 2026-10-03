@@ -1,9 +1,9 @@
-const httpClient = require("../utils/httpClient.js");
+const httpClient = require("../utils/http-client.js");
 const devLogger = require("../utils/dev-logger.js");
 
-const {
-    BLOG_CATEGORY_SERVICE
-} = require("../config/services.js");
+const { BLOG_CATEGORY_SERVICE } = require("../config/services.js");
+const createServiceError = require("../utils/service-error.js");
+const { BlogCategoryServiceErrorMessage } = require("../constants/error-message.constant.js");
 
 
 const FILE_NAME = "blog-category.service.js";
@@ -29,12 +29,7 @@ async function getAllBlogCategoryList() {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to fetch blog categories`, error);
         devLogger.warn(`[${FILE_NAME}] Get all blog categories request could not be completed`);
-
-        throw {
-            message: "Failed to fetch blog categories",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCategoryServiceErrorMessage.GET_ALL_CATEGORIES_FAILED, error);
     }
 }
 // ============================================================
@@ -63,12 +58,7 @@ async function getBlogCategoryByID(categoryID) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to fetch category by ID`, error);
         devLogger.warn(`[${FILE_NAME}] Get category by ID request could not be completed`);
-
-        throw {
-            message: "Failed to fetch category by ID",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCategoryServiceErrorMessage.GET_CATEGORY_BY_ID_FAILED, error);
     }
 }
 // ============================================================
@@ -97,12 +87,7 @@ async function getBlogCategoryByName(categoryName) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to fetch category by name`, error);
         devLogger.warn(`[${FILE_NAME}] Get category by name request could not be completed`);
-
-        throw {
-            message: "Failed to fetch category by name",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCategoryServiceErrorMessage.GET_CATEGORY_BY_NAME_FAILED, error);
     }
 }
 // ============================================================
@@ -131,12 +116,7 @@ async function searchBlogCategory(searchText) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to search blog categories`, error);
         devLogger.warn(`[${FILE_NAME}] Blog category search request could not be completed`);
-
-        throw {
-            message: "Failed to search blog categories",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCategoryServiceErrorMessage.SEARCH_CATEGORIES_FAILED, error);
     }
 }
 // ============================================================

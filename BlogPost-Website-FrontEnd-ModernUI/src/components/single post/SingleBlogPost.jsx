@@ -80,8 +80,13 @@ function SingleBlogPost() {
 				`${backendBaseURL}/api/blogPost/postId/${blogPostID}`
 			);
 			logger.log("Fetched blog post details:", response);
-			
-			setBlogPostDetails(response.data);
+
+			const fetchedBlogPostResponse = response.data;
+
+			if(fetchedBlogPostResponse.success){
+				const fetchedBlogPostResultData = fetchedBlogPostResponse.resultData;
+				setBlogPostDetails(fetchedBlogPostResultData);
+			}
 		}
 		catch (error) {
 			logger.error("Error while fetching blog post details:", error);

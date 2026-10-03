@@ -177,12 +177,23 @@ function AllBlogs() {
 		try {
 			// Fetch paginated blog posts with user and category information
 			const response = await axios.get(
-				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo?page=${currentPageNo}&limit=${limit}`
+				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo`,
+				{
+					params: {
+						page: currentPageNo,
+						limit: limit		
+					}
+				}
 			);
 			logger.log("Fetched blog posts with pagination:", response);
 
-			setTotalPagesCount(response.data.totalPages);
-			setBlogPostDetails(response.data.blogPostData);
+			const blogPostResponse = response.data;
+			
+			if(blogPostResponse.success){
+				const blogPostResultData = blogPostResponse.resultData;
+				setTotalPagesCount(blogPostResultData.totalPages);
+				setBlogPostDetails(blogPostResultData.blogPostData);
+			}
 		}
 		catch (error) {
 			logger.error("Error while fetching blog posts with pagination:", error);
@@ -203,12 +214,23 @@ function AllBlogs() {
 		try {
 			// Fetch paginated posts belonging to the selected user
 			const response = await axios.get(
-				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo/user/${username}?page=${currentPageNo}&limit=${limit}`
+				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo/user/${username}`,
+				{
+					params: {
+						page: currentPageNo,
+						limit: limit		
+					}
+				}
 			);
 			logger.log("Fetched user blog posts with pagination:", response);
 
-			setTotalPagesCount(response.data.totalPages);
-			setBlogPostDetails(response.data.blogPostData);
+			const blogPostResponse = response.data;
+			
+			if(blogPostResponse.success){
+				const blogPostResultData = blogPostResponse.resultData;
+				setTotalPagesCount(blogPostResultData.totalPages);
+				setBlogPostDetails(blogPostResultData.blogPostData);
+			}
 		}
 		catch (error) {
 			logger.error("Error while fetching user blog posts with pagination:", error);
@@ -229,12 +251,23 @@ function AllBlogs() {
 		try {
 			// Fetch paginated posts belonging to the selected category
 			const response = await axios.get(
-				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo/category/${blogCategory}?page=${currentPageNo}&limit=${limit}`
+				`${backendBaseURL}/api/blogPost/postWithPaginationWithUserAndCategoryInfo/category/${blogCategory}`,
+				{
+					params: {
+						page: currentPageNo,
+						limit: limit		
+					}
+				}
 			);
 			logger.log("Fetched category blog posts with pagination:", response);
 
-			setTotalPagesCount(response.data.totalPages);
-			setBlogPostDetails(response.data.blogPostData);
+			const blogPostResponse = response.data;
+			
+			if(blogPostResponse.success){
+				const blogPostResultData = blogPostResponse.resultData;
+				setTotalPagesCount(blogPostResultData.totalPages);
+				setBlogPostDetails(blogPostResultData.blogPostData);
+			}
 		}
 		catch (error) {
 			logger.error("Error while fetching category blog posts with pagination:", error);
@@ -255,12 +288,26 @@ function AllBlogs() {
 		try {
 			// Fetch filtered and sorted posts for all blogs
 			const response = await axios.post(
-				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo?page=${filteredCurrentPageNo}&limit=${limit}`,
-				sortFilterObject
+				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo`,
+				sortFilterObject,
+				{
+					params: {
+						page: filteredCurrentPageNo,
+						limit: limit		
+					}
+				}
 			);
 			logger.log("Fetched blog posts with filter and sorting:", response);
 
-			return response.data;
+			const fetchedBlogPostResponse = response.data;
+
+			if(!fetchedBlogPostResponse.success){
+				logger.error("Error while fetching blog posts with filter and sorting:", fetchedBlogPostResponse.errorMessage);
+				return null;
+			}
+
+			const fetchedBlogPostResultData = fetchedBlogPostResponse.resultData;
+			return fetchedBlogPostResultData;
 		}
 		catch (error) {
 			logger.error("Error while fetching blog posts with filter and sorting:", error);
@@ -281,12 +328,26 @@ function AllBlogs() {
 		try {
 			 // Fetch filtered and sorted posts for the selected user
 			const response = await axios.post(
-				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo/user/${username}?page=${filteredCurrentPageNo}&limit=${limit}`,
-				sortFilterObject
+				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo/user/${username}`,
+				sortFilterObject,
+				{
+					params: {
+						page: filteredCurrentPageNo,
+						limit: limit		
+					}
+				}
 			);
 			logger.log("Fetched user blog posts with filter and sorting:", response);
 
-			return response.data;
+			const fetchedUserBlogPostResponse = response.data;
+
+			if(!fetchedUserBlogPostResponse.success){
+				logger.error("Error while fetching user blog posts with filter and sorting:", fetchedUserBlogPostResponse.errorMessage);
+				return null;
+			}
+
+			const fetchedUserBlogPostResultData = fetchedUserBlogPostResponse.resultData;
+			return fetchedUserBlogPostResultData;
 		}
 		catch (error) {
 			logger.error("Error while fetching user blog posts with filter and sorting:", error);
@@ -307,12 +368,26 @@ function AllBlogs() {
 		try {
 			// Fetch filtered and sorted posts for the selected category
 			const response = await axios.post(
-				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo/category/${blogCategory}?page=${filteredCurrentPageNo}&limit=${limit}`,
-				sortFilterObject
+				`${backendBaseURL}/api/blogPost/postWithFilterSortingPaginationWithUserAndCategoryInfo/category/${blogCategory}`,
+				sortFilterObject,
+				{
+					params: {
+						page: filteredCurrentPageNo,
+						limit: limit		
+					}
+				}
 			);
 			logger.log("Fetched category blog posts with filter and sorting:", response);
 
-			return response.data;
+			const fetchedCategoryBlogPostResponse = response.data;
+
+			if(!fetchedCategoryBlogPostResponse.success){
+				logger.error("Error while fetching category blog posts with filter and sorting:", fetchedCategoryBlogPostResponse.errorMessage);
+				return null;
+			}
+
+			const fetchedCategoryBlogPostResultData = fetchedCategoryBlogPostResponse.resultData;
+			return fetchedCategoryBlogPostResultData;
 		}
 		catch (error) {
 			logger.error("Error while fetching category blog posts with filter and sorting:", error);

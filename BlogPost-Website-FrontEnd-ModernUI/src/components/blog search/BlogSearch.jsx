@@ -79,8 +79,12 @@ function BlogSearch() {
                 `${backendBaseURL}/api/searchBlogOrUserOrCategory?searchText=${searchQuery}`
             );
             logger.log("Fetched search results:", response);
+
+            const searchResponse = response.data;
+            if(searchResponse.success){
+                setSearchedResult(searchResponse.resultData);
+            }
             
-            setSearchedResult(response.data);
         } catch (error) {
             logger.error("Error while fetching search results:", error);
         }

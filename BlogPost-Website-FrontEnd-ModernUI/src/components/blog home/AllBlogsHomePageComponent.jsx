@@ -117,8 +117,13 @@ function AllBlogsHomePageComponent() {
 				`${backendBaseURL}/api/blogPost/fourPostWithUserAndCategoryInfo`
 			);
 			logger.log("Fetched four blog posts:", response);
-
-			setDefaultBlogPosts(response.data);
+			
+			const fourBlogPostsResponse = response.data;
+			
+			if(fourBlogPostsResponse.success){
+				const fourBlogPosts = fourBlogPostsResponse.resultData;
+				setDefaultBlogPosts(fourBlogPosts);
+			}
 		}
 		catch(error){
 			logger.error("Error while fetching four blog posts:", error);

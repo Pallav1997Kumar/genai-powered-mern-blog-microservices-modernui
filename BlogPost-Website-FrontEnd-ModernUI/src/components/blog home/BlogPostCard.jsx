@@ -4,6 +4,7 @@ import "../../style/blog home/BlogPostCard.scss";
 
 import { getPlainText } from "../../utils/utility functions.js";
 
+
 function BlogPostCard(props) {
 
 	// ============================================================

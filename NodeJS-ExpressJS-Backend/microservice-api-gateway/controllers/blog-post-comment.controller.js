@@ -1,7 +1,7 @@
 const blogCommentService = require("../services/blog-comment.service.js");
 const userService = require("../services/blog-user.service.js");
 
-const handleError = require("../utils/errorHandler.js");
+const handleError = require("../utils/error-handler.js");
 const devLogger = require("../utils/dev-logger.js");
 
 
@@ -143,27 +143,49 @@ async function deleteParticularComment (req, res) {
 // ============================================================
 // Get All Comments For Particular Blog Starts
 // ============================================================
-async function getAllCommentsForParticularBlog (req, res) {
+async function getAllCommentsForParticularBlog(req, res, next) {
     devLogger.info(`[${FILE_NAME}] Get all blog comments request received`);
 
     try {
         devLogger.info(`[${FILE_NAME}] Extracting post ID from request parameters`);
         const postID = req.params.postID;
         if (!postID) {
-            devLogger.warn(`[${FILE_NAME}] Get comments request received without post ID`);
+            devLogger.error(`[${FILE_NAME}] Get comments request received without post ID`);
+            throw {
+                success: false,
+                error: true,
+                successMessage: "",
+                errorMessage: "Post ID is required",
+                errorData: null,
+                resultData: null,
+                status: 400
+            };
         }
 
-        devLogger.info(`[${FILE_NAME}] Calling blog comment service to get all comments`);
-        const comments = await blogCommentService.getAllCommentsByPostId(postID);
+        devLogger.info(`[${FILE_NAME}] Fetching all comments for blog post: ${postID}`);
+        const blogPostCommentsResponse = await blogCommentService.getAllCommentsByPostId(postID);
 
-        devLogger.info(`[${FILE_NAME}] Blog comment service returned comments successfully`);
-        devLogger.info(`[${FILE_NAME}] Preparing comments with user details`);
+        if(!blogPostCommentsResponse?.success) {
+            devLogger.error(`[${FILE_NAME}] Failed to fetch comments: ${blogPostCommentsResponse?.errorMessage || "Failed to fetch comments"}`);
+            throw blogPostCommentsResponse;
+        }
 
-        const commentsWithUserDetails = await Promise.all(
-            comments.map(async function (comment) {
-                devLogger.info(`[${FILE_NAME}] Fetching user details for comment`);
-                const userDetails = await userService.getUserByID(comment.userID);
-                devLogger.info(`[${FILE_NAME}] User details fetched for comment successfully`);
+        const blogPostComments = blogPostCommentsResponse.resultData || [];
+
+        devLogger.info(`[${FILE_NAME}] ${blogPostComments.length} comments fetched successfully`);
+        devLogger.info(`[${FILE_NAME}] Preparing comments with user information`);
+
+        const updatedBlogPostComments = await Promise.all(
+            blogPostComments.map(async function(comment) {
+                devLogger.info(`[${FILE_NAME}] Fetching user details for comment: ${comment._id}`);
+                const userDetailsResponse = await userService.getUserByID(comment.userID);
+
+                if(!userDetailsResponse?.success) {
+                    devLogger.error(`[${FILE_NAME}] Failed to fetch user details for comment: ${comment._id}`);
+                    throw userDetailsResponse;
+                }
+
+                const userDetails = userDetailsResponse.resultData;
 
                 return {
                     _id: comment._id,
@@ -180,20 +202,25 @@ async function getAllCommentsForParticularBlog (req, res) {
             })
         );
 
-        devLogger.info(`[${FILE_NAME}] Comments with user details prepared successfully`);
-        const result = commentsWithUserDetails;
+        devLogger.info(`[${FILE_NAME}] Comments with user information prepared successfully`);
         devLogger.success(`[${FILE_NAME}] All blog comments fetched successfully`);
-
         devLogger.info(`[${FILE_NAME}] Sending comments response to client`);
 
-        return res.status(200).json(result);
-    } 
-    catch (error) {
-        devLogger.error(`[${FILE_NAME}] Failed to fetch blog comments`, error);
-        devLogger.warn(`[${FILE_NAME}] Get comments request could not be completed`);
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: "All blog comments fetched successfully",
+            errorMessage: "",
+            errorData: null,
+            resultData: updatedBlogPostComments
+        });
+    }
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Failed to fetch blog comments with user information`, error);
+        devLogger.warn(`[${FILE_NAME}] Get all blog comments request could not be completed`);
         return handleError(res, error);
     }
-};
+}
 // ============================================================
 // Get All Comments For Particular Blog Ends
 // ============================================================

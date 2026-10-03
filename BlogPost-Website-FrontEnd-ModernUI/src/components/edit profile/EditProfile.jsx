@@ -134,8 +134,7 @@ function EditProfile() {
 	const [isValidEmail, setIsValidEmail] = useState(true);
 	const [isValidOldPassword, setIsValidOldPassword] = useState(true);
 	const [isValidNewPassword, setIsValidNewPassword] = useState(true);
-	const [isValidConfirmNewPassword, setIsValidConfirmNewPassword] =
-		useState(true);
+	const [isValidConfirmNewPassword, setIsValidConfirmNewPassword] = useState(true);
 	// ============================================================
 	// Initialize Input Field Validation States - ends
 	// ============================================================
@@ -147,8 +146,7 @@ function EditProfile() {
 	// ============================================================
 	const [profilePhotoErrorMessage, setProfilePhotoErrorMessage] = useState("");
 	const [basicInfoErrorMessage, setBasicInfoErrorMessage] = useState("");
-	const [usernameEmailErrorMessage, setUsernameEmailErrorMessage] =
-		useState("");
+	const [usernameEmailErrorMessage, setUsernameEmailErrorMessage] = useState("");
 	const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 	// ============================================================
 	// Initialize Error Messages - ends
@@ -159,11 +157,9 @@ function EditProfile() {
 	// ============================================================
 	// Initialize Success Messages - starts
 	// ============================================================
-	const [profilePhotoSuccessMessage, setProfilePhotoSuccessMessage] =
-		useState("");
+	const [profilePhotoSuccessMessage, setProfilePhotoSuccessMessage] = useState("");
 	const [basicInfoSuccessMessage, setBasicInfoSuccessMessage] = useState("");
-	const [usernameEmailSuccessMessage, setUsernameEmailSuccessMessage] =
-		useState("");
+	const [usernameEmailSuccessMessage, setUsernameEmailSuccessMessage] = useState("");
 	const [passwordSuccessMessage, setPasswordSuccessMessage] = useState("");
 	// ============================================================
 	// Initialize Success Messages - ends
@@ -373,7 +369,6 @@ function EditProfile() {
 
 
 
-
 	// ============================================================
 	// Update Basic Information - starts
 	// ============================================================
@@ -388,13 +383,12 @@ function EditProfile() {
 
 		if (isAllBasicInfoValid) {
 			// Prepare Basic Information for API Request
-			const inputs = { 
-				firstName, 
-				middleName, 
-				lastName, 
-				gender, 
-				dob, 
-				token 
+			const inputs = {
+				firstName,
+				middleName,
+				lastName,
+				gender,
+				dob
 			};
 
 			try {
@@ -402,54 +396,66 @@ function EditProfile() {
 				logger.log("Updating basic information:", inputs);
 				const response = await axios.put(
 					`${backendBaseURL}/api/blogUser/update/basicInfo/${user.userID}`,
-					inputs
+					inputs,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						}
+					}
 				);
 				logger.log("Basic information updated:", response);
 
-				setBasicInfoSuccessMessage(response.data);
-				setBasicInfoErrorMessage("");
+				const basicInfoUpdateResponse = response.data;
+				if (basicInfoUpdateResponse.success) {
+					setBasicInfoSuccessMessage(basicInfoUpdateResponse.successMessage);
+					setBasicInfoErrorMessage(basicInfoUpdateResponse.errorMessage);
 
-				// Generate Updated User Full Name
-				let fullName;
-				if (middleName.trim() === "") {
-					fullName = firstName + " " + lastName;
-				} else {
-					fullName = firstName + " " + middleName + " " + lastName;
+					// Generate Updated User Full Name
+					let fullName;
+					if (middleName.trim() === "") {
+						fullName = firstName + " " + lastName;
+					} else {
+						fullName = firstName + " " + middleName + " " + lastName;
+					}
+
+					// Prepare Updated User Information
+					const updatedUser = {
+						...user,
+						fullName: fullName,
+						firstName: firstName,
+						middleName: middleName,
+						lastName: lastName,
+						gender: gender,
+						dob: dob,
+					};
+
+					// Update User Information in Redux and Local Storage
+					dispatch(update(updatedUser));
+					localStorage.setItem("user", JSON.stringify(updatedUser));
+
+					setIsError(false);
+					setInfoUpdated(true);
 				}
 
-				// Prepare Updated User Information
-				const updatedUser = {
-					...user,
-					fullName: fullName,
-					firstName: firstName,
-					middleName: middleName,
-					lastName: lastName,
-					gender: gender,
-					dob: dob,
-				};
-
-				// Update User Information in Redux and Local Storage
-				dispatch(update(updatedUser));
-				localStorage.setItem("user", JSON.stringify(updatedUser));
-
-				setIsError(false);
-				setInfoUpdated(true);
 			} catch (error) {
 				logger.error("Error while updating basic information:", error);
-				
-				// Handle Basic Information Update Error
-				if (error.message === "Request failed with status code 403") {
-					setBasicInfoErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 417") {
-					setBasicInfoErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 401") {
-					setBasicInfoErrorMessage(error.response.data);
-				} else {
-					setBasicInfoErrorMessage(error.message);
-				}
 
-				setBasicInfoSuccessMessage("");
-				setIsError(true);
+				const errorMessageResponse = error?.response?.data;
+				if (errorMessageResponse.error) {
+					// Handle Basic Information Update Error
+					if (error.message === "Request failed with status code 403") {
+						setBasicInfoErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 417") {
+						setBasicInfoErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 401") {
+						setBasicInfoErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else {
+						setBasicInfoErrorMessage(error.message);
+					}
+
+					setBasicInfoSuccessMessage(errorMessageResponse?.successMessage);
+					setIsError(true);
+				}
 			}
 		}
 	}
@@ -497,10 +503,9 @@ function EditProfile() {
 
 		if (isUsernameEmailValid) {
 			// Prepare Username and Email for API Request
-			const inputs = { 
-				email, 
-				username, 
-				token 
+			const inputs = {
+				email,
+				username
 			};
 
 			try {
@@ -508,46 +513,58 @@ function EditProfile() {
 				logger.log("Updating username and email:", inputs);
 				const response = await axios.put(
 					`${backendBaseURL}/api/blogUser/update/usernameEmail/${user.userID}`,
-					inputs
+					inputs,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}
 				);
 				logger.log("Username and email updated:", response);
 
-				setUsernameEmailSuccessMessage(response.data);
-				setUsernameEmailErrorMessage("");
+				const usernameEmailUpdateResponse = response.data;
+				if (usernameEmailUpdateResponse.success) {
+					setUsernameEmailSuccessMessage(usernameEmailUpdateResponse.successMessage);
+					setUsernameEmailErrorMessage(usernameEmailUpdateResponse.errorMessage);
 
-				// Prepare Updated User Information
-				const updatedUser = {
-					...user,
-					username: username,
-					emailAddress: email,
-				};
+					// Prepare Updated User Information
+					const updatedUser = {
+						...user,
+						username: username,
+						emailAddress: email,
+					};
 
-				// Update User Information in Redux and Local Storage
-				dispatch(update(updatedUser));
-				localStorage.setItem("user", JSON.stringify(updatedUser));
+					// Update User Information in Redux and Local Storage
+					dispatch(update(updatedUser));
+					localStorage.setItem("user", JSON.stringify(updatedUser));
 
-				setIsError(false);
-				setInfoUpdated(true);
+					setIsError(false);
+					setInfoUpdated(true);
+				}
+
 			} catch (error) {
 				logger.error("Error while updating username and email:", error);
 
-				// Handle Username and Email Update Error
-				if (error.message === "Request failed with status code 409") {
-					setUsernameEmailErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 401") {
-					setUsernameEmailErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 403") {
-					setUsernameEmailErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 417") {
-					setUsernameEmailErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 404") {
-					setUsernameEmailErrorMessage(error.response.data);
-				} else {
-					setUsernameEmailErrorMessage(error.message);
-				}
+				const errorMessageResponse = error?.response?.data;
+				if (errorMessageResponse.error) {
+					// Handle Username and Email Update Error
+					if (error.message === "Request failed with status code 409") {
+						setUsernameEmailErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 401") {
+						setUsernameEmailErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 403") {
+						setUsernameEmailErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 417") {
+						setUsernameEmailErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 404") {
+						setUsernameEmailErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else {
+						setUsernameEmailErrorMessage(error.message);
+					}
 
-				setUsernameEmailSuccessMessage("");
-				setIsError(true);
+					setUsernameEmailSuccessMessage(errorMessageResponse?.successMessage);
+					setIsError(true);
+				}
 			}
 		}
 	}
@@ -606,8 +623,7 @@ function EditProfile() {
 			const inputs = {
 				oldPassword,
 				newPassword,
-				confirmNewPassword,
-				token
+				confirmNewPassword
 			};
 
 			try {
@@ -615,28 +631,40 @@ function EditProfile() {
 				logger.log("Updating password:", inputs);
 				const response = await axios.put(
 					`${backendBaseURL}/api/blogUser/update/password/${user.userID}`,
-					inputs
+					inputs,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					}
 				);
 				logger.log("Password updated:", response);
 
-				setPasswordSuccessMessage(response.data);
-				setPasswordErrorMessage("");
-				setIsError(false);
-				setInfoUpdated(true);
+				const updatePasswordResponse = response.data;
+				if (updatePasswordResponse.success) {
+					setPasswordSuccessMessage(updatePasswordResponse.successMessage);
+					setPasswordErrorMessage(updatePasswordResponse.errorMessage);
+					setIsError(false);
+					setInfoUpdated(true);
+				}
+
 			} catch (error) {
 				logger.error("Error while updating password:", error);
 
-				// Handle Password Update Error
-				if (error.message === "Request failed with status code 401") {
-					setPasswordErrorMessage(error.response.data);
-				} else if (error.message === "Request failed with status code 403") {
-					setPasswordErrorMessage(error.response.data);
-				} else {
-					setPasswordErrorMessage(error.message);
-				}
+				const errorMessageResponse = error?.response?.data;
+				if (errorMessageResponse.error) {
+					// Handle Password Update Error
+					if (error.message === "Request failed with status code 401") {
+						setPasswordErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else if (error.message === "Request failed with status code 403") {
+						setPasswordErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+					} else {
+						setPasswordErrorMessage(error.message);
+					}
 
-				setPasswordSuccessMessage("");
-				setIsError(true);
+					setPasswordSuccessMessage(errorMessageResponse?.successMessage);
+					setIsError(true);
+				}
 			}
 		}
 	}
@@ -692,14 +720,19 @@ function EditProfile() {
 		const token = Cookies.get("jwt_access_token");
 
 		// Prepare Profile Photo Update Request
-		const inputs = { imageDetail, token };
+		const inputs = { imageDetail };
 
 		try {
 			// Call Update Profile Photo API
 			logger.log("Updating profile photo:", inputs);
 			const response = await axios.put(
 				`${backendBaseURL}/api/blogUser/update/profilePhoto/${user.userID}`,
-				inputs
+				inputs,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				}
 			);
 			logger.log("Profile photo updated:", response);
 
@@ -729,10 +762,9 @@ function EditProfile() {
 
 
 
-	
 	// ============================================================
-    // JSX Section - starts
-    // ============================================================
+	// JSX Section - starts
+	// ============================================================
 
 	return (
 		<div className="edit-profile-page">
@@ -758,9 +790,9 @@ function EditProfile() {
 
 			<Accordion
 				alwaysOpen
-				defaultActiveKey={["0"]}
 				className="account-settings-accordion"
 			>
+
 				{/* ======================================================
 						PROFILE PHOTO
 					====================================================== */}
@@ -846,24 +878,48 @@ function EditProfile() {
 									</Button>
 								</div>
 
-								<div className="success-error-container">
-									{isError ? (
-										<p className="error-update-message">
-											{profilePhotoErrorMessage}
-										</p>
-									) : (
-										<p className="success-update-message">
-											{profilePhotoSuccessMessage}
-										</p>
-									)}
-								</div>
+								{(isError ? profilePhotoErrorMessage : profilePhotoSuccessMessage) !== "" && (
+									<div className="success-error-container">
+										{isError ? (
+											<p className="error-update-message">
+												{profilePhotoErrorMessage}
+											</p>
+										) : (
+											<p className="success-update-message">
+												{profilePhotoSuccessMessage}
+											</p>
+										)}
+									</div>
+								)}
 							</div>
 						</div>
 					</Accordion.Body>
+				</Accordion.Item>
+
+
+
+				{/* ======================================================
+						BASIC INFORMATION
+					====================================================== */}
+
+				<Accordion.Item eventKey="1" className="settings-card">
+					<Accordion.Header>
+						<div className="settings-header">
+							<div className="settings-icon">
+								<i className="fa-regular fa-user"></i>
+							</div>
+
+							<div className="settings-header-content">
+								<h4>Basic Information</h4>
+								<p>Update your personal information</p>
+							</div>
+						</div>
+					</Accordion.Header>
 
 					<Accordion.Body>
 						<form>
 							<div className="basic-info-section">
+
 								{/* ================= Name ================= */}
 
 								<div className="setting-form-card">
@@ -944,9 +1000,7 @@ function EditProfile() {
 														name="gender"
 														value="Male"
 														checked={gender === "Male"}
-														onChange={
-															genderChangleHandler
-														}
+														onChange={genderChangleHandler}
 													/>
 
 													<span>Male</span>
@@ -963,12 +1017,8 @@ function EditProfile() {
 														type="radio"
 														name="gender"
 														value="Female"
-														checked={
-															gender === "Female"
-														}
-														onChange={
-															genderChangleHandler
-														}
+														checked={gender === "Female"}
+														onChange={genderChangleHandler}
 													/>
 
 													<span>Female</span>
@@ -1008,20 +1058,44 @@ function EditProfile() {
 									</Button>
 								</div>
 
-								<div className="success-error-container">
-									{isError ? (
-										<p className="error-update-message">
-											{basicInfoErrorMessage}
-										</p>
-									) : (
-										<p className="success-update-message">
-											{basicInfoSuccessMessage}
-										</p>
-									)}
-								</div>
+								{(isError ? basicInfoErrorMessage : basicInfoSuccessMessage) !== "" && (
+									<div className="success-error-container">
+										{isError ? (
+											<p className="error-update-message">
+												{basicInfoErrorMessage}
+											</p>
+										) : (
+											<p className="success-update-message">
+												{basicInfoSuccessMessage}
+											</p>
+										)}
+									</div>
+								)}
+
 							</div>
 						</form>
 					</Accordion.Body>
+				</Accordion.Item>
+
+
+
+				{/* ======================================================
+						USERNAME AND EMAIL
+					====================================================== */}
+
+				<Accordion.Item eventKey="2" className="settings-card">
+					<Accordion.Header>
+						<div className="settings-header">
+							<div className="settings-icon">
+								<i className="fa-regular fa-envelope"></i>
+							</div>
+
+							<div className="settings-header-content">
+								<h4>Username and Email</h4>
+								<p>Update your username and email address</p>
+							</div>
+						</div>
+					</Accordion.Header>
 
 					<Accordion.Body>
 						<form>
@@ -1036,6 +1110,7 @@ function EditProfile() {
 									</p>
 
 									<div className="input-grid two-column">
+
 										{/* Username */}
 
 										<div className="input-group">
@@ -1052,9 +1127,7 @@ function EditProfile() {
 												<input
 													type="text"
 													value={username}
-													onChange={
-														usernameChangleHandler
-													}
+													onChange={usernameChangleHandler}
 													className={
 														isValidUserName
 															? "modern-input"
@@ -1080,9 +1153,7 @@ function EditProfile() {
 												<input
 													type="email"
 													value={email}
-													onChange={
-														emailAddressChangleHandler
-													}
+													onChange={emailAddressChangleHandler}
 													className={
 														isValidEmail
 															? "modern-input"
@@ -1104,20 +1175,44 @@ function EditProfile() {
 									</Button>
 								</div>
 
-								<div className="success-error-container">
-									{isError ? (
-										<p className="error-update-message">
-											{usernameEmailErrorMessage}
-										</p>
-									) : (
-										<p className="success-update-message">
-											{usernameEmailSuccessMessage}
-										</p>
-									)}
-								</div>
+								{(isError ? usernameEmailErrorMessage : usernameEmailSuccessMessage) !== "" && (
+									<div className="success-error-container">
+										{isError ? (
+											<p className="error-update-message">
+												{usernameEmailErrorMessage}
+											</p>
+										) : (
+											<p className="success-update-message">
+												{usernameEmailSuccessMessage}
+											</p>
+										)}
+									</div>
+								)}
+
 							</div>
 						</form>
 					</Accordion.Body>
+				</Accordion.Item>
+
+
+
+				{/* ======================================================
+						PASSWORD
+					====================================================== */}
+
+				<Accordion.Item eventKey="3" className="settings-card">
+					<Accordion.Header>
+						<div className="settings-header">
+							<div className="settings-icon">
+								<i className="fa-solid fa-lock"></i>
+							</div>
+
+							<div className="settings-header-content">
+								<h4>Password</h4>
+								<p>Change your account password</p>
+							</div>
+						</div>
+					</Accordion.Header>
 
 					<Accordion.Body>
 						<form>
@@ -1131,6 +1226,7 @@ function EditProfile() {
 									</p>
 
 									<div className="input-grid one-column">
+
 										{/* Old Password */}
 
 										<div className="input-group">
@@ -1147,9 +1243,7 @@ function EditProfile() {
 												<input
 													type="password"
 													value={oldPassword}
-													onChange={
-														oldPasswordChangleHandler
-													}
+													onChange={oldPasswordChangleHandler}
 													className={
 														isValidOldPassword
 															? "modern-input"
@@ -1176,9 +1270,7 @@ function EditProfile() {
 												<input
 													type="password"
 													value={newPassword}
-													onChange={
-														newPasswordChangleHandler
-													}
+													onChange={newPasswordChangleHandler}
 													className={
 														isValidNewPassword
 															? "modern-input"
@@ -1205,9 +1297,7 @@ function EditProfile() {
 												<input
 													type="password"
 													value={confirmNewPassword}
-													onChange={
-														confirmNewPasswordChangleHandler
-													}
+													onChange={confirmNewPasswordChangleHandler}
 													className={
 														isValidConfirmNewPassword
 															? "modern-input"
@@ -1217,23 +1307,6 @@ function EditProfile() {
 												/>
 											</div>
 										</div>
-									</div>
-
-									<div className="password-tips">
-										<h6>Password Requirements</h6>
-
-										<ul>
-											<li>Minimum 8 characters</li>
-											<li>
-												Include uppercase and lowercase
-												letters
-											</li>
-											<li>Include at least one number</li>
-											<li>
-												Include at least one special
-												character
-											</li>
-										</ul>
 									</div>
 								</div>
 
@@ -1247,28 +1320,32 @@ function EditProfile() {
 									</Button>
 								</div>
 
-								<div className="success-error-container">
-									{isError ? (
-										<p className="error-update-message">
-											{passwordErrorMessage}
-										</p>
-									) : (
-										<p className="success-update-message">
-											{passwordSuccessMessage}
-										</p>
-									)}
-								</div>
+								{(isError ? passwordErrorMessage : passwordSuccessMessage) !== "" && (
+									<div className="success-error-container">
+										{isError ? (
+											<p className="error-update-message">
+												{passwordErrorMessage}
+											</p>
+										) : (
+											<p className="success-update-message">
+												{passwordSuccessMessage}
+											</p>
+										)}
+									</div>
+								)}
+
 							</div>
 						</form>
 					</Accordion.Body>
 				</Accordion.Item>
+
 			</Accordion>
 		</div>
 	);
 
 	// ============================================================
-    // JSX Section - ends
-    // ============================================================
+	// JSX Section - ends
+	// ============================================================
 
 }
 

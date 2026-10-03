@@ -90,8 +90,13 @@ function ApplyFilterandSort(props) {
 				`${backendBaseURL}/api/blogPost/distinctBlogUsersInfo`
 			);
 			logger.log("Fetched unique blog authors:", response);
-			
-			setUniquePostAuthors(response.data);
+
+			const uniqueAuthorsResponse = response.data;
+
+			if(uniqueAuthorsResponse.success){
+				const uniqueAuthorsData = uniqueAuthorsResponse.resultData;
+				setUniquePostAuthors(uniqueAuthorsData);
+			}
 		} 
 		catch (error) {
 			logger.error("Error while fetching unique blog authors:", error);
@@ -116,7 +121,12 @@ function ApplyFilterandSort(props) {
 			);
 			logger.log("Fetched unique blog categories:", response);
 
-			setUniquePostCategories(response.data);
+			const uniqueCategoriesResponse = response.data;
+			
+			if(uniqueCategoriesResponse.success){
+				const uniqueCategoriesData = uniqueCategoriesResponse.resultData;
+				setUniquePostCategories(uniqueCategoriesData);
+			}
 		} 
 		catch (error) {
 			logger.error("Error while fetching unique blog categories:", error);
@@ -141,7 +151,12 @@ function ApplyFilterandSort(props) {
 			);
 			logger.log("Fetched unique blog authors for category:", response);
 			
-			setUniquePostAuthors(response.data);
+			const uniqueAuthorsResponse = response.data;
+			
+			if(uniqueAuthorsResponse.success){
+				const uniqueAuthorsData = uniqueAuthorsResponse.resultData;
+				setUniquePostAuthors(uniqueAuthorsData);
+			}
 		} 
 		catch (error) {
 			logger.error("Error while fetching unique blog authors for category:", error);
@@ -166,7 +181,12 @@ function ApplyFilterandSort(props) {
 			);
 			logger.log("Fetched unique blog categories for user:", response);
 
-			setUniquePostCategories(response.data);
+			const uniqueCategoriesResponse = response.data;
+			
+			if(uniqueCategoriesResponse.success){
+				const uniqueCategoriesData = uniqueCategoriesResponse.resultData;
+				setUniquePostCategories(uniqueCategoriesData);
+			}
 		} 
 		catch (error) {
 			logger.error("Error while fetching unique blog categories for user:", error);
@@ -364,50 +384,12 @@ function ApplyFilterandSort(props) {
 							}}
 						>
 							<option value="">Please Select</option>
-
-							<option value="postTitleAscending">
-								Post Title (A-Z)
-							</option>
-
-							<option value="postTitleDescending">
-								Post Title (Z-A)
-							</option>
-
-							{!pathname.includes("/blogs/username/") && (
-								<option value="authorAscending">
-									Author Name (A-Z)
-								</option>
-							)}
-
-							{!pathname.includes("/blogs/username/") && (
-								<option value="authorDescending">
-									Author Name (Z-A)
-								</option>
-							)}
-
-							{!pathname.includes("/blogs/category/") && (
-								<option value="categoryAscending">
-									Category (A-Z)
-								</option>
-							)}
-
-							{!pathname.includes("/blogs/category/") && (
-								<option value="categoryDescending">
-									Category (Z-A)
-								</option>
-							)}
-
+							<option value="postTitleAscending">Post Title (A-Z)</option>
+							<option value="postTitleDescending">Post Title (Z-A)</option>
 							<option value="postDateAscending">Oldest First</option>
-
 							<option value="postDateDescending">Newest First</option>
-
-							<option value="postLengthAscending">
-								Shortest Post
-							</option>
-
-							<option value="postLengthDescending">
-								Longest Post
-							</option>
+							<option value="postLengthAscending">Shortest Post</option>
+							<option value="postLengthDescending">Longest Post</option>
 						</select>
 					</div>
 
@@ -432,12 +414,7 @@ function ApplyFilterandSort(props) {
 																handleChangeCategory
 															}
 														/>
-
-														<span>
-															{
-																categoryList.categoryName
-															}
-														</span>
+														<span>{categoryList.categoryName}</span>
 													</label>
 												);
 											},
@@ -462,11 +439,8 @@ function ApplyFilterandSort(props) {
 														<input
 															type="checkbox"
 															value={eachAuthor._id}
-															onChange={
-																handleChangeAuthor
-															}
+															onChange={handleChangeAuthor}
 														/>
-
 														<span>
 															{eachAuthor.fullName} (
 															{eachAuthor.username})

@@ -143,52 +143,60 @@ function LoginBox() {
                 );
                 logger.log("Login response:", response);
 
-                // Extract user details and JWT token from response
-                const {
-                    firstName,
-                    middleName,
-                    lastName,
-                    emailAddress,
-                    fullName,
-                    userID,
-                    jwtToken,
-                    username,
-                    gender,
-                    dob,
-                    profilePhoto,
-                } = response.data;
+                const loginResponse = response.data;
 
-                // Prepare user details for local storage
-                const storage = {
-                    firstName,
-                    middleName,
-                    lastName,
-                    emailAddress,
-                    fullName,
-                    userID,
-                    username,
-                    gender,
-                    dob,
-                    profilePhoto,
-                };
-                
-                // Store authenticated user details locally
-                localStorage.setItem("user", JSON.stringify(storage));
+                if(loginResponse.success) {
+                    // Extract user details and JWT token from response
+                    const {
+                        firstName,
+                        middleName,
+                        lastName,
+                        emailAddress,
+                        fullName,
+                        userID,
+                        jwtToken,
+                        username,
+                        gender,
+                        dob,
+                        profilePhoto,
+                    } = loginResponse.resultData;
 
-                // Retrieve stored user details for Redux state
-                const userDetail = JSON.parse(localStorage.getItem("user"));
-                
-                // Store JWT access token in browser cookie
-                Cookies.set("jwt_access_token", jwtToken);
+                    // Prepare user details for local storage
+                    const storage = {
+                        firstName,
+                        middleName,
+                        lastName,
+                        emailAddress,
+                        fullName,
+                        userID,
+                        username,
+                        gender,
+                        dob,
+                        profilePhoto,
+                    };
 
-                // Update global authentication state
-                dispatch(login(userDetail));
+                    // Store authenticated user details locally
+                    localStorage.setItem("user", JSON.stringify(storage));
 
-                // Redirect user after successful login
-                navigate("/");
-            } catch (error) {
+                    // Retrieve stored user details for Redux state
+                    const userDetail = JSON.parse(localStorage.getItem("user"));
+                    
+                    // Store JWT access token in browser cookie
+                    Cookies.set("jwt_access_token", jwtToken);
+
+                    // Update global authentication state
+                    dispatch(login(userDetail));
+
+                    // Redirect user after successful login
+                    navigate("/");
+                }
+            } 
+            catch (error) {
                 logger.error("Login error:", error);
-                setErrorMessage(error.response.data);
+                const errorMessageResponse = error?.response?.data;
+                if(errorMessageResponse.error){
+                    setErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+                }
             }
         }
     }

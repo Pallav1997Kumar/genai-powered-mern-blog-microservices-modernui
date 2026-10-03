@@ -102,8 +102,12 @@ function CommentSection(props) {
 			);
 			logger.log("Fetched blog post comments:", response);
 
-			setBlogPostAllComments(response.data);
+			const blogBlogCommentsResponse = response.data;
 
+			if(blogBlogCommentsResponse.success){
+				const blogPostAllComments = blogBlogCommentsResponse.resultData;
+				setBlogPostAllComments(blogPostAllComments);
+			}
 		}
 		catch (error) {
 			logger.error("Error while fetching blog post comments:", error);

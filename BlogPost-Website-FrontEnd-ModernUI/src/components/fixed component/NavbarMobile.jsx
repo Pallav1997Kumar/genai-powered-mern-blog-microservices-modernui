@@ -121,28 +121,36 @@ function NavbarMobile() {
 
 		// Get authentication token from cookies
 		const token = Cookies.get("jwt_access_token");
-		const values = { token };
-		try {
 
+		try {
 			// Send logout request to the backend
 			const response = await axios.post(
 				`${backendBaseURL}/api/authorization/logout`,
-				values
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				}
 			);
 			logger.log("User logged out:", response);
 
-			// Remove user authentication data
-			localStorage.removeItem("user");
-			Cookies.remove("jwt_access_token");
+			const logoutResponse = response.data;
+			if(logoutResponse.success){
+				// Remove user authentication data
+				localStorage.removeItem("user");
+				Cookies.remove("jwt_access_token");
 
-			// Clear logged in user details from Redux
-			dispatch(logout());
+				// Clear logged in user details from Redux
+				dispatch(logout());
 
-			// Navigate to logout page
-			navigate("/logout");
+				// Navigate to logout page
+				navigate("/logout");
 
-			// Close logout modal
-			setShowLogoutModal(false);
+				// Close logout modal
+				setShowLogoutModal(false);
+			}
+			
 		} catch (error) {
 			logger.error("Error while logging out user:", error);
 		}
@@ -162,31 +170,34 @@ function NavbarMobile() {
 		
 		// Get authentication token from cookies
 		const token = Cookies.get("jwt_access_token");
-		const values = { token };
+
 		try {
 			// Send delete account request to the backend
-			const response = await fetch(
+			const response = await axios.delete(
 				`${backendBaseURL}/api/authorization/deleteAccount/${currentUserObject.userID}`,
 				{
-					method: "DELETE",
-					body: JSON.stringify(values),
-					headers: { "Content-type": "application/json; charset=UTF-8" },
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
 			);
-			const data = await response.json();
-			logger.log("Account deleted:", data);
+			logger.log("Account deleted:", response);
+
+			const accountDeleteResponse = response.data;
+			if(accountDeleteResponse.success){
+				// Navigate to account deleted confirmation page
+				navigate("/accountDeleted");
+
+				// Close delete account modal
+				setShowDeleteAccountModal(false);
+
+				// Remove user data from local storage
+				localStorage.removeItem("user");
+
+				// Clear logged in user details from Redux
+				dispatch(logout());
+			}
 			
-			// Navigate to account deleted confirmation page
-			navigate("/accountDeleted");
-
-			// Close delete account modal
-			setShowDeleteAccountModal(false);
-
-			// Remove user data from local storage
-			localStorage.removeItem("user");
-
-			// Clear logged in user details from Redux
-			dispatch(logout());
 		} catch (error) {
 			logger.error("Error while deleting account:", error);
 		}

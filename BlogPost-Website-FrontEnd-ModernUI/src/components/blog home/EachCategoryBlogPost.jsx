@@ -66,7 +66,12 @@ function EachCategoryBlogPost(props) {
 			);
             logger.log("Fetched four blog posts for category:", response);
 
-			setDefaultBlogPosts(response.data);
+            const fourBlogPostsByCategoryResponse = response.data;
+            
+            if(fourBlogPostsByCategoryResponse.success){
+				const fourBlogPostsByCategory = fourBlogPostsByCategoryResponse.resultData;
+				setDefaultBlogPosts(fourBlogPostsByCategory);
+			}
 		}
 		catch(error){
             logger.error("Error while fetching four blog posts for category:", error);

@@ -3,7 +3,7 @@ const blogPostService = require("../services/blog-post.service.js");
 const blogCommentService = require("../services/blog-comment.service.js");
 const blogLikeService = require("../services/blog-post-like.service.js");
 
-const handleError = require("../utils/errorHandler.js");
+const handleError = require("../utils/error-handler.js");
 const devLogger = require("../utils/dev-logger.js");
 
 
@@ -23,11 +23,19 @@ async function blogUserRegistration(req,res){
         const body = req.body;
 
         devLogger.info(`[${FILE_NAME}] Calling user service for registration`);
-        const result = await userService.registerUser(body);
+        const registerUserResult = await userService.registerUser(body);
 
         devLogger.success(`[${FILE_NAME}] Blog user registration completed successfully`);
         devLogger.info(`[${FILE_NAME}] Sending registration response to client`);
-        return res.status(200).json(result);
+        
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: registerUserResult.successMessage,
+            errorMessage: "",
+            errorData: null,
+            resultData: registerUserResult.resultData
+        });
     }
     catch(error){
         devLogger.error(`[${FILE_NAME}] Blog user registration failed: `, error);
@@ -44,24 +52,21 @@ async function blogUserRegistration(req,res){
 // ============================================================
 // Blog User Login Starts
 // ============================================================
-async function blogUserLogin(req,res){
+async function blogUserLogin(req, res, next) {
     devLogger.info(`[${FILE_NAME}] Blog user login request received`);
 
-    try{
+    try {
         devLogger.info(`[${FILE_NAME}] Extracting login request body`);
         const body = req.body;
 
         devLogger.info(`[${FILE_NAME}] Calling user service for login`);
-        const result = await userService.loginUser(body);
-
+        const loginUserResult = await userService.loginUser(body);
+        
         devLogger.info(`[${FILE_NAME}] Login service execution completed`);
 
-        if(result.cookies){
+        if(loginUserResult.cookies) {
             devLogger.info(`[${FILE_NAME}] Authentication cookie received from login service`);
-            res.setHeader(
-                "Set-Cookie",
-                result.cookies
-            );
+            res.setHeader("Set-Cookie", loginUserResult.cookies);
             devLogger.success(`[${FILE_NAME}] Authentication cookie attached to response`);
         }
         else {
@@ -70,9 +75,17 @@ async function blogUserLogin(req,res){
 
         devLogger.success(`[${FILE_NAME}] Blog user login completed successfully`);
         devLogger.info(`[${FILE_NAME}] Sending login response to client`);
-        return res.status(200).json(result.data);
+
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: loginUserResult.data.successMessage,
+            errorMessage: "",
+            errorData: null,
+            resultData: loginUserResult.data.resultData
+        });
     }
-    catch(error){
+    catch(error) {
         devLogger.error(`[${FILE_NAME}] Blog user login failed: `, error);
         devLogger.warn(`[${FILE_NAME}] Login request could not be completed`);
         return handleError(res, error);
@@ -87,73 +100,156 @@ async function blogUserLogin(req,res){
 // ============================================================
 // Delete User Account Starts
 // ============================================================
-async function blogUserAccountDelete(req,res){
+async function blogUserAccountDelete(req, res, next) {
     devLogger.warn(`[${FILE_NAME}] Blog user account deletion request received`);
 
-    try{
-        devLogger.info(`[${FILE_NAME}] Extracting authentication token from cookies`);
-        const token = req.body.token || req.cookies?.jwt_access_token;
-        if (!token) {
+    try {
+        devLogger.info(`[${FILE_NAME}] Extracting authentication token from request headers`);
+
+        const authHeader = req.headers.authorization;
+        const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+
+        if(!token) {
             devLogger.warn(`[${FILE_NAME}] Account deletion requested without authentication token`);
+            throw {
+                success: false,
+                error: true,
+                successMessage: "",
+                errorMessage: "Authentication token is required",
+                errorData: null,
+                resultData: null,
+                status: 401
+            };
         }
+        devLogger.info(`[${FILE_NAME}] Authentication token extracted successfully`);
 
         devLogger.info(`[${FILE_NAME}] Extracting user ID from request parameters`);
         const userID = req.params.userID;
-        if (!userID) {
+
+        if(!userID) {
             devLogger.warn(`[${FILE_NAME}] Account deletion requested without user ID`);
+            throw {
+                success: false,
+                error: true,
+                successMessage: "",
+                errorMessage: "User ID is required",
+                errorData: null,
+                resultData: null,
+                status: 400
+            };
         }
 
+        devLogger.info(`[${FILE_NAME}] User ID extracted successfully: ${userID}`);
         devLogger.info(`[${FILE_NAME}] Starting deletion of all user blog related data for user: ${userID}`);
-        devLogger.info(`[${FILE_NAME}] Calling blog comment service to delete all comments by user: ${userID}`);
-        const deleteUserCommentsResult = await blogCommentService.deleteCommentsByUserId(userID, token);
 
-        devLogger.info(`[${FILE_NAME}] All user comments deleted successfully for user: ${userID}`);
+        devLogger.info(`[${FILE_NAME}] Deleting all comments by user: ${userID}`);
+        const deleteUserCommentsResponse = await blogCommentService.deleteCommentsByUserId(userID, token);
+
+        if(!deleteUserCommentsResponse?.success) {
+            devLogger.error(`[${FILE_NAME}] Failed to delete user comments: ${deleteUserCommentsResponse?.errorMessage || "Failed to delete user comments"}`);
+            throw deleteUserCommentsResponse;
+        }
+
+        devLogger.info(`[${FILE_NAME}] All user comments deleted successfully`);
         devLogger.success(`[${FILE_NAME}] User comments deletion completed successfully`);
-        devLogger.info(`[${FILE_NAME}] Calling blog like service to delete all likes by user: ${userID}`);
-        const deleteUserLikeResult = await blogLikeService.deleteLikesByUserId(userID, token);
 
-        devLogger.info(`[${FILE_NAME}] All user likes deleted successfully for user: ${userID}`);
+        devLogger.info(`[${FILE_NAME}] Deleting all likes by user: ${userID}`);
+        const deleteUserLikesResponse = await blogLikeService.deleteLikesByUserId(userID, token);
+
+        if(!deleteUserLikesResponse?.success) {
+            devLogger.error(`[${FILE_NAME}] Failed to delete user likes: ${deleteUserLikesResponse?.errorMessage || "Failed to delete user likes"}`);
+            throw deleteUserLikesResponse;
+        }
+
+        devLogger.info(`[${FILE_NAME}] All user likes deleted successfully`);
         devLogger.success(`[${FILE_NAME}] User likes deletion completed successfully`);
-        devLogger.info(`[${FILE_NAME}] Calling blog post service to get all blog post IDs for user: ${userID}`);
+
+        devLogger.info(`[${FILE_NAME}] Fetching all blog post IDs for user: ${userID}`);
         const blogPostIdsByUserId = await blogPostService.getAllBlogPostIdsByUserId(userID);
 
-        devLogger.info(`[${FILE_NAME}] Received blog post IDs for user: ${userID}. Total posts: ${blogPostIdsByUserId.length}`);
-        devLogger.success(`[${FILE_NAME}] Blog post IDs fetched successfully for user: ${userID}`);
-
-        for (const post of blogPostIdsByUserId) {
-            const postID = post._id;
-
-            devLogger.info(`[${FILE_NAME}] Processing deletion for blog post: ${postID}`);
-            devLogger.info(`[${FILE_NAME}] Calling blog like service to delete all likes for post: ${postID}`);
-            const deleteAllLikesByPostIdResult = await blogLikeService.deleteAllLikesForPost(postID, token);
-            devLogger.info(`[${FILE_NAME}] All likes deleted successfully for post: ${postID}`);
-            devLogger.success(`[${FILE_NAME}] Blog likes deletion completed successfully for post: ${postID}`);
-
-            devLogger.info(`[${FILE_NAME}] Calling blog comment service to delete all comments for post: ${postID}`);
-            const deleteAllCommentsByPostIdResult = await blogCommentService.deleteCommentsByPostId(postID, token);
-            devLogger.info(`[${FILE_NAME}] All comments deleted successfully for post: ${postID}`);
-            devLogger.success(`[${FILE_NAME}] Blog comments deletion completed successfully for post: ${postID}`);
+        if(!blogPostIdsByUserId) {
+            devLogger.error(`[${FILE_NAME}] Failed to fetch blog post IDs for user: ${userID}`);
+            throw {
+                success: false,
+                error: true,
+                successMessage: "",
+                errorMessage: "Failed to fetch user blog post IDs",
+                errorData: null,
+                resultData: null,
+                status: 500
+            };
         }
 
-        devLogger.info(`[${FILE_NAME}] Calling blog post service to delete all blogs for user: ${userID}`);
-        const deleteUserBlogsResult = await blogPostService.deleteBlogPostsByUser(userID, token);
-        devLogger.info(`[${FILE_NAME}] All user blog posts deleted successfully for user: ${userID}`);
+        devLogger.info(`[${FILE_NAME}] Received blog post IDs for user: ${userID}. Total posts: ${blogPostIdsByUserId.length}`);
+        devLogger.success(`[${FILE_NAME}] Blog post IDs fetched successfully`);
+
+        for(const post of blogPostIdsByUserId) {
+            const postID = post._id;
+            devLogger.info(`[${FILE_NAME}] Processing deletion for blog post: ${postID}`);
+
+            devLogger.info(`[${FILE_NAME}] Deleting all likes for post: ${postID}`);
+            const deleteAllLikesByPostIdResponse = await blogLikeService.deleteAllLikesForPost(postID, token);
+
+            if(!deleteAllLikesByPostIdResponse?.success) {
+                devLogger.error(`[${FILE_NAME}] Failed to delete likes for post: ${postID}`);
+                throw deleteAllLikesByPostIdResponse;
+            }
+
+            devLogger.info(`[${FILE_NAME}] All likes deleted successfully for post: ${postID}`);
+            devLogger.success(`[${FILE_NAME}] Blog likes deletion completed successfully`);
+
+            devLogger.info(`[${FILE_NAME}] Deleting all comments for post: ${postID}`);
+            const deleteAllCommentsByPostIdResponse = await blogCommentService.deleteCommentsByPostId(postID, token);
+
+            if(!deleteAllCommentsByPostIdResponse?.success) {
+                devLogger.error(`[${FILE_NAME}] Failed to delete comments for post: ${postID}`);
+                throw deleteAllCommentsByPostIdResponse;
+            }
+
+            devLogger.info(`[${FILE_NAME}] All comments deleted successfully for post: ${postID}`);
+            devLogger.success(`[${FILE_NAME}] Blog comments deletion completed successfully`);
+        }
+
+        devLogger.info(`[${FILE_NAME}] Deleting all blog posts for user: ${userID}`);
+        const deleteUserBlogsResponse = await blogPostService.deleteBlogPostsByUser(userID, token);
+
+        if(!deleteUserBlogsResponse?.success) {
+            devLogger.error(`[${FILE_NAME}] Failed to delete user blog posts: ${deleteUserBlogsResponse?.errorMessage || "Failed to delete user blog posts"}`);
+            throw deleteUserBlogsResponse;
+        }
+
+        devLogger.info(`[${FILE_NAME}] All user blog posts deleted successfully`);
         devLogger.success(`[${FILE_NAME}] User blog posts deletion completed successfully`);
 
         devLogger.info(`[${FILE_NAME}] Calling user service for account deletion`);
-        const deleteUserResult = await userService.deleteUser(userID, token);
-        devLogger.info(`[${FILE_NAME}] User service completed account deletion`);
+        const deleteUserResponse = await userService.deleteUser(userID, token);
+
+        if(!deleteUserResponse?.success) {
+            devLogger.error(`[${FILE_NAME}] Failed to delete user account: ${deleteUserResponse?.errorMessage || "Failed to delete user account"}`);
+            throw deleteUserResponse;
+        }
+
+        devLogger.info(`[${FILE_NAME}] User account deleted successfully`);
+        devLogger.success(`[${FILE_NAME}] User service completed account deletion`);
 
         devLogger.info(`[${FILE_NAME}] Clearing authentication cookie`);
         res.clearCookie("jwt_access_token");
-        devLogger.info(`[${FILE_NAME}] Cleared authentication cookie`);
+        devLogger.info(`[${FILE_NAME}] Authentication cookie cleared successfully`);
 
         devLogger.success(`[${FILE_NAME}] Blog user account deleted successfully`);
         devLogger.info(`[${FILE_NAME}] Sending account deletion response to client`);
-        return res.status(200).json(deleteUserResult);
+
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: deleteUserResponse.successMessage,
+            errorMessage: "",
+            errorData: null,
+            resultData: deleteUserResponse.resultData
+        });
     }
-    catch(error){
-        devLogger.error(`[${FILE_NAME}] Blog user account deletion failed: `,error);
+    catch(error) {
+        devLogger.error(`[${FILE_NAME}] Blog user account deletion failed`, error);
         devLogger.warn(`[${FILE_NAME}] Account deletion request could not be completed`);
         return handleError(res, error);
     }
@@ -172,13 +268,14 @@ async function blogUserLogout(req,res){
 
     try{
         devLogger.info(`[${FILE_NAME}] Extracting authentication token from cookies`);
-        const token = req.cookies?.jwt_access_token;
+        const authHeader = req.headers.authorization;
+        const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
         if (!token) {
             devLogger.warn(`[${FILE_NAME}] Logout requested without authentication token`);
         }
 
         devLogger.info(`[${FILE_NAME}] Calling user service for logout`);
-        const result = await userService.logout(token);
+        const logoutUserResult = await userService.logout(token);
         devLogger.info(`[${FILE_NAME}] Logout service execution completed`);
 
         devLogger.info(`[${FILE_NAME}] Clearing authentication cookie`);
@@ -187,7 +284,15 @@ async function blogUserLogout(req,res){
 
         devLogger.success(`[${FILE_NAME}] Blog user logout completed successfully`);
         devLogger.info(`[${FILE_NAME}] Sending logout response to client`);
-        return res.status(200).json(result);
+        
+        return res.status(200).json({
+            success: true,
+            error: false,
+            successMessage: logoutUserResult.successMessage,
+            errorMessage: "",
+            errorData: null,
+            resultData: logoutUserResult.resultData
+        });
     }
     catch(error){
         devLogger.error(`[${FILE_NAME}] Blog user logout failed`, error);

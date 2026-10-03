@@ -331,44 +331,52 @@ function RegisterBox() {
 				);
                 logger.log("Registration response:", response);
 
-                // Display successful registration message
-				setSuccessMessage(response.data);
+                const registrationResponse = response.data;
 
-                // Reset registration form fields
-				setFirstName("");
-				setMiddleName("");
-				setLastName("");
-				setUsername("");
-				setGender("Male");
-				setDob("");
-				setEmail("");
-				setPassword("");
-				setConfirmPassword("");
+                if(registrationResponse.success){
+                    // Display successful registration message
+				    setSuccessMessage(registrationResponse.successMessage);
 
-                // Clear previous registration error state
-				setErrorMessage("");
-				setIsErrorWhileRegistration(false);
+                    // Reset registration form fields
+                    setFirstName("");
+                    setMiddleName("");
+                    setLastName("");
+                    setUsername("");
+                    setGender("Male");
+                    setDob("");
+                    setEmail("");
+                    setPassword("");
+                    setConfirmPassword("");
+
+                    // Clear previous registration error state
+                    setErrorMessage("");
+                    setIsErrorWhileRegistration(false);
+                }        
 			} 
             catch (error) {
                 logger.error("Registration error:", error);
+                const errorMessageResponse = error?.response?.data;
 
-                // Display the appropriate backend error message
-				if (error.message === "Request failed with status code 401") {
-					setErrorMessage(error.response.data);
-				} 
-                else if (error.message === "Request failed with status code 409") {
-					setErrorMessage(error.response.data);
-				} 
-                else if (error.message === "Request failed with status code 400") {
-					setErrorMessage(error.response.data);
-				} 
-                else {
-					setErrorMessage(error.message);
-				}
+                if(errorMessageResponse.error){
+                    // Display the appropriate backend error message
+                    if (error.message === "Request failed with status code 401") {
+					    setErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+				    } 
+                    else if (error.message === "Request failed with status code 409") {
+					    setErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+                    } 
+                    else if (error.message === "Request failed with status code 400") {
+                        setErrorMessage(errorMessageResponse?.errorData?.errorMessage);
+                    } 
+                    else {
+                        setErrorMessage(error.message);
+                    }
 
-                // Clear success state and mark registration as failed
-				setSuccessMessage("");
-				setIsErrorWhileRegistration(true);
+                    // Clear success state and mark registration as failed
+                    setSuccessMessage(errorMessageResponse?.successMessage);
+                    setIsErrorWhileRegistration(true);
+                }
+                
 			}
 		}
 	}

@@ -1,9 +1,9 @@
-const httpClient = require("../utils/httpClient.js");
+const httpClient = require("../utils/http-client.js");
 const devLogger = require("../utils/dev-logger.js");
 
-const { 
-    BLOG_COMMENT_SERVICE 
-} = require("../config/services.js");
+const { BLOG_COMMENT_SERVICE } = require("../config/services.js");
+const createServiceError = require("../utils/service-error.js");
+const { BlogCommentServiceErrorMessage } = require("../constants/error-message.constant.js");
 
 
 const FILE_NAME = "blog-comment.service.js";
@@ -36,12 +36,7 @@ async function addNewCommentForPostId(postID, data, token) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to add comment`, error);
         devLogger.warn(`[${FILE_NAME}] Add comment request could not be completed`);
-
-        throw {
-            message: "Failed to add comment",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCommentServiceErrorMessage.ADD_COMMENT_FAILED, error);
     }
 }
 // ============================================================
@@ -76,12 +71,7 @@ async function updateCommentByCommentId(commentID, data, token) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to update comment`, error);
         devLogger.warn(`[${FILE_NAME}] Update comment request could not be completed`);
-
-        throw {
-            message: "Failed to update comment",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCommentServiceErrorMessage.UPDATE_COMMENT_BY_ID_FAILED, error);
     }
 }
 // ============================================================
@@ -115,12 +105,7 @@ async function deleteCommentByCommentId(commentID, token) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to delete comment`, error);
         devLogger.warn(`[${FILE_NAME}] Delete comment request could not be completed`);
-
-        throw {
-            message: "Failed to delete comment",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCommentServiceErrorMessage.DELETE_COMMENT_BY_ID_FAILED, error);
     }
 }
 // ============================================================
@@ -149,12 +134,7 @@ async function getAllCommentsByPostId(postID) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to fetch comments`, error);
         devLogger.warn(`[${FILE_NAME}] Get all comments request could not be completed`);
-
-        throw {
-            message: "Failed to fetch comments",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCommentServiceErrorMessage.FETCH_COMMENTS_BY_POSTID_FAILED, error);
     }
 }
 // ============================================================
@@ -188,12 +168,7 @@ async function deleteCommentsByUserId(userID, token) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to delete user's comments`, error);
         devLogger.warn(`[${FILE_NAME}] Delete user's comments request could not be completed`);
-
-        throw {
-            message: "Failed to delete user's comments",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCommentServiceErrorMessage.DELETE_USER_COMMENTS_FAILED, error);
     }
 }
 // ============================================================
@@ -227,12 +202,7 @@ async function deleteCommentsByPostId(postID, token) {
     catch(error) {
         devLogger.error(`[${FILE_NAME}] Failed to delete post comments`, error);
         devLogger.warn(`[${FILE_NAME}] Delete post comments request could not be completed`);
-
-        throw {
-            message: "Failed to delete post comments",
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message
-        };
+        throw createServiceError(BlogCommentServiceErrorMessage.DELETE_POST_COMMENTS_FAILED, error);
     }
 }
 // ============================================================
